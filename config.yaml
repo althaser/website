@@ -72,7 +72,7 @@ params:
         url: "https://mastodon.social/@althaser.rss"
         icon2: "images/rss.png"
       - title: OFTC
-        url: "#"
+        url: "https://www.oftc.net"
         # description: Description of the project
         # class: "fa-regular"
         # icon: "fa-regular fa-comments"
