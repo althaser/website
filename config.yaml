@@ -45,6 +45,9 @@ params:
       - icon: fab fa-mastodon
         url: "https://mastodon.social/@althaser"
         title: Mastodon
+      - icon: fas fa-file
+        url: "#"
+        title: CV
 
   showInAccordion:
     - item: aboutme
