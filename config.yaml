@@ -3,9 +3,9 @@ languageCode: en-us
 build:
   writeStats: true
 params:
-  title: althaser website
+  title: althaser's website
   author: Pedro Beja
-  description: althaser website
+  description: althaser's website
   copyright: >-
     no borders no nations @ 2024
   theme:
@@ -51,8 +51,8 @@ params:
 
   showInAccordion:
     - item: about
-      expand: true
     - item: links
+      expand: true  # default
     # - item: experience
     # - item: education
     # - item: publication
@@ -95,6 +95,10 @@ params:
         version: ""
       - title: Debian BTS
         url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
+        icon2: "images/debian.svg"
+        version: ""
+      - title: Debian GNOME Team Activity
+        url: "https://salsa.debian.org/groups/gnome-team/-/activity"
         icon2: "images/debian.svg"
         version: ""
       - title: TopDocs
