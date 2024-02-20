@@ -1,7 +1,7 @@
 ---
-title: "Bash prompt branch name"
+title: "Bash prompt with branch name"
 date: 2024-02-20
-tags: ["linux", "utils", "bash", "branch"]
+tags: ["linux", "bash", "branch", "git"]
 categories: ["medium"]
 description: "How to setup bashrc to support branch name in its prompt."
 draft: false
