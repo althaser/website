@@ -50,28 +50,28 @@ params:
         title: CV
 
   showInAccordion:
-    - item: aboutme
+    - item: about
       expand: true
-    - item: interestinglinks
+    - item: links
     # - item: experience
     # - item: education
     # - item: publication
     # - item: project
     # - item: skill
     # - item: hobby
-  aboutme:
-    title: About Me
+  about:
+    title: About
     icon: fas fa-user
     description: "**Hi**, I am **Pedro Beja** and this is my website."
-  interestinglinks:
-    title: Interesting Links
+  links:
+    title: Links
     # icon: fas fa-project-diagram
     icon: fas fa-link
     list:
       - title: RSS
         url: "https://mastodon.social/@althaser.rss"
-        icon2: "images/rss.png"
-      - title: OFTC
+        icon2: "images/rss.svg"
+      - title: IRC-OFTC
         url: "https://www.oftc.net"
         # description: Description of the project
         # class: "fa-regular"
@@ -79,7 +79,7 @@ params:
         icon2: "images/chat.svg"
       - title: Linux Kernel
         url: "https://www.kernel.org"
-        icon2: "images/linux.png"
+        icon2: "images/linux.svg"
         version: "v6.7.5"
       - title: GNOME
         url: "https://www.gnome.org"
@@ -87,19 +87,19 @@ params:
         version: "v46"
       - title: Debian GNU/Linux
         url: "https://www.debian.org"
-        icon2: "images/debian.png"
+        icon2: "images/debian.svg"
         version: "v12.5"
       - title: Debian Contributions
         url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
-        icon2: "images/debian.png"
+        icon2: "images/debian.svg"
         version: ""
       - title: Debian BTS
         url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
-        icon2: "images/debian.png"
+        icon2: "images/debian.svg"
         version: ""
       - title: TopDocs
         url: "https://www.youtube.com/playlist?list=PLufXXcyYWiXhlzS4jAkIxTQJsO8FVDzwT"
-        icon2: "images/youtube.png"
+        icon2: "images/youtube.svg"
         version: ""
   # experience:
   #   title: Experiences

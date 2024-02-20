@@ -1,5 +1,5 @@
 ---
-title: "Rdfind - redundant data find"
+title: "Rdfind - Redundant Data Find"
 date: 2024-02-20
 tags: ["linux", "storage"]
 categories: ["github"]
