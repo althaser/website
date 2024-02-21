@@ -17,6 +17,12 @@ https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pag
 
 https://medium.com/@isphinxs/using-a-custom-domain-name-with-github-pages-c9cdc2084d54
 
+#### GitHub Pages -> Custom Domain
+https://github.com/althaser/website/settings/pages
+
+> Custom domain: althaser.eu
+>
+> * DNS check successful
 
 #### baseURL in config.yaml
 ```
