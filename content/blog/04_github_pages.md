@@ -8,6 +8,9 @@ draft: false
 ---
 
 # Hugo - Deploy and Set Custom Domain on GitHub Pages
+<img src="https://raw.githubusercontent.com/althaser/website/96f6c74f638ff3ac5e4f29225a88c2534ee3cd6a/static/images/github.svg" alt="GitHub" width="100" height="90">
+<img src="https://raw.githubusercontent.com/althaser/website/7f6d0aa95d19c343d266a074e0fff78d201372a0/static/images/hugo.svg" alt="Hugo" width="100" height="100">
+
 
 https://gohugo.io/hosting-and-deployment/hosting-on-github/
 
@@ -21,8 +24,9 @@ https://medium.com/@isphinxs/using-a-custom-domain-name-with-github-pages-c9cdc2
 https://github.com/althaser/website/settings/pages
 
 > Custom domain: althaser.eu
->
-> * DNS check successful
+
+![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8)
+DNS check successful
 
 #### baseURL in config.yaml
 ```
