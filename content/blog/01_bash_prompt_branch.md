@@ -8,7 +8,7 @@ draft: false
 ---
 
 # Bash Prompt With Branch Name
-<img src="https://raw.githubusercontent.com/althaser/website/67c0225b7e6216e4ba43ff7fd529d3feb8126b96/static/images/bash.svg" alt="Bash" width="30" height="30">
+<img src="https://raw.githubusercontent.com/althaser/website/67c0225b7e6216e4ba43ff7fd529d3feb8126b96/static/images/bash.svg" alt="Bash" width="70" height="70">
 
 https://medium.com/@chiraggandhi70726/how-to-add-git-branch-name-to-bash-prompt-b112b93606e
 

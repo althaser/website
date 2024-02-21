@@ -8,6 +8,6 @@ draft: false
 ---
 
 # FreeFileSync - Open Source File Synchronization
-<img src="https://github.com/althaser/website/blob/master/static/images/freefilesync.png?raw=true" alt="FreeFileSync" width="30" height="30"> https://freefilesync.org
+<img src="https://github.com/althaser/website/blob/master/static/images/freefilesync.png?raw=true" alt="FreeFileSync" width="70" height="70"> https://freefilesync.org
 
 FreeFileSync is a folder comparison and synchronization software that creates and manages backup copies of all your important files. Instead of copying every file every time, FreeFileSync determines the differences between a source and a target folder and transfers only the minimum amount of data needed. FreeFileSync is Open Source software, available for Windows, macOS, and Linux.

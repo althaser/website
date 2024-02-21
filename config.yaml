@@ -2,6 +2,8 @@ baseURL: "https://althaser.eu"
 languageCode: en-us
 build:
   writeStats: true
+# https://www.markdownguide.org/tools/hugo/
+# https://gohugo.io/getting-started/configuration-markup/#goldmark
 markup:
   goldmark:
     renderer:
