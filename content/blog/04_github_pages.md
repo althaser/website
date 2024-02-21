@@ -26,6 +26,7 @@ https://github.com/althaser/website/settings/pages
 > Custom domain: althaser.eu
 
 ![](https://github.githubassets.com/images/icons/emoji/unicode/2714.png?v8)
+:white_check_mark:
 DNS check successful
 
 #### baseURL in config.yaml
