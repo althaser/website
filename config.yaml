@@ -1,4 +1,4 @@
-baseURL: "https://althaser.me"
+baseURL: "https://althaser.eu"
 languageCode: en-us
 build:
   writeStats: true
