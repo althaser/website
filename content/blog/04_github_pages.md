@@ -7,7 +7,6 @@ description: "Hugo - Deploy and Set Custom Domain on GitHub Pages."
 draft: false
 ---
 
-# Hugo - Deploy and Set Custom Domain on GitHub Pages
 <img src="https://raw.githubusercontent.com/althaser/website/96f6c74f638ff3ac5e4f29225a88c2534ee3cd6a/static/images/github.svg" alt="GitHub" width="70" height="70">
 <img src="https://raw.githubusercontent.com/althaser/website/7f6d0aa95d19c343d266a074e0fff78d201372a0/static/images/hugo.svg" alt="Hugo" width="140" height="140">
 
