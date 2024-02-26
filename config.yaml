@@ -74,8 +74,11 @@ params:
     # icon: fas fa-project-diagram
     icon: fas fa-link
     list:
-      - title: RSS
+      - title: RSS Mastodon
         url: "https://mastodon.social/@althaser.rss"
+        icon2: "images/rss.svg"
+      - title: RSS Blog
+        url: "https://althaser.eu/index.xml"
         icon2: "images/rss.svg"
       - title: IRC-OFTC
         url: "https://www.oftc.net"
