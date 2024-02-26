@@ -1,9 +1,9 @@
 ---
-title: "Gitlab - Gitlab Job Log Viewer"
+title: "Gitlab - Job Log Viewer"
 date: 2024-02-26
 tags: ["linux", "gitlab", "software"]
 categories: ["other"]
-description: "Gitlab - Gitlab Job Log Viewer."
+description: "Gitlab - Job Log Viewer."
 draft: false
 ---
 
