@@ -7,7 +7,7 @@ description: "Gitlab - Job Log Viewer."
 draft: false
 ---
 
-<img src="https://raw.githubusercontent.com/althaser/website/9747d99b746b802ed20a74df6524be5a0a5c70ab/static/images/gitlab.svg" alt="GitLab" width="140" height="140">
+<img src="https://raw.githubusercontent.com/althaser/website/fb8859704db61c13a4575dbda0475b5afa1a25ab/static/images/gitlab.svg" alt="GitLab" width="200" height="200">
 
 Chrome extension: https://github.com/7rulnik/gitlab-job-log-viewer
 
