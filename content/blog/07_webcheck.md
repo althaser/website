@@ -7,7 +7,7 @@ description: "WebCheck - Intelligence for any Website."
 draft: false
 ---
 
-<img src="https://raw.githubusercontent.com/althaser/website/fb8859704db61c13a4575dbda0475b5afa1a25ab/static/images/webcheck.png" alt="WebCheck" width="100" height="100">
+<img src="https://camo.githubusercontent.com/def1f3032b6ec59d11b109c906eb7a512796acbf46da8a7e53a3f1fa19fdcade/68747470733a2f2f692e6962622e636f2f7131675a4e32702f7765622d636865636b2d6c6f676f2e706e67" alt="WebCheck" width="100" height="100">
 
 https://github.com/Lissy93/web-check
 
