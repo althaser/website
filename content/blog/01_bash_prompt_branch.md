@@ -1,5 +1,5 @@
 ---
-title: "Bash Prompt With Branch Name"
+title: "Bash - Prompt With Branch Name"
 date: 2024-02-20
 tags: ["linux", "bash", "branch", "git", "configurations"]
 categories: ["medium"]
