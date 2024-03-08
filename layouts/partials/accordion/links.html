@@ -8,3 +8,31 @@
   </span>
 </p>
 {{ end }}
+
+<!-- <div id="GNOMELatestTag"></div>
+<script>
+    async function fetchLatestGNOMEGitLabTag() {
+    const projectId = encodeURIComponent('GNOME/gnome-shell'); // URL-encoded path of the project
+    const url = `https://gitlab.gnome.org/api/v4/projects/${projectId}/repository/tags`;
+
+    try {
+      const response = await fetch(url + '?order_by=updated&sort=desc');
+      if (!response.ok) throw new Error('Network response was not ok.');
+
+      const tags = await response.json();
+      if (tags.length > 0) {
+        // console.log('Latest Tag:', tags[0].name); // Assuming the first tag is the latest
+        // document.write('Latest Tag:', tags[0].name);
+        // return tags[0].name;
+        const latestTag = tags[0].name;
+        document.getElementById('GNOMELatestTag').textContent = `GNOME: ${latestTag}`;
+      } else {
+        throw new Error('No tags found.');
+      }
+    } catch (error) {
+      console.error('Failed to fetch latest tag:', error);
+    }
+  }
+
+  fetchLatestGNOMEGitLabTag();
+</script> -->
