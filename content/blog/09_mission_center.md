@@ -1,7 +1,7 @@
 ---
 title: "Mission Center - Monitor system resource usage"
 date: 2024-03-06
-tags: ["linux", "system-info", "monitoring"]
+tags: ["linux", "system-info", "monitoring", "software"]
 categories: ["flatpak"]
 description: "Mission Center - Monitor system resource usage."
 draft: false

@@ -1,8 +1,8 @@
 ---
 title: "WebCheck - Intelligence for any Website"
 date: 2024-02-27
-tags: ["linux", "WebCheck", "software"]
-categories: ["others"]
+tags: ["linux", "WebCheck", "software", "monitoring"]
+categories: ["github"]
 description: "WebCheck - Intelligence for any Website."
 draft: false
 ---

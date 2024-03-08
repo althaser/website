@@ -1,7 +1,7 @@
 ---
 title: "Rdfind - Redundant Data Find"
 date: 2024-02-20
-tags: ["linux", "storage", "software"]
+tags: ["linux", "storage", "software", "cleanup"]
 categories: ["github"]
 description: "Rdfind is a command line tool that finds duplicate files."
 draft: false
