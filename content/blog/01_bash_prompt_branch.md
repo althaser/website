@@ -17,6 +17,9 @@ $ code ~/.bashrc
 
 Append the following:
 ```shell
+# Show git branch name
+force_color_prompt=yes
+color_prompt=yes
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
