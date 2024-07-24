@@ -13,4 +13,6 @@ draft: false
 > - I Couldn't Care Less.
 > - Hoje, Fazia Tudo Igual.
 > - Na tavas capaz, na vinhas.
+> - It has happened in the past.
+> - Cocolinguaco, Manaquinomanaio, barotenakazote.
 > #### ''
