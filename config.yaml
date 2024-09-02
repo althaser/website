@@ -90,15 +90,15 @@ params:
       - title: Linux Kernel
         url: "https://www.kernel.org"
         icon2: "images/linux.svg"
-        version: "v6.8"
+        version: ""
       - title: GNOME
         url: "https://www.gnome.org"
         icon2: "images/gnome.svg"
-        version: "v46"
+        version: ""
       - title: Debian GNU/Linux
         url: "https://www.debian.org"
         icon2: "images/debian.svg"
-        version: "v12.5"
+        version: ""
       - title: Debian Contributions
         url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
         icon2: "images/debian.svg"
