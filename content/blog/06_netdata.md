@@ -7,7 +7,7 @@ description: "NetData - Monitor your servers."
 draft: false
 ---
 
-<img src="https://camo.githubusercontent.com/1fa8fd7635eea275fd68289a28813c3625900dc431b24ebbfe3f86ca5f1b6e8f/68747470733a2f2f7777772e6e6574646174612e636c6f75642f696d672f726561646d652d696d616765732f6e6574646174615f726561646d655f6c6f676f5f6c696768742e706e67" alt="NetData" width="300" height="300">
+<img src="https://avatars.githubusercontent.com/u/43390781?s=200&v=4" alt="NetData" width="100" height="100">
 
 https://github.com/netdata/netdata
 
