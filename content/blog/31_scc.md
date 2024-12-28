@@ -7,6 +7,8 @@ description: "Sloc Cloc and Code (scc)"
 draft: false
 ---
 
+<img src="https://github.com/boyter/scc/raw/master/scc.jpg" alt="scc" width="300px" height="100px">
+
 **Sloc, Cloc and Code**: **scc** is a very fast accurate code counter with complexity calculations and COCOMO estimates written in pure Go
 
 https://github.com/boyter/scc
