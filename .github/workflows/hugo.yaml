@@ -30,9 +30,9 @@ defaults:
 jobs:
   # Build job
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
-      HUGO_VERSION: 0.136.5
+      HUGO_VERSION: 0.140.1
     steps:
       - name: Install Hugo CLI
         run: |
@@ -70,7 +70,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Deploy to GitHub Pages
