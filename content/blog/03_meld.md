@@ -7,7 +7,7 @@ description: "Open Source Software to visualize differences and merge data."
 draft: false
 ---
 
-<img src="https://raw.githubusercontent.com/althaser/website/96f6c74f638ff3ac5e4f29225a88c2534ee3cd6a/static/images/meld.svg" alt="Meld" width="70" height="70"> https://meldmerge.org
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Meld_Logo.svg/1200px-Meld_Logo.svg.png" alt="Meld" width="70" height="70"> https://meldmerge.org
 
 Meld helps you compare files, directories, and version controlled projects. It provides two- and three-way comparison of both files and directories, and has support for many popular version control systems.
 
