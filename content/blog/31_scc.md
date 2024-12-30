@@ -167,4 +167,9 @@ Estimated People Required (organic) 562.34
 ───────────────────────────────────────────────────────────────────────────────
 Processed 1459971652 bytes, 1459.972 megabytes (SI)
 ───────────────────────────────────────────────────────────────────────────────
+
+beja@Sirius:~$ docker run --rm -it -v "/home/beja/Development/github-althaser/website:/pwd"  ghcr.io/lhoupert/scc:master scc --version
+scc version 3.3.0 (beta)
+
+beja@Sirius:~$ docker run --rm -it -v "/home/beja/Development/github-althaser/website:/pwd"  ghcr.io/lhoupert/scc:master scc /pwd
 ```
