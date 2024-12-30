@@ -7,7 +7,7 @@ description: "Micropia - Tree of Life."
 draft: false
 ---
 
-<img src="https://www.micropia.nl/static/microworld/images/photos/tree-of-life.580.jpg" alt="treeoflife" width="350" height="350">
+<img src="https://www.researchgate.net/publication/384151175/figure/fig1/AS:11431281283008583@1728612502735/The-tree-of-life-appearing-as-a-wall-map-at-the-entrance-to-the-Micropia-museum.png" alt="treeoflife" width="350" height="350">
 
 https://www.micropia.nl/dossiercontent/microworld/en/3/?ph=1
 
