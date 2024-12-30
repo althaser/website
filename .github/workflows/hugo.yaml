@@ -27,13 +27,10 @@ defaults:
   run:
     shell: bash
 
-env:
-  RUNS_ON_OS: ubuntu-24.04
-
 jobs:
   # Build job
   build:
-    runs-on: ${{ env.RUNS_ON_OS }}
+    runs-on: ubuntu-24.04
     env:
       HUGO_VERSION: 0.140.1
     steps:
@@ -76,7 +73,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ${{ env.RUNS_ON_OS }}
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - name: Deploy to GitHub Pages
