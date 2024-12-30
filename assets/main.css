@@ -88,7 +88,6 @@
     @apply bg-gray-300 pointer-events-none text-blue-800 dark:text-yellow-500 dark:bg-gray-600;
   }
 }
-
 .pagefind-ui__search-input {
   color: black;
   width: 100%;
