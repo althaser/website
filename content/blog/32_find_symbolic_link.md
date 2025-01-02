@@ -20,4 +20,6 @@ lrwxrwxrwx 1 pbeja pbeja  60 jul  1  2024 cpe-gitlab-ci-keypair.yml -> ../../Tem
 lrwxrwxrwx 1 pbeja pbeja  57 ago 20 17:07 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/keypair.yml
 lrwxrwxrwx 1 pbeja pbeja  57 abr 19  2024 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/keypair.yml
 lrwxrwxrwx 1 pbeja pbeja  60 jun  7  2023 gitlab-ci-keypair.yml -> ../../../Templates/domain.com/keypair/keypair.yml
+
+$ find -L . -xtype l
 ```
