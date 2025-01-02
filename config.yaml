@@ -28,7 +28,6 @@ params:
               <link rel="manifest" href="site.webmanifest">
               <link rel="mask-icon" href="safari-pinned-tab.svg" color="#252627">
               <link rel="shortcut icon" href="favicon.ico">
-
   profile:
     name: "Pedro Beja"
     tagline: althaser
@@ -60,19 +59,12 @@ params:
     - item: about
     - item: links
       expand: true  # default
-    # - item: experience
-    # - item: education
-    # - item: publication
-    # - item: project
-    # - item: skill
-    # - item: hobby
   about:
     title: About
     icon: fas fa-user
     description: "**Hi**, I am **Pedro Beja** and this is my website."
   links:
     title: Links
-    # icon: fas fa-project-diagram
     icon: fas fa-link
     list:
       - title: GitHub
@@ -83,21 +75,15 @@ params:
         icon2: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/GitLab_icon.svg/2127px-GitLab_icon.svg.png"
       - title: RSS Blog
         url: "https://althaser.eu/index.xml"
-        # icon2: "images/rss.svg"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
       - title: RSS Mastodon
         url: "https://mastodon.social/@althaser.rss"
-        # icon2: "images/rss.svg"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
       - title: Mastodon
         url: "https://mastodon.social/@althaser"
         icon2: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mastodon-icon.svg"
       - title: IRC-OFTC
         url: "https://www.oftc.net"
-        # description: Description of the project
-        # class: "fa-regular"
-        # icon: "fa-regular fa-comments"
-        # icon2: "images/chat.svg"
         icon2: "https://element.io/images/logo-mark-primary.svg"
       # - title: Linux Kernel
       #   url: "https://www.kernel.org"
@@ -113,124 +99,17 @@ params:
       #   version: ""
       - title: Debian Contributions
         url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
-        # icon2: "images/debian.svg"
         icon2: "https://www.debian.org/logos/openlogo-nd.svg"
         version: ""
       - title: Debian BTS
         url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
-        # icon2: "images/debian.svg"
         icon2: "https://www.debian.org/logos/openlogo-nd.svg"
         version: ""
       - title: Debian GNOME Team Activity
         url: "https://salsa.debian.org/groups/gnome-team/-/activity"
-        # icon2: "images/debian.svg"
         icon2: "https://www.debian.org/logos/openlogo-nd.svg"
         version: ""
       - title: TopDocs
         url: "https://www.youtube.com/playlist?list=PLufXXcyYWiXhlzS4jAkIxTQJsO8FVDzwT"
-        # icon2: "images/youtube.svg"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg"
         version: ""
-  # experience:
-  #   title: Experiences
-  #   icon: fas fa-briefcase
-  #   list:
-  #     - position: Job Title
-  #       dates: 2019 - *Present*
-  #       company: Company Name
-  #       details: |1-
-  #         - Printed from desktop. Sent [emails](#).
-  #             - Called people *using* telephone.
-  #         - Drank water from office cooler.
-  #         - Ate donuts on people's birthdays.
-  #     - position: Job Title
-  #       dates: 2018 - 2019
-  #       url: "#"
-  #       company: Company Name
-  # education:
-  #   title: Education
-  #   icon: fas fa-graduation-cap
-  #   list:
-  #     - degree: Ph.D. in Subject
-  #       college: University of State-City
-  #       dates: 2013 - 2018
-  #       thesis_title: "Effect of humans on other humans: a study of human behavior."
-  #       thesis_url: "#"
-  #     - degree: M.S. in Subject
-  #       college: University of State-City
-  #       dates: 2013 - 2018
-  #       thesis_title: "Effect of humans on other humans: a study of human behavior."
-  #       thesis_url: "#"
-  #     - degree: B.S. in Subject
-  #       college: University of State-City
-  #       dates: 2004 - 2009
-  # publication:
-  #   title: Publications
-  #   icon: fas fa-book
-  #   format:
-  #     - date
-  #     - title
-  #     - authors
-  #     - journal
-  #   types:
-  #     - Journal Articles
-  #     - Proceedings
-  #   list:
-  #     - title: >-
-  #         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  #         eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  #       authors: "F Last, F Second, P secondary"
-  #       date: "2018"
-  #       journal: "Journal of Field 52 (16), 9033-9044"
-  #       url: "#"
-  #       type: Journal Articles
-  #     - title: >-
-  #         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  #         eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  #       authors: "F Last, F Second, P secondary"
-  #       date: "2018"
-  #       journal: "Journal of Field 52 (16), 9033-9044"
-  #       url: "#"
-  #       type: Journal Articles
-  #     - title: >-
-  #         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  #         eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  #       authors: "F Last, F Second, P secondary"
-  #       date: "2018"
-  #       journal: "Journal of Field 52 (16), 9033-9044"
-  #       url: "#"
-  #       type: Proceedings
-  # project:
-  #   title: Projects
-  #   icon: fas fa-project-diagram
-  #   list:
-  #     - title: Project 1
-  #       url: "#"
-  #       description: Description of the project
-  #     - title: Project 2
-  #       url: "#"
-  #       description: Description of the project
-  #     - title: Project 3
-  #       url: "#"
-  #       description: Description of the project
-  #     - title: Project 4
-  #       url: "#"
-  #       description: Description of the project
-  # skill:
-  #   title: Skills
-  #   panelId: skill-panel
-  #   icon: fas fa-cogs
-  #   list:
-  #     - skill: "Skill 1, Skill 2"
-  #       skillrating: 90
-  #     - skill: Skill 3
-  #       skillrating: 80
-  #     - skill: Skill 4
-  #       skillrating: 50
-  # hobby:
-  #   title: Hobbies
-  #   icon: fas fa-gamepad
-  #   list:
-  #     - hobby: Cooking
-  #     - hobby: Hiking
-  #     - hobby: Baking
