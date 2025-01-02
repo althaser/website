@@ -12,14 +12,12 @@ draft: false
 **Find symbolic links**
 
 ```shell
-$ ls -lR |grep '^l'|grep keypair.yml
-lrwxrwxrwx 1 pbeja pbeja  60 jan  2 12:36 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/v2/keypair.yml
-lrwxrwxrwx 1 pbeja pbeja  57 ago  4  2023 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/keypair.yml
-lrwxrwxrwx 1 pbeja pbeja   57 jun  7  2023 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/keypair.yml
-lrwxrwxrwx 1 pbeja pbeja  60 jul  1  2024 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/v1/keypair.yml
-lrwxrwxrwx 1 pbeja pbeja  57 ago 20 17:07 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/keypair.yml
-lrwxrwxrwx 1 pbeja pbeja  57 abr 19  2024 cpe-gitlab-ci-keypair.yml -> ../../Templates/domain.com/keypair/keypair.yml
-lrwxrwxrwx 1 pbeja pbeja  60 jun  7  2023 gitlab-ci-keypair.yml -> ../../../Templates/domain.com/keypair/keypair.yml
+$ ls -lR |grep "^l" |grep backend-swarm.yml
+lrwxrwxrwx 1 pbeja pbeja  58 ago  4  2023 cpe-securitygroup-swarm.yml -> ../../Templates/domain.com/sg/backend-swarm.yml
+lrwxrwxrwx 1 pbeja pbeja  58 ago  4  2023 cpe-securitygroup-swarm.yml -> ../../Templates/domain.com/sg/backend-swarm.yml
+lrwxrwxrwx 1 pbeja pbeja  58 abr 19  2024 cpe-securitygroup-back-swarm.yml -> ../../Templates/domain.com/sg/backend-swarm.yml
 
-$ find -L . -xtype l
+$ find . -name "cpe-securitygroup-swarm.yml"
+./Europe/Backend/cpe-securitygroup-swarm.yml
+./Asia/Backend/cpe-securitygroup-swarm.yml
 ```
