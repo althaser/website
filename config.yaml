@@ -14,7 +14,7 @@ params:
   author: Pedro Beja
   description: althaser's website
   copyright: >-
-    no borders no nations @ 2025
+    no borders no nations
   theme:
     mainTheme: light
     showAttribute: true
@@ -39,12 +39,12 @@ params:
       - icon: fas fa-envelope
         url: "mailto:althaser at gmail dot com"
         title: E-Mail
-      - icon: fas fa-file
-        url: "#"
-        title: CV
       - icon: fab fa-linkedin-in
         url: "https://www.linkedin.com/in/althaser/"
         title: LinkedIn
+      - icon: fas fa-file
+        url: "#"
+        title: CV
       # - icon: fab fa-github
       #   url: "https://github.com/althaser"
       #   title: GitHub
@@ -67,49 +67,42 @@ params:
     title: Links
     icon: fas fa-link
     list:
+      - title: Debian BTS
+        url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
+        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
+      - title: Debian Contributions
+        url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
+        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
+      - title: Debian GNOME Team Activity
+        url: "https://salsa.debian.org/groups/gnome-team/-/activity"
+        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
       - title: GitHub
         url: "https://github.com/althaser"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
       - title: GitLab
         url: "https://gitlab.com/althaser"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/GitLab_icon.svg/2127px-GitLab_icon.svg.png"
+      - title: IRC-OFTC
+        url: "https://www.oftc.net"
+        icon2: "https://element.io/images/logo-mark-primary.svg"
+      - title: Mastodon
+        url: "https://mastodon.social/@althaser"
+        icon2: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mastodon-icon.svg"
       - title: RSS Blog
         url: "https://althaser.eu/index.xml"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
       - title: RSS Mastodon
         url: "https://mastodon.social/@althaser.rss"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
-      - title: Mastodon
-        url: "https://mastodon.social/@althaser"
-        icon2: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mastodon-icon.svg"
-      - title: IRC-OFTC
-        url: "https://www.oftc.net"
-        icon2: "https://element.io/images/logo-mark-primary.svg"
       # - title: Linux Kernel
       #   url: "https://www.kernel.org"
       #   icon2: "images/linux.svg"
-      #   version: ""
       # - title: GNOME
       #   url: "https://www.gnome.org"
       #   icon2: "images/gnome.svg"
-      #   version: ""
       # - title: Debian GNU/Linux
       #   url: "https://www.debian.org"
       #   icon2: "images/debian.svg"
-      #   version: ""
-      - title: Debian Contributions
-        url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
-        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
-        version: ""
-      - title: Debian BTS
-        url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
-        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
-        version: ""
-      - title: Debian GNOME Team Activity
-        url: "https://salsa.debian.org/groups/gnome-team/-/activity"
-        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
-        version: ""
       - title: TopDocs
         url: "https://www.youtube.com/playlist?list=PLufXXcyYWiXhlzS4jAkIxTQJsO8FVDzwT"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg"
-        version: ""
