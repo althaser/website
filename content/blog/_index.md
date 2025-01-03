@@ -2,7 +2,7 @@
 title: "Tutorials and Hints"
 date: "2024-12-28"
 tags: [""]
-categories: [""]
+categories: ["tutorials", "hints"]
 description: "Tutorials and Hints"
 draft: false
 weight: 100

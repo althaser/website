@@ -88,12 +88,12 @@ params:
       - title: Mastodon
         url: "https://mastodon.social/@althaser"
         icon2: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mastodon-icon.svg"
-      - title: RSS Blog
-        url: "https://althaser.eu/index.xml"
-        icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
-      - title: RSS Mastodon
+      - title: Mastodon RSS
         url: "https://mastodon.social/@althaser.rss"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
+      # - title: RSS Blog
+      #   url: "https://althaser.eu/index.xml"
+      #   icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
       # - title: Linux Kernel
       #   url: "https://www.kernel.org"
       #   icon2: "images/linux.svg"
