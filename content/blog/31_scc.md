@@ -1,9 +1,9 @@
 ---
-title: "Sloc Cloc and Code (scc)"
+title: "SCC - Sloc Cloc and Code"
 date: 2024-12-28
 tags: ["SCC", "tools"]
 categories: ["tools"]
-description: "Sloc Cloc and Code (scc)"
+description: "SCC - Sloc Cloc and Code"
 draft: false
 ---
 

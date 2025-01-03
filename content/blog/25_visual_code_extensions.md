@@ -1,9 +1,9 @@
 ---
-title: "Visual Code Extensions"
+title: "Visual Code - Extensions"
 date: 2024-09-12
 tags: ["vscode", "code", "utils", "extensions"]
 categories: ["editor"]
-description: "Visual Code Extensions"
+description: "Visual Code - Extensions"
 draft: false
 ---
 

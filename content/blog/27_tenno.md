@@ -1,9 +1,9 @@
 ---
-title: "Tenno"
+title: "Tenno - Markdown Editor"
 date: 2024-10-11
 tags: ["tenno", "markdown"]
 categories: ["markdown"]
-description: "Tenno"
+description: "Tenno - Markdown Editor"
 draft: false
 ---
 

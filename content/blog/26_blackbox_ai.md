@@ -1,9 +1,9 @@
 ---
-title: "BlackBox AI"
+title: "BlackBox - AI"
 date: 2024-10-11
 tags: ["blackbox", "ai"]
 categories: ["ai"]
-description: "BlackBox AI"
+description: "BlackBox - AI"
 draft: false
 ---
 
