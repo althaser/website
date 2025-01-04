@@ -78,7 +78,7 @@ params:
         icon2: "https://www.debian.org/logos/openlogo-nd.svg"
       - title: GitHub
         url: "https://github.com/althaser"
-        icon2: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+        icon2: "https://cdn.iconscout.com/icon/free/png-256/free-github-logo-icon-download-in-svg-png-gif-file-formats--social-media-pack-logos-icons-3073768.png"
       - title: GitLab
         url: "https://gitlab.com/althaser"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/GitLab_icon.svg/2127px-GitLab_icon.svg.png"
