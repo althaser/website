@@ -1,9 +1,9 @@
 ---
 title: "WolframAlpha - Mathematics"
 date: 2024-03-09
-tags: ["tools", "software", "mathematics"]
-categories: ["others"]
-description: "WolframAlpha - Mathematics."
+tags: ["math", "fun"]
+categories: ["science"]
+description: "WolframAlpha - Mathematics"
 draft: false
 ---
 

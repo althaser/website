@@ -1,9 +1,9 @@
 ---
 title: "Awesome-Selfhosted"
 date: 2024-04-03
-tags: ["linux", "selfhosted"]
-categories: ["others"]
-description: "Awesome-Selfhosted."
+tags: ["selfhosted", "prem"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Awesome-Selfhosted"
 draft: false
 ---
 

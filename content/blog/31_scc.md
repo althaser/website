@@ -1,8 +1,8 @@
 ---
 title: "SCC - Sloc Cloc and Code"
 date: 2024-12-28
-tags: ["SCC", "tools"]
-categories: ["tools"]
+tags: ["scc", "code"]
+categories: ["linux", "software", "applications", "tools"]
 description: "SCC - Sloc Cloc and Code"
 draft: false
 ---

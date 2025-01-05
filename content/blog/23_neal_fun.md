@@ -1,9 +1,9 @@
 ---
 title: "Neal Fun"
 date: 2024-06-14
-tags: ["Fun", "awesome"]
-categories: ["Fun"]
-description: "Neal Fun."
+tags: ["fun", "awesome"]
+categories: ["universe", "science"]
+description: "Neal Fun"
 draft: false
 ---
 

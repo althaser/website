@@ -1,9 +1,9 @@
 ---
 title: "Gogh - Color Scheme for Terminals"
 date: 2024-03-05
-tags: ["linux", "terminal", "bash", "shell", "colors"]
-categories: ["github"]
-description: "Gogh - Color Scheme for Terminals."
+tags: ["terminal", "bash", "shell", "colors"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Gogh - Color Scheme for Terminals"
 draft: false
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: "Alternative Linux Utils"
 date: 2024-09-12
-tags: ["linux", "utils"]
-categories: ["linux"]
+tags: ["utils"]
+categories: ["linux", "software", "applications", "tools"]
 description: "Replace default linux commands with these alternatives"
 draft: false
 ---

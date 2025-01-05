@@ -1,9 +1,9 @@
 ---
 title: "FreeFileSync - Open Source File Synchronization"
 date: 2024-02-20
-tags: ["linux", "backup", "software"]
-categories: ["others"]
-description: "Open Source Software to Synchronize Files and Folders."
+tags: ["backup", "sync"]
+categories: ["linux", "software", "applications", "tools", "backup"]
+description: "Open Source Software to Synchronize Files and Folders"
 draft: false
 ---
 

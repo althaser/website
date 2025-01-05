@@ -1,8 +1,8 @@
 ---
 title: "Systemd CGroups"
 date: 2025-01-04
-tags: ["linux", "systemd", "cg"]
-categories: ["tools"]
+tags: ["cgroups", "systemd"]
+categories: ["linux", "software", "applications", "tools"]
 description: "Systemd CGroups"
 draft: false
 ---

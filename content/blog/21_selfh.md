@@ -1,9 +1,9 @@
 ---
 title: "Selfh"
 date: 2024-05-20
-tags: ["linux", "Selfhost"]
-categories: ["linux"]
-description: "Browse Self-Hosted Software."
+tags: ["selfhosted", "prem"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Browse Self-Hosted Software"
 draft: false
 ---
 

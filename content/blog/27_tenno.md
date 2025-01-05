@@ -2,7 +2,7 @@
 title: "Tenno - Markdown Editor"
 date: 2024-10-11
 tags: ["tenno", "markdown"]
-categories: ["markdown"]
+categories: ["linux", "software", "applications", "tools"]
 description: "Tenno - Markdown Editor"
 draft: false
 ---

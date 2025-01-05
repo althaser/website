@@ -1,9 +1,9 @@
 ---
 title: "Meld - Visual Diff And Merge Tool"
 date: 2024-02-20
-tags: ["linux", "diff", "software"]
-categories: ["others"]
-description: "Open Source Software to visualize differences and merge data."
+tags: ["diff", "compare"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Open Source Software to visualize differences and merge data"
 draft: false
 ---
 

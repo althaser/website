@@ -1,9 +1,9 @@
 ---
 title: "Bashrc"
 date: 2024-03-13
-tags: ["linux", "shell", "bash"]
-categories: ["others"]
-description: "Bashrc."
+tags: ["shell", "bash"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Bashrc"
 draft: false
 ---
 

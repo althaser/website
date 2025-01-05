@@ -2,7 +2,7 @@
 title: "GNOME Shell Extensions"
 date: 2024-10-24
 tags: ["GNOME", "gnome-shell", "extensions"]
-categories: ["GNOME"]
+categories: ["linux", "software", "applications", "tools"]
 description: "GNOME Shell Extensions"
 draft: false
 ---

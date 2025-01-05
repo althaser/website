@@ -1,9 +1,9 @@
 ---
 title: "Remote - Control Machines from Smartphone"
 date: 2024-04-08
-tags: ["linux", "remote", "touchpad", "smartphone"]
-categories: ["others"]
-description: "Remote - Control Machines from Smartphone."
+tags: ["remote", "touchpad", "smartphone"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Remote - Control Machines from Smartphone"
 draft: false
 ---
 

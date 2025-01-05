@@ -1,9 +1,9 @@
 ---
 title: "Command Line Fu"
 date: 2024-03-09
-tags: ["tools", "linux", "Bash", "CLI"]
-categories: ["others"]
-description: "Command Line Fu."
+tags: ["bash", "cli"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Command Line Fu"
 draft: false
 ---
 

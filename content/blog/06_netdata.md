@@ -1,9 +1,9 @@
 ---
 title: "NetData - Monitor your servers"
 date: 2024-02-27
-tags: ["linux", "NetData", "software", "monitoring"]
-categories: ["github"]
-description: "NetData - Monitor your servers."
+tags: ["NetData", "monitoring"]
+categories: ["linux", "software", "applications", "tools"]
+description: "NetData - Monitor your servers"
 draft: false
 ---
 

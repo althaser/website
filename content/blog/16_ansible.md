@@ -1,9 +1,9 @@
 ---
 title: "Ansible - Callbacks"
 date: 2024-03-12
-tags: ["linux", "ansible"]
-categories: ["others"]
-description: "Ansible - Callbacks."
+tags: ["ansible", "python", "automation"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Ansible - Callbacks"
 draft: false
 ---
 

@@ -1,9 +1,9 @@
 ---
 title: "Warp - Terminal with AI"
 date: 2024-03-06
-tags: ["linux", "terminal", "bash", "ai", "software"]
-categories: ["others"]
-description: "Warp - Terminal with AI."
+tags: ["terminal", "bash", "ai"]
+categories: ["linux", "software", "applications", "tools"]
+description: "Warp - Terminal with AI"
 draft: false
 ---
 

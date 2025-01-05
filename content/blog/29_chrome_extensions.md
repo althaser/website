@@ -1,8 +1,8 @@
 ---
 title: "Chrome Extensions"
 date: 2024-10-30
-tags: ["Chrome", "browser", "extensions"]
-categories: ["browser"]
+tags: ["chrome", "browser", "extensions"]
+categories: ["linux", "software", "applications", "tools"]
 description: "Chrome Extensions"
 draft: false
 ---

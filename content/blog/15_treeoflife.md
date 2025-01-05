@@ -1,9 +1,9 @@
 ---
-title: "Micropia - Tree of Life"
+title: "Micropia: Tree of Life - Museum"
 date: 2024-03-11
-tags: ["science", "treeoflife"]
-categories: ["others"]
-description: "Micropia - Tree of Life."
+tags: ["fun", "treeoflife"]
+categories: ["museum", "science"]
+description: "Micropia: Tree of Life - Museum"
 draft: false
 ---
 

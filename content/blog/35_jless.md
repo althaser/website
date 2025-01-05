@@ -1,8 +1,8 @@
 ---
 title: "JLess"
 date: 2025-01-05
-tags: ["linux", "tools"]
-categories: ["tools"]
+tags: ["jless", "less"]
+categories: ["linux", "software", "applications", "tools"]
 description: "JLess"
 draft: false
 ---

@@ -1,9 +1,9 @@
 ---
 title: "DaftLogic - Multiple Projects"
 date: 2024-03-08
-tags: ["tools", "software"]
-categories: ["others"]
-description: "DaftLogic - Multiple Projects."
+tags: ["fun"]
+categories: ["science"]
+description: "DaftLogic - Multiple Projects"
 draft: false
 ---
 

@@ -1,9 +1,9 @@
 ---
 title: "Scale of Universe"
 date: 2024-03-09
-tags: ["tools", "software", "universe", "science"]
-categories: ["others"]
-description: "Scale of Universe."
+tags: ["fun"]
+categories: ["universe", "science"]
+description: "Scale of Universe"
 draft: false
 ---
 

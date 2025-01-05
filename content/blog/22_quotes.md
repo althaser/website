@@ -1,9 +1,9 @@
 ---
 title: "Quotes"
 date: 2024-05-20
-tags: ["quotes", "awesome"]
+tags: ["quotes", "awesome", "fun"]
 categories: ["quotes"]
-description: "Awesome Quotes."
+description: "Awesome Quotes"
 draft: false
 ---
 
