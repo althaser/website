@@ -10,15 +10,6 @@ draft: false
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="70" height="70">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Logo_of_Hugo_the_static_website_generator.svg/1200px-Logo_of_Hugo_the_static_website_generator.svg.png" alt="Hugo" width="140" height="140">
 
-
-https://gohugo.io/hosting-and-deployment/hosting-on-github/
-
-https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
-
-https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages
-
-https://medium.com/@isphinxs/using-a-custom-domain-name-with-github-pages-c9cdc2084d54
-
 #### GitHub Pages -> Custom Domain
 https://github.com/althaser/website/settings/pages
 
@@ -67,3 +58,11 @@ althaser.github.io.	    3413	IN	A	185.199.111.153
 althaser.github.io.	    3413	IN	A	185.199.109.153
 althaser.github.io.	    3413	IN	A	185.199.108.153
 ```
+
+https://gohugo.io/hosting-and-deployment/hosting-on-github/
+
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
+
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages
+
+https://medium.com/@isphinxs/using-a-custom-domain-name-with-github-pages-c9cdc2084d54

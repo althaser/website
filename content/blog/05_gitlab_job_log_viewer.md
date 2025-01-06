@@ -11,7 +11,6 @@ draft: false
 
 Chrome extension: https://github.com/7rulnik/gitlab-job-log-viewer
 
-#### Shell
 Download full log file and execute:
 ```shell
 $ less -r job.txt

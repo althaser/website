@@ -9,8 +9,6 @@ draft: false
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" alt="ansible" width="100" height="100">
 
-https://docs.ansible.com/ansible/latest/plugins/callback.html#enabling-callback-plugins
-
 Calculate **timers** for each task and **timers by each role** at the end of ansible run:
 
 ```shell
@@ -33,3 +31,5 @@ prepare ---------------------------------------------------------------- 49.27s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 total ----------------------------------------------------------------- 125.10s
 ```
+
+https://docs.ansible.com/ansible/latest/plugins/callback.html#enabling-callback-plugins

@@ -9,6 +9,6 @@ draft: false
 
 <img src="https://neal.fun/general/logo.svg" alt="nealfun" width="250" height="250">
 
-a tiny website by neal.
+A tiny website by neal.
 
-https://neal.fun/
+https://neal.fun
