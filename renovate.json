@@ -1,16 +1,16 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "regexManagers": [
-    {
-      "fileMatch": ["^.github/workflows/hugo\\.yaml$"],
-      "matchStrings": [
-        "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
-      ],
-      "datasource": "github-tags",
-      "depNameTemplate": "gohugoio/hugo"
-    }
-  ]
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "config:recommended"
+    ],
+    "regexManagers": [
+      {
+        "fileMatch": ["^.github/workflows/hugo\\.yaml$"],
+        "matchStrings": [
+          "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
+        ],
+        "depNameTemplate": "gohugoio/hugo",
+        "datasourceTemplate": "github-tags"
+      }
+    ]
 }
