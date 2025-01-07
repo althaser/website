@@ -1,7 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:recommended"],
-    "_comment": "This config uses the default settings. Add 'schedule' to customize renovate run times.",
+    "extends": [
+      "config:recommended"
+    ],
     "regexManagers": [
       {
         "fileMatch": ["^.github/workflows/hugo\\.yaml$"],
