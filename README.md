@@ -8,5 +8,11 @@ $ hugo server
 $ npx -y pagefind --site public # index content after deploying
 ```
 
-## Renovate runs
-https://developer.mend.io/github/althaser/website -->
+## Renovate Runs
+https://developer.mend.io/github/althaser/website
+
+add the following:
+```json
+"schedule": ["every weekday", "after 6am and before 6pm"]
+```
+in **renovate.json** to schedule the renovate run. -->
