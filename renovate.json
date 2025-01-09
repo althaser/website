@@ -3,6 +3,8 @@
     "extends": [
       "config:recommended"
     ],
+    "schedule": ["before 7:00 am"],
+    "timezone": "UTC",
     "regexManagers": [
       {
         "fileMatch": ["^.github/workflows/hugo\\.yaml$"],
