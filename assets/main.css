@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@config '../tailwind.config.js';
+@config './tailwind.config.js';
 
 @utility nav {
   @apply text-lg text-blue-500 dark:text-gray-300 font-semibold;
