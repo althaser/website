@@ -8,6 +8,15 @@ $ hugo server
 $ npx -y pagefind --site public # index content after deploying
 ```
 
+## DEBUG
+```shell
+$ rm -rf node_modules package-lock.json
+$ npm cache clean --force
+$ npm install
+$ npx postcss assets/main.css --verbose
+$ hugo server
+```
+
 ## Renovate Runs
 https://developer.mend.io/github/althaser/website
 
