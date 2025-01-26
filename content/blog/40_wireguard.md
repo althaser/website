@@ -71,7 +71,7 @@ drwxr-xr-x 136 root root  12K Jan 25 23:06 ..
 root@raspberrypi:~# mkdir -p /etc/wireguard/clients/beja
 
 root@raspberrypi:~# tree /etc/wireguard/
-.
+/etc/wireguard/
 ├── clients
 │   └── beja
 ├── privatekey
@@ -83,6 +83,8 @@ ekHeweGbOqDxzaPg1lKMwGAxpmh6zKhjSDZUoe2H2uQLNQyAC7zhRrVGeMtkwCTi
 
 root@raspberrypi:~# cat /etc/wireguard/clients/beja/beja.key | wg pubkey | tee /etc/wireguard/clients/beja/beja.pub
 sdrUDZLQ1S2mNP4J4xlE86GCo17zwkOy2z3an6AfQnn7xVu7BlhXIYeorZUnTpLG
+
+root@raspberrypi:~# chmod 400 /etc/wireguard/{privatekey,publickey} /etc/wireguard/clients/beja/beja.{key,pub}
 ```
 
 8. Check default **gateway** interface that is used to connect to the internet.
@@ -91,21 +93,21 @@ root@raspberrypi:/etc/wireguard# ip route list default
 default via 192.168.1.1 dev wlan0 proto dhcp src 192.168.1.13 metric 600
 ```
 
-9. Create **WireGuard** configuration `/etc/wireguard/wg0.conf` and replace the interface in NAT configuration section from the previous step.
+9. Create **WireGuard** configuration `/etc/wireguard/wg-rasp.conf` and replace the interface in NAT configuration section from the previous step. `<wg-rasp>` and `<wlan0>`.
 ```shell
-root@raspberrypi:~# vim /etc/wireguard/wg0.conf
+root@raspberrypi:~# vim /etc/wireguard/wg-rasp.conf
 [Interface]
 # Wireguard interface will be run at 10.20.0.1
 Address = 10.20.0.1/24
 # Ensure any changes will be saved to the WireGuard config file
 SaveConfig = true
 # Setting up NAT for Wireguard Interface
-PostUp = ufw route allow in on wg0 out on wlan0
-PostUp = iptables -t nat -I POSTROUTING -o wlan0 -j MASQUERADE
-PostUp = ip6tables -t nat -I POSTROUTING -o wlan0 -j MASQUERADE
-PreDown = ufw route delete allow in on wg0 out on wlan0
-PreDown = iptables -t nat -D POSTROUTING -o wlan0 -j MASQUERADE
-PreDown = ip6tables -t nat -D POSTROUTING -o wlan0 -j MASQUERADE
+PostUp = ufw route allow in on <wg-rasp> out on <wlan0>
+PostUp = iptables -t nat -I POSTROUTING -o <wlan0> -j MASQUERADE
+PostUp = ip6tables -t nat -I POSTROUTING -o <wlan0> -j MASQUERADE
+PreDown = ufw route delete allow in on <wg-rasp> out on <wlan0>
+PreDown = iptables -t nat -D POSTROUTING -o <wlan0> -j MASQUERADE
+PreDown = ip6tables -t nat -D POSTROUTING -o <wlan0> -j MASQUERADE
 # Clients will connect to UDP port 51820
 ListenPort = 51820
 # WireGuard Server private key
@@ -117,7 +119,7 @@ PublicKey = sdrUDZLQ1S2mNP4J4xlE86GCo17zwkOy2z3an6AfQnn7xVu7BlhXIYeorZUnTpLG
 
 # clients VPN IP address you allow to connect
 # Possible to specify subnet -> [10.20.0.0/24]
-AllowedIPs = 10.20.0.2/24
+AllowedIPs = 10.20.0.2/32
 ```
 
 10. Add `51820/udp` rule to **ufw** firewall.
@@ -138,13 +140,13 @@ OpenSSH (v6)               ALLOW       Anywhere (v6)
 
 11. Managing **WireGuard** service.
 ```shell
-root@raspberrypi:/etc/wireguard# systemctl start wg-quick@wg0.service
+root@raspberrypi:/etc/wireguard# systemctl start wg-quick@wg-rasp.service
 
-root@raspberrypi:/etc/wireguard# systemctl enable wg-quick@wg0.service
-Created symlink /etc/systemd/system/multi-user.target.wants/wg-quick@wg0.service → /lib/systemd/system/wg-quick@.service.
+root@raspberrypi:/etc/wireguard# systemctl enable wg-quick@wg-rasp.service
+Created symlink /etc/systemd/system/multi-user.target.wants/wg-quick@wg-rasp.service → /lib/systemd/system/wg-quick@.service.
 
-root@raspberrypi:/etc/wireguard# systemctl status wg-quick@wg0.service
-● wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
+root@raspberrypi:/etc/wireguard# systemctl status wg-quick@wg-rasp.service
+● wg-quick@wg-rasp.service - WireGuard via wg-quick(8) for wg-rasp
      Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; preset: enabled)
      Active: active (exited) since Sat 2025-01-25 23:20:02 WET; 27s ago
        Docs: man:wg-quick(8)
@@ -155,34 +157,48 @@ root@raspberrypi:/etc/wireguard# systemctl status wg-quick@wg0.service
              https://git.zx2c4.com/wireguard-tools/about/src/man/wg.8
    Main PID: 4346 (code=exited, status=0/SUCCESS)
         CPU: 176ms
-Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] wg setconf wg0 /dev/fd/63
+Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] wg setconf wg-rasp /dev/fd/63
 Jan 25 23:20:02 raspberrypi wg-quick[4362]: Warning: AllowedIP has nonzero host part: 10.20.0>
-Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ip -4 address add 10.20.0.1/24 dev wg0
-Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ip link set mtu 1420 up dev wg0
-Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ufw route allow in on wg0 out on wlan0
+Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ip -4 address add 10.20.0.1/24 dev wg-rasp
+Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ip link set mtu 1420 up dev wg-rasp
+Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ufw route allow in on wg-rasp out on wlan0
 Jan 25 23:20:02 raspberrypi wg-quick[4377]: Rule added
 Jan 25 23:20:02 raspberrypi wg-quick[4377]: Rule added (v6)
 Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] iptables -t nat -I POSTROUTING -o wlan0 -j MA>
 Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ip6tables -t nat -I POSTROUTING -o wlan0 -j M>
-Jan 25 23:20:02 raspberrypi systemd[1]: Finished wg-quick@wg0.service - WireGuard via wg-quic>
+Jan 25 23:20:02 raspberrypi systemd[1]: Finished wg-quick@wg-rasp.service - WireGuard via wg-quic>
 
-root@raspberrypi:/etc/wireguard# ip a show wg0
-5: wg0: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
+root@raspberrypi:/etc/wireguard# ip a show wg-rasp
+5: wg-rasp: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
-    inet 10.20.0.1/24 scope global wg0
+    inet 10.20.0.1/24 scope global wg-rasp
        valid_lft forever preferred_lft forever
 
-root@raspberrypi:/etc/wireguard# ip --color a show wg0
-5: wg0: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
+root@raspberrypi:/etc/wireguard# ip --color a show wg-rasp
+5: wg-rasp: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
-    inet 10.20.0.1/24 scope global wg0
+    inet 10.20.0.1/24 scope global wg-rasp
        valid_lft forever preferred_lft forever
 ```
 
 12. Manual managing **WireGuard** connections.
 ```shell
-$ sudo wg-quick up /etc/wireguard/wg0.conf
-$ sudo wg-quick down /etc/wireguard/wg0.conf
+$ sudo wg-quick up /etc/wireguard/wg-rasp.conf
+$ sudo wg-quick down /etc/wireguard/wg-rasp.conf
+```
+
+13. Check all configurations.
+```shell
+root@raspberrypi:~# sudo tree /etc/wireguard/
+/etc/wireguard/
+├── clients
+│   └── beja
+        └── beja.key
+        └── beja.pub
+├── privatekey
+└── publickey
+└── wg-rasp.conf
+3 directories, 5 files
 ```
 
 ## Client - Laptop
@@ -195,9 +211,9 @@ root@laptop:~# apt install wireguard-tools
 
 2. Create **WireGuard** configurations.
 ```shell
-root@laptop:~# vim /etc/wireguard/wg1.conf
+root@laptop:~# vim /etc/wireguard/wg-rasp-beja.conf
 [Interface]
-# Define the IP address for the client - must be matched with wg0 on the Wireguard Server
+# Define the IP address for the client - must be matched with wg-rasp on the Wireguard Server
 Address = 10.20.0.2/24
 
 # specific DNS Server
@@ -222,26 +238,26 @@ PersistentKeepalive = 25
 
 3. Start **WireGuard** connection.
 ```shell
-root@laptop:~# wg-quick up wg1
-[#] ip link add wg1 type wireguard
-[#] wg setconf wg1 /dev/fd/63
-[#] ip -4 address add 10.20.0.2/24 dev wg1
-[#] ip link set mtu 1420 up dev wg1
-[#] resolvconf -a wg1 -m 0 -x
-[#] wg set wg1 fwmark 51820
+root@laptop:~# wg-quick up wg-rasp-beja
+[#] ip link add wg-rasp-beja type wireguard
+[#] wg setconf wg-rasp-beja /dev/fd/63
+[#] ip -4 address add 10.20.0.2/24 dev wg-rasp-beja
+[#] ip link set mtu 1420 up dev wg-rasp-beja
+[#] resolvconf -a wg-rasp-beja -m 0 -x
+[#] wg set wg-rasp-beja fwmark 51820
 [#] ip -4 rule add not fwmark 51820 table 51820
 [#] ip -4 rule add table main suppress_prefixlength 0
-[#] ip -4 route add 0.0.0.0/0 dev wg1 table 51820
+[#] ip -4 route add 0.0.0.0/0 dev wg-rasp-beja table 51820
 [#] sysctl -q net.ipv4.conf.all.src_valid_mark=1
 [#] nft -f /dev/fd/63
 ```
 
 4. Check connections
 ```shell
-root@laptop:~# ip a show wg1
-13: wg1: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
+root@laptop:~# ip a show wg-rasp-beja
+13: wg-rasp-beja: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
-    inet 10.20.0.2/24 scope global wg1
+    inet 10.20.0.2/24 scope global wg-rasp-beja
        valid_lft forever preferred_lft forever
 
 root@laptop:~# ping -c3 10.20.0.1
@@ -281,7 +297,7 @@ PING google.com (2a00:1450:4003:80d::200e) 56 data bytes
 rtt min/avg/max/mdev = 24.318/27.749/29.713/2.434 ms
 
 root@laptop:~# sudo wg show
-interface: wg1
+interface: wg-rasp-beja
   public key: sdrUDZLQ1S2mNP4J4xlE86GCo17zwkOy2z3an6AfQnn7xVu7BlhXIYeorZUnTpLG
   private key: (hidden)
   listening port: 42869
@@ -297,10 +313,21 @@ peer: JRKg8QbQqYMTMwDjHHw4Lba5ZfdsUjIQQMuOyQwHCMsJKGpFuduaVnnnhQy14rmI
 
 5. Manage connection
 ```shell
-$ sudo wg-quick down wg1
+$ sudo wg-quick down wg-rasp-beja
 ```
 
-6. done :)
+6. Check configurations.
+```shell
+root@laptop:~# tree /etc/wireguard/
+/etc/wireguard/
+├── wg-rasp-beja.conf
+└── wg-tank-beja.conf
+
+1 directory, 2 files
+
+```
+
+7. done :)
 
 ## Reference links
 - https://wiki.debian.org/WireGuard
