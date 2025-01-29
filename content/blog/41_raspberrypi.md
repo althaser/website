@@ -519,7 +519,7 @@ althaser@raspberrypi:~ $ sudo vim /etc/ssh/sshd_config
 ListenAddress 10.20.0.1
 
 althaser@raspberrypi:~ $ sudo systemctl restart ssh
-```shell
+```
 
 VPN IP is 10.20.0.1
 
