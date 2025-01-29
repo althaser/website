@@ -527,6 +527,7 @@ VPN IP is 10.20.0.1
 
 # Troubleshooting
 - Prometheus Target for Docker instances
+
 Make docker available: http://192.168.1.13:9090/targets
 
 ```shell
