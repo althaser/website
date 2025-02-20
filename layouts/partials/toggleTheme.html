@@ -1,16 +1,40 @@
 <script>
-  const lightDark = (el) => {
-    let html = document.querySelector("html");
-    if (html.classList.contains("dark")) {
-      html.classList.remove("dark");
-      el.classList.add("fa-moon");
-      el.classList.remove("fa-sun");
-      window.localStorage.setItem("theme", "light");
-    } else {
-      html.classList.add("dark");
-      el.classList.add("fa-sun");
-      el.classList.remove("fa-moon");
-      window.localStorage.setItem("theme", "dark");
-    }
-  };
+    // Function to toggle theme
+    const toggleTheme = () => {
+      let html = document.querySelector("html");
+      let themeToggle = document.querySelector(".theme-toggle");
+      let theme = window.localStorage.getItem("theme");
+
+      if (theme === "dark") {
+        html.classList.remove("dark");
+        themeToggle.classList.remove("fa-sun");
+        themeToggle.classList.add("fa-moon");
+        window.localStorage.setItem("theme", "light");
+      } else {
+        html.classList.add("dark");
+        themeToggle.classList.add("fa-sun");
+        themeToggle.classList.remove("fa-moon");
+        window.localStorage.setItem("theme", "dark");
+      }
+    };
+
+    // Function to set initial theme on page load
+    const setInitialTheme = () => {
+      let html = document.querySelector("html");
+      let themeToggle = document.querySelector(".theme-toggle");
+      let theme = window.localStorage.getItem("theme");
+
+      if (theme === "dark") {
+        html.classList.add("dark");
+        themeToggle.classList.add("fa-sun");
+      } else {
+        themeToggle.classList.add("fa-moon");
+      }
+    };
+
+    // Attach event listener for theme toggle
+    document.addEventListener("DOMContentLoaded", function() {
+      setInitialTheme();
+      document.querySelector(".theme-toggle").addEventListener("click", toggleTheme);
+    });
 </script>
