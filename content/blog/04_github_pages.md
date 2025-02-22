@@ -25,23 +25,36 @@ baseURL: "https://althaser.eu"
 
 #### DNS Server Configurations
 ```
-A	    @	    185.199.108.153	    1 hour
-A	    @	    185.199.109.153	    1 hour
-A	    @	    185.199.110.153	    1 hour
-A	    @	    185.199.111.153	    1 hour
-CNAME	www	    althaser.eu.	    1 hour
+A	    @	    185.199.108.153	                1 hour
+A	    @	    185.199.109.153	                1 hour
+A	    @	    185.199.110.153	                1 hour
+A	    @	    185.199.111.153	                1 hour
+CNAME	www	    althaser.eu.	                1 hour
+-------------------------------------------------------
+CNAME	www	    althaser.github.io.             1 hour
+-------------------------------------------------------
+NS      @       ns07.domaincontrol.com.	        1 hour
+NS      @       ns08.domaincontrol.com.	        1 hour
+SOA     @       ns07.domaincontrol.com.	        1 hour
 ```
+
+It might take some time until it propagates to all DNS Servers. Check for A entries in https://www.whatsmydns.net/
 
 #### dig outputs
 ```shell
+$ dig althaser.eu +short
+185.199.111.153
+185.199.110.153
+185.199.109.153
+185.199.108.153
+
 $ dig althaser.eu +nostats +nocomments +nocmd
 ;althaser.eu. 	        IN	A
 althaser.eu. 	3600	IN	A	185.199.111.153
 althaser.eu.	3600	IN	A	185.199.110.153
 althaser.eu.	3600	IN	A	185.199.109.153
 althaser.eu.	3600	IN	A	185.199.108.153
-```
-```shell
+
 $ dig www.althaser.eu +nostats +nocomments +nocmd
 ;www.althaser.eu.		        IN	A
 www.althaser.eu.	    1244	IN	CNAME	althaser.eu.
@@ -49,8 +62,7 @@ althaser.eu.		    3600	IN	A	    185.199.110.153
 althaser.eu.		    3600	IN	A	    185.199.109.153
 althaser.eu.		    3600	IN	A	    185.199.108.153
 althaser.eu.		    3600	IN	A	    185.199.111.153
-```
-```shell
+
 $ dig althaser.github.io +nostats +nocomments +nocmd
 ;althaser.github.io.		    IN	A
 althaser.github.io.	    3413	IN	A	185.199.110.153
@@ -59,6 +71,13 @@ althaser.github.io.	    3413	IN	A	185.199.109.153
 althaser.github.io.	    3413	IN	A	185.199.108.153
 ```
 
+GitHub supports **https** via Let's Encrypt. Enable **enforce ssl** via github UI -> github project -> Settings -> Pages:
+Set your Custom domain and Save. Then enable **enforce HTTPS**.
+
+This one can only be activated once it is propagated on most DNS Servers. Check https://www.whatsmydns.net/ as above.
+
+
+#### Related links
 https://gohugo.io/hosting-and-deployment/hosting-on-github/
 
 https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
