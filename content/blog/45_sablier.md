@@ -1,9 +1,9 @@
 ---
 title: "Sablier - Scale to Zero"
 date: 2025-03-08
-tags: ["Sablier"]
+tags: ["sablier", "docker", "k8s"]
 categories: ["linux", "software", "applications", "tools"]
-description: "HomeAssistant"
+description: "Sablier"
 draft: false
 ---
 
@@ -11,6 +11,6 @@ draft: false
 
 **Sablier** is a free and open-source software that can scale your workloads on demand.
 
-https://sablierapp.dev/
+https://sablierapp.dev
 
 https://github.com/sablierapp/sablier

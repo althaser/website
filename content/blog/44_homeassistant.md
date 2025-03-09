@@ -1,7 +1,7 @@
 ---
 title: "HomeAssistant"
 date: 2025-02-12
-tags: ["HomeAssistant"]
+tags: ["homeassistant"]
 categories: ["linux", "software", "applications", "tools"]
 description: "HomeAssistant"
 draft: false

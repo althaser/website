@@ -1,8 +1,8 @@
 ---
 title: "Ghostty"
 date: 2025-03-09
-tags: ["ghostty"]
-categories: ["linux", "software", "applications", "tools", "terminal"]
+tags: ["ghostty", "terminal", "shell"]
+categories: ["linux", "software", "applications", "tools"]
 description: "Ghostty"
 draft: false
 ---

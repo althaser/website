@@ -1,7 +1,7 @@
 ---
 title: "Raspberry Pi"
 date: 2025-01-27
-tags: ["security", "VPN", "monitoring","docker"]
+tags: ["security", "vpn", "monitoring","docker"]
 categories: ["linux", "software", "applications", "tools", "raspberrypi"]
 description: "Raspberry Pi"
 draft: false
