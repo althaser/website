@@ -5,6 +5,20 @@
     ],
     "schedule": ["before 7:00 am"],
     "timezone": "UTC",
+    "automerge": true,
+    "automergeType": "pr",
+    "packageRules": [
+      {
+        "matchFiles": ["package.json", "package-lock.json"],
+        "matchUpdateTypes": ["minor", "patch"],
+        "automerge": true
+      },
+      {
+        "matchFiles": ["package.json", "package-lock.json"],
+        "matchUpdateTypes": ["major"],
+        "automerge": false
+      }
+    ],
     "regexManagers": [
       {
         "fileMatch": ["^.github/workflows/hugo\\.yaml$"],
