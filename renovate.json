@@ -27,6 +27,18 @@
         "matchDatasources": ["github-actions"],
         "matchUpdateTypes": ["major"],
         "automerge": false
+      },
+      {
+        "matchDatasources": ["github-tags"],
+        "matchDepNames": ["gohugoio/hugo"],
+        "matchUpdateTypes": ["minor", "patch"],
+        "automerge": true
+      },
+      {
+        "matchDatasources": ["github-tags"],
+        "matchDepNames": ["gohugoio/hugo"],
+        "matchUpdateTypes": ["major"],
+        "automerge": false
       }
     ],
     "regexManagers": [
@@ -36,8 +48,7 @@
           "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
         ],
         "depNameTemplate": "gohugoio/hugo",
-        "datasourceTemplate": "github-tags",
-        "automerge": true
+        "datasourceTemplate": "github-tags"
       }
     ]
 }
