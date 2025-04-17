@@ -1,44 +1,58 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-      "config:recommended"
-    ],
+    "extends": ["config:best-practices"],
     "schedule": ["before 7:00 am"],
     "timezone": "UTC",
-    "automerge": true,
-    "automergeType": "pr",
     "packageRules": [
       {
-        "matchFiles": ["package.json", "package-lock.json"],
-        "matchUpdateTypes": ["minor", "patch"],
-        "automerge": true
+        "matchFiles": [
+            "package.json",
+            "package-lock.json"
+        ],
+        "matchUpdateTypes": [
+            "minor",
+            "patch"
+        ],
+        "automerge": true,
+        "automergeType": "pr"
       },
       {
-        "matchFiles": ["package.json", "package-lock.json"],
+        "matchFiles": [
+            "package.json",
+            "package-lock.json"
+        ],
         "matchUpdateTypes": ["major"],
-        "automerge": false
+        "automerge": false,
+        "automergeType": "pr"
       },
       {
         "matchDatasources": ["github-actions"],
-        "matchUpdateTypes": ["minor", "patch"],
-        "automerge": true
+        "matchUpdateTypes": [
+            "minor",
+            "patch"
+        ],
+        "automerge": true,
+        "automergeType": "pr"
       },
       {
         "matchDatasources": ["github-actions"],
         "matchUpdateTypes": ["major"],
-        "automerge": false
+        "automerge": false,
+        "automergeType": "pr"
       },
       {
         "matchDatasources": ["github-tags"],
         "matchDepNames": ["gohugoio/hugo"],
         "matchUpdateTypes": ["minor", "patch"],
-        "automerge": true
+        "automerge": true,
+        "automergeType": "pr"
       },
       {
         "matchDatasources": ["github-tags"],
         "matchDepNames": ["gohugoio/hugo"],
         "matchUpdateTypes": ["major"],
-        "automerge": false
+        "automerge": false,
+        "automergeType": "pr"
       }
     ],
     "regexManagers": [
