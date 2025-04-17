@@ -1,68 +1,96 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["config:best-practices"],
-    "schedule": ["before 7:00 am"],
-    "timezone": "UTC",
-    "packageRules": [
-      {
-        "matchFiles": [
-            "package.json",
-            "package-lock.json"
-        ],
-        "matchUpdateTypes": [
-            "minor",
-            "patch"
-        ],
-        "automerge": true,
-        "automergeType": "pr"
-      },
-      {
-        "matchFiles": [
-            "package.json",
-            "package-lock.json"
-        ],
-        "matchUpdateTypes": ["major"],
-        "automerge": false,
-        "automergeType": "pr"
-      },
-      {
-        "matchDatasources": ["github-actions"],
-        "matchUpdateTypes": [
-            "minor",
-            "patch"
-        ],
-        "automerge": true,
-        "automergeType": "pr"
-      },
-      {
-        "matchDatasources": ["github-actions"],
-        "matchUpdateTypes": ["major"],
-        "automerge": false,
-        "automergeType": "pr"
-      },
-      {
-        "matchDatasources": ["github-tags"],
-        "matchDepNames": ["gohugoio/hugo"],
-        "matchUpdateTypes": ["minor", "patch"],
-        "automerge": true,
-        "automergeType": "pr"
-      },
-      {
-        "matchDatasources": ["github-tags"],
-        "matchDepNames": ["gohugoio/hugo"],
-        "matchUpdateTypes": ["major"],
-        "automerge": false,
-        "automergeType": "pr"
-      }
-    ],
-    "regexManagers": [
-      {
-        "fileMatch": ["^.github/workflows/hugo\\.yaml$"],
-        "matchStrings": [
-          "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
-        ],
-        "depNameTemplate": "gohugoio/hugo",
-        "datasourceTemplate": "github-tags"
-      }
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices"
+  ],
+  "schedule": [
+    "before 7:00 am"
+  ],
+  "timezone": "UTC",
+  "packageRules": [
+    {
+      "matchFileNames": [
+        "package.json",
+        "package-lock.json"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchFileNames": [
+        "package.json",
+        "package-lock.json"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "automergeType": "pr"
+    },
+    {
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchDatasources": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "automergeType": "pr"
+    },
+    {
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchDepNames": [
+        "gohugoio/hugo"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchDepNames": [
+        "gohugoio/hugo"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false,
+      "automergeType": "pr"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^.github/workflows/hugo\\.yaml$"
+      ],
+      "matchStrings": [
+        "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
+      ],
+      "depNameTemplate": "gohugoio/hugo",
+      "datasourceTemplate": "github-tags"
+    }
+  ]
 }
