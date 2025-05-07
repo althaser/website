@@ -83,8 +83,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "^.github/workflows/hugo\\.yaml$"
+      "managerFilePatterns": [
+        "/^.github/workflows/hugo\\.yaml$/"
       ],
       "matchStrings": [
         "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
