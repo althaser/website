@@ -328,8 +328,10 @@ root@laptop:~# tree /etc/wireguard/
 
 7. Import to GNOME NetworkManager sessions:
 ```shell
-10:29:04 pbeja@cspt0060:~ $ sudo nmcli connection import type wireguard file /etc/wireguard/wg-elara.conf
+pbeja@cspt0060:~ $ sudo nmcli connection import type wireguard file /etc/wireguard/wg-elara.conf
 Connection 'wg-elara' (2f88f973-5bfb-46ee-a6c0-33d8dbf12de9) successfully added.
+
+pbeja@cspt0060:~ $ nmcli connection modify wg-elara connection.autoconnect no
 ```
 
 8. done :)
