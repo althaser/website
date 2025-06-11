@@ -324,10 +324,15 @@ root@laptop:~# tree /etc/wireguard/
 └── wg-tank-beja.conf
 
 1 directory, 2 files
-
 ```
 
-7. done :)
+7. Import to GNOME NetworkManager sessions:
+```shell
+10:29:04 pbeja@cspt0060:~ $ sudo nmcli connection import type wireguard file /etc/wireguard/wg-elara.conf
+Connection 'wg-elara' (2f88f973-5bfb-46ee-a6c0-33d8dbf12de9) successfully added.
+```
+
+8. done :)
 
 ## Reference links
 - https://wiki.debian.org/WireGuard
