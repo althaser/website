@@ -6,7 +6,7 @@
         {{ partial "profilePhoto" . }}
         <div class="px-2 text-center">
           {{ partial "social" . }}
-          
+
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
       <h2 class="accordion {{- if .expand }} active {{- end }}">
         {{ $current := index $.Site.Params .item }}
         <p
-         
+
           onclick="expandAccordion(this)"
           style="cursor: pointer"
         >
@@ -37,8 +37,6 @@
       </div>
     </div>
     {{ end }}
-
-    <script src="{{ `js/accordion.js` | relURL }}"></script>
   </div>
 </div>
 {{ end }}
