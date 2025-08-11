@@ -1,6 +1,4 @@
 baseURL: "https://althaser.me"
-# Uncomment below to use aafu as hugo theme. See instructions in README.md
-# theme: aafu
 languageCode: en-us
 build:
   writeStats: true
@@ -11,8 +9,9 @@ markup:
     renderer:
       unsafe: true
 title: "althaser's blog"
+# Uncomment below to use aafu as hugo theme. See instructions in README.md
+# theme: aafu
 params:
-  title: althaser's website
   author: Pedro Beja
   description: althaser's website
   copyright: >-
