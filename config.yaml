@@ -60,15 +60,6 @@ params:
     title: Links
     icon: fas fa-link
     list:
-      - title: Debian BTS
-        url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
-        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
-      - title: Debian Contributions
-        url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
-        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
-      - title: Debian GNOME Team Activity
-        url: "https://salsa.debian.org/groups/gnome-team/-/activity"
-        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
       - title: GitHub
         url: "https://github.com/althaser"
         icon2: "https://cdn.iconscout.com/icon/free/png-256/free-github-logo-icon-download-in-svg-png-gif-file-formats--social-media-pack-logos-icons-3073768.png"
@@ -78,12 +69,24 @@ params:
       - title: IRC-OFTC
         url: "https://www.oftc.net"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/OFTC_logo.svg/425px-OFTC_logo.svg.png"
+      - title: [matrix]
+        url: "https://element.io/"
+        icon2: "https://element.io/assets-32bb636196f91ed59d7a49190e26b42c/5ef25c0d30ee3108da4c25e9/5f365d3197194f8c73b00112_logo-mark-primary.svg"
       - title: Mastodon
         url: "https://mastodon.social/@althaser"
         icon2: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/mastodon-icon.svg"
       - title: Mastodon RSS
         url: "https://mastodon.social/@althaser.rss"
         icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
+      - title: Debian BTS
+        url: "https://bugs.debian.org/cgi-bin/pkgreport.cgi?correspondent=althaser%40gmail.com;correspondent=althaser%40hotmail.com;archive=both"
+        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
+      - title: Debian Contributions
+        url: "https://contributors.debian.org/contributor/althaser-guest%40alioth"
+        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
+      - title: Debian GNOME Team Activity
+        url: "https://salsa.debian.org/groups/gnome-team/-/activity"
+        icon2: "https://www.debian.org/logos/openlogo-nd.svg"
       # - title: RSS Blog
       #   url: "https://althaser.eu/index.xml"
       #   icon2: "https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg"
