@@ -15,7 +15,7 @@
   <div class="col-span-3 relative">
     {{ range .Site.Params.showInAccordion }}
     <div class="px-2">
-      <h2 class="accordion {{- if .expand }} active {{- end }}">
+      <h2 class="not-prose accordion {{- if .expand }} active {{- end }}">
         {{ $current := index $.Site.Params .item }}
         <p
 

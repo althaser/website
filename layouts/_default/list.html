@@ -18,14 +18,14 @@
         class="cursor-pointer chevron p-2 mr-4 fas fa-chevron-right rounded-sm text-blue-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700"
       ></i>
       <a href="{{ .Permalink | relURL }}"
-        ><h2 class="accordion m-0">{{- .Title -}}</h2></a
+        ><h2 class="not-prose accordion m-0 font-bold">{{- .Title -}}</h2></a
       >
     </div>
     <div
       id="panel-item-{{ $key }}"
       class="not-prose panel metadata-panel overflow-hidden bg-gray-200 dark:bg-dark"
     >
-      <div class="metadata p-2">{{- partial "metadata" . -}}</div>
+      <div class="not-prose metadata p-2 font-bold">{{- partial "metadata" . -}}</div>
     </div>
   </div>
   {{ end }}
