@@ -90,6 +90,10 @@
   .prose ol {
     @apply marker:text-gray-700 dark:marker:text-gray-200;
   }
-  .accordion { @apply text-blue-600 dark:text-yellow-500 my-0; }
-  .accordion > p { @apply my-0 p-2 hover:bg-gray-300 rounded-sm dark:hover:bg-darker; }
+  .accordion {
+    @apply text-blue-600 dark:text-yellow-500 my-0;
+    > p {
+      @apply my-0 p-2 hover:bg-gray-300 rounded-sm dark:hover:bg-darker;
+    }
+  }
 }
