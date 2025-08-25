@@ -72,12 +72,11 @@ jobs:
       - name: Packaging site to Pages
         run: |
           tar -cf pages.tar -C public .
-          gzip -n pages.tar
       - name: Upload artifact github-pages
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: pages.tar.gz
+          path: pages.tar
 
   # Deployment job
   deploy:
