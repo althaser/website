@@ -63,10 +63,21 @@ jobs:
       - name: Install Pagefind
         run: |
           npx -y pagefind --site public
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
+      #   with:
+      #     path: ./public
+      - name: Make sure .nojekyll exists
+        run: echo > public/.nojekyll
+      - name: Packaging site to Pages
+        run: |
+          tar -cf pages.tar -C public .
+          gzip -n pages.tar
+      - name: Upload artifact github-pages
+        uses: actions/upload-artifact@v4
         with:
-          path: ./public
+          name: github-pages
+          path: pages.tar.gz
 
   # Deployment job
   deploy:
