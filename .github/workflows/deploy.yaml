@@ -32,7 +32,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     env:
-      HUGO_VERSION: 0.148.1
+      HUGO_VERSION: 0.148.2
     steps:
       - name: Install Hugo CLI
         run: |
@@ -81,19 +81,10 @@ jobs:
       - name: Install Pagefind
         run: npx -y pagefind --site public
 
-      # - name: Upload artifact
-      #   uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
-      #   with:
-      #     path: ./public
-
-      - name: Package site for Pages
-        run: tar -cf pages.tar -C public .
-
-      - name: Upload artifact github-pages
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - name: Upload artifact to github-pages
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
-          name: github-pages
-          path: pages.tar
+          path: ./public
 
   # Deployment job
   deploy:
