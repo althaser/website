@@ -17,11 +17,7 @@
     <div class="px-2">
       <h2 class="accordion {{- if .expand }} active {{- end }}">
         {{ $current := index $.Site.Params .item }}
-        <p
-
-          onclick="expandAccordion(this)"
-          style="cursor: pointer"
-        >
+        <p onclick="expandAccordion(this)" style="m-0 cursor: pointer">
           <i class="{{ $current.icon }}"></i>
           {{ $current.title -}}
         </p>

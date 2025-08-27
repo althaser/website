@@ -49,12 +49,12 @@
   {{ with $css | minify | fingerprint }}
   <link
     rel="stylesheet"
-    href="{{ .Permalink }}"
+    href="{{ .RelPermalink }}"
     integrity="{{ .Data.Integrity | safeHTMLAttr }}"
     crossorigin="anonymous"
   />
   {{ end }} {{ else}}
-  <link href="{{ $css.Permalink }}" rel="stylesheet" />
+  <link href="{{ $css.RelPermalink }}" rel="stylesheet" />
   {{ end }}
 
   <style>

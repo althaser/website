@@ -1,6 +1,4 @@
-# baseURL: "https://althaser.me"
-# baseURL: "https://althaser.github.io/website"
-baseURL: "/"
+baseURL: "https://althaser.me/"
 languageCode: en-us
 build:
   writeStats: true
