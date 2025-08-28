@@ -54,7 +54,7 @@
     },
     {
       "matchDatasources": [
-        "github-tags"
+        "github-releases"
       ],
       "matchDepNames": [
         "gohugoio/hugo"
@@ -68,7 +68,7 @@
     },
     {
       "matchDatasources": [
-        "github-tags"
+        "github-releases"
       ],
       "matchDepNames": [
         "gohugoio/hugo"
@@ -80,17 +80,14 @@
       "automergeType": "pr"
     }
   ],
-  "customManagers": [
+  "regexManagers": [
     {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/^.github/workflows/hugo\\.yaml$/"
-      ],
+      "fileMatch": ["^\\.github/workflows/hugo\\.ya?ml$"],
       "matchStrings": [
         "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
       ],
       "depNameTemplate": "gohugoio/hugo",
-      "datasourceTemplate": "github-tags"
+      "datasourceTemplate": "github-releases"
     }
   ]
 }
