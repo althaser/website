@@ -32,6 +32,11 @@ h2.accordion {
 .accordion p {
   padding-top: 1px;
 }
+/* a.page-link {
+    &:is(.dark *) {
+      color: red
+    }
+} */
 
 @layer utilities {
   h1 {
