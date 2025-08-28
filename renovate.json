@@ -84,7 +84,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "/^\\.github/workflows/hugo\\.ya?ml$/"
+        "/^\\.github/workflows/deploy\\.ya?ml$/"
       ],
       "matchStrings": [
         "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
