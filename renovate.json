@@ -80,9 +80,12 @@
       "automergeType": "pr"
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["^\\.github/workflows/hugo\\.ya?ml$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/hugo\\.ya?ml$/"
+      ],
       "matchStrings": [
         "HUGO_VERSION:\\s*\"?(?<currentValue>[0-9\\.]+)\"?"
       ],
