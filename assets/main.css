@@ -18,25 +18,7 @@
       border-color: var(--color-gray-200, currentColor);
     }
   }
-  /* h2.accordion {
-    @apply m-0;
-  }
-  .accordion p {
-    @apply pt-[1px];
-  } needed postcss to use there from here. */
 }
-
-h2.accordion {
-  margin: 0;
-}
-.accordion p {
-  padding-top: 1px;
-}
-/* a.page-link {
-    &:is(.dark *) {
-      color: red
-    }
-} */
 
 @layer utilities {
   h1 {
@@ -69,7 +51,25 @@ h2.accordion {
   p {
     @apply mt-2 mb-2;
   }
+  h2.accordion {
+    @apply m-0;
+  }
+  .accordion p {
+    @apply pt-[8px];
+  }
 }
+
+/*h2.accordion {
+  margin: 0;
+}
+.accordion p {
+  padding-top: 1px;
+}
+/* a.page-link {
+    &:is(.dark *) {
+      color: red
+    }
+} */
 
 @layer components {
   ul.pagination {
