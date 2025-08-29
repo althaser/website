@@ -57,6 +57,9 @@
   .accordion p {
     @apply pt-[8px];
   }
+  ul.pagination .page-item.active > .page-link {
+    @apply text-white dark:text-gray-900;
+  }
 }
 
 /*h2.accordion {
