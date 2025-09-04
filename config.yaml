@@ -15,7 +15,7 @@ params:
   author: Pedro Beja
   description: althaser's website
   copyright: >-
-    althaser
+    powered by [hugo](https://gohugo.io/)
   theme:
     mainTheme: dark
     showAttribute: true
