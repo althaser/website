@@ -24,25 +24,25 @@ params:
   social:
     title: Links
     list:
-      - icon: fab fa-linkedin-in
+      - icon: bi bi-linkedin
         url: "#"
         title: LinkedIn
-      - icon: fab fa-stack-overflow
+      - icon: bi bi-stack-overflow
         url: "#"
         title: StackOverflow
-      - icon: fab fa-github
+      - icon: bi bi-github
         url: "#"
         title: GitHub
-      - icon: fab fa-twitter
+      - icon: bi bi-twitter
         url: "#"
         title: Twitter
-      - icon: fab fa-orcid
+      - icon: ai ai-orcid
         url: "#"
         title: Orcid
       - icon: ai ai-google-scholar
         url: "#"
         title: Google Scholar
-      - icon: fab fa-researchgate
+      - icon: ai ai-researchgate
         url: "#"
         title: ResearchGate
   showInAccordion:
@@ -56,11 +56,11 @@ params:
     - item: hobby
   aboutme:
     title: About Me
-    icon: fas fa-user
+    icon: bi bi-person
     description: This is a demo of the `aafu` theme. It has `light` and `dark` theme.
   experience:
     title: Experiences
-    icon: fas fa-briefcase
+    icon: bi bi-briefcase
     list:
       - position: Job Title
         dates: 2019 - *Present*
@@ -76,7 +76,7 @@ params:
         company: Company Name
   education:
     title: Education
-    icon: fas fa-graduation-cap
+    icon: bi bi-mortarboard
     list:
       - degree: Ph.D. in Subject
         college: University of State-City
@@ -93,7 +93,7 @@ params:
         dates: 2004 - 2009
   publication:
     title: Publications
-    icon: fas fa-book
+    icon: bi bi-book
     format:
       - date
       - title
@@ -129,7 +129,7 @@ params:
         type: Proceedings
   project:
     title: Projects
-    icon: fas fa-project-diagram
+    icon: bi bi-kanban
     list:
       - title: Project 1
         url: "#"
@@ -146,7 +146,7 @@ params:
   skill:
     title: Skills
     panelId: skill-panel
-    icon: fas fa-cogs
+    icon: bi bi-list-check
     list:
       - skill: "Skill 1, Skill 2"
         skillrating: 90
@@ -156,7 +156,7 @@ params:
         skillrating: 50
   hobby:
     title: Hobbies
-    icon: fas fa-gamepad
+    icon: bi bi-controller
     list:
       - hobby: Cooking
       - hobby: Hiking

@@ -5,10 +5,10 @@
       href="{{ .PrevInSection.Permalink | relURL }}"
       title="{{ .PrevInSection.Title }}"
     >
-      <i class="nav-menu fas fa-chevron-circle-left"></i>
+      <i class="nav-menu bi bi-caret-left"></i>
     </a>
     {{ else }}
-    <i class="text-gray-300 dark:text-gray-600 fas fa-chevron-circle-left"></i>
+    <i class="text-gray-300 dark:text-gray-600 bi bi-caret-left"></i>
     {{ end }}
   </h3>
   <h3 class="mb-1 mt-1 text-left ml-4">
@@ -17,10 +17,10 @@
       href="{{ .NextInSection.Permalink | relURL }}"
       title="{{ .NextInSection.Title }}"
     >
-      <i class="nav-menu fas fa-chevron-circle-right"></i>
+      <i class="nav-menu bi bi-caret-right"></i>
     </a>
     {{ else }}
-    <i class="text-gray-300 dark:text-gray-600 fas fa-chevron-circle-right"></i>
+    <i class="text-gray-300 dark:text-gray-600 bi bi-caret-right"></i>
     {{ end }}
   </h3>
 </div>
