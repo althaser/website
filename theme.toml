@@ -6,7 +6,7 @@ homepage = "https://github.com/darshanbaral/aafu"
 demosite = "https://aafu.darshanbaral.com/"
 tags = ["portfolio", "accordion", "resume", "blog", "tailwind"]
 features = ["responsive", "dark", "clean"]
-min_version = "0.134.3"
+min_version = "0.152.2"
 theme_version = "2024.10.13"
 
 [author]
