@@ -9,155 +9,18 @@ title: aafu theme
 params:
   author: Darshan Baral
   description: Website title
-  copyright: >-
-    powered by [hugo](https://gohugo.io/)
+  copyright: powered by [hugo](https://gohugo.io/)
   theme:
     mainTheme: dark
     showAttribute: true
-    singlePage: false  
-
-  profile:
-    name: "First Last, Abbr."
-    tagline: Title
-    location: "City Name, ST"
-    photo: profile.jpg
-  social:
-    title: Links
-    list:
-      - icon: bi bi-linkedin
-        url: "#"
-        title: LinkedIn
-      - icon: bi bi-stack-overflow
-        url: "#"
-        title: StackOverflow
-      - icon: bi bi-github
-        url: "#"
-        title: GitHub
-      - icon: bi bi-twitter
-        url: "#"
-        title: Twitter
-      - icon: ai ai-orcid
-        url: "#"
-        title: Orcid
-      - icon: ai ai-google-scholar
-        url: "#"
-        title: Google Scholar
-      - icon: ai ai-researchgate
-        url: "#"
-        title: ResearchGate
-  showInAccordion:
-    - item: aboutme
-      expand: true
-    - item: experience
+    singlePage: false
+  accordion:
+    - item: about_me
+      expand: true # only the first `expand: true` will take effect
+    - item: experiences
     - item: education
-    - item: publication
-    - item: project
-    - item: skill
-    - item: hobby
-  aboutme:
-    title: About Me
-    icon: bi bi-person
-    description: This is a demo of the `aafu` theme. It has `light` and `dark` theme.
-  experience:
-    title: Experiences
-    icon: bi bi-briefcase
-    list:
-      - position: Job Title
-        dates: 2019 - *Present*
-        company: Company Name
-        details: |1-
-          - Printed from desktop. Sent [emails](#).
-              - Called people *using* telephone.
-          - Drank water from office cooler.
-          - Ate donuts on people's birthdays.
-      - position: Job Title
-        dates: 2018 - 2019
-        url: "#"
-        company: Company Name
-  education:
-    title: Education
-    icon: bi bi-mortarboard
-    list:
-      - degree: Ph.D. in Subject
-        college: University of State-City
-        dates: 2013 - 2018
-        thesis_title: "Effect of humans on other humans: a study of human behavior."
-        thesis_url: "#"
-      - degree: M.S. in Subject
-        college: University of State-City
-        dates: 2013 - 2018
-        thesis_title: "Effect of humans on other humans: a study of human behavior."
-        thesis_url: "#"
-      - degree: B.S. in Subject
-        college: University of State-City
-        dates: 2004 - 2009
-  publication:
-    title: Publications
-    icon: bi bi-book
-    format:
-      - date
-      - title
-      - authors
-      - journal
-    types:
-      - Journal Articles
-      - Proceedings
-    list:
-      - title: >-
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        authors: "F Last, F Second, P secondary"
-        date: "2018"
-        journal: "Journal of Field 52 (16), 9033-9044"
-        url: "#"
-        type: Journal Articles
-      - title: >-
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        authors: "F Last, F Second, P secondary"
-        date: "2018"
-        journal: "Journal of Field 52 (16), 9033-9044"
-        url: "#"
-        type: Journal Articles
-      - title: >-
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        authors: "F Last, F Second, P secondary"
-        date: "2018"
-        journal: "Journal of Field 52 (16), 9033-9044"
-        url: "#"
-        type: Proceedings
-  project:
-    title: Projects
-    icon: bi bi-kanban
-    list:
-      - title: Project 1
-        url: "#"
-        description: Description of the project
-      - title: Project 2
-        url: "#"
-        description: Description of the project
-      - title: Project 3
-        url: "#"
-        description: Description of the project
-      - title: Project 4
-        url: "#"
-        description: Description of the project
-  skill:
-    title: Skills
-    panelId: skill-panel
-    icon: bi bi-list-check
-    list:
-      - skill: "Skill 1, Skill 2"
-        skillrating: 90
-      - skill: Skill 3
-        skillrating: 80
-      - skill: Skill 4
-        skillrating: 50
-  hobby:
-    title: Hobbies
-    icon: bi bi-controller
-    list:
-      - hobby: Cooking
-      - hobby: Hiking
-      - hobby: Baking
+    - item: publications
+    - item: projects
+    - item: skills
+      panel_id: skill-panel
+    - item: hobbies

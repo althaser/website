@@ -1,0 +1,27 @@
+{
+  "title": "Experiences",
+  "icon": "bi bi-briefcase",
+  "list": [{
+      "position": "Job Title",
+      "dates": "2022 - *Present*",
+      "url": "#",
+      "company": "Company Name"
+    },
+    {
+      "position": "Job Title",
+      "dates": "2019 - 2022",
+      "company": "Company Name",
+      "details": [
+        "Printed from desktop. Sent [emails](#). Called people *using* telephone.",
+        "Drank water from office cooler.",
+        "Ate donuts on people's birthdays."
+      ]
+    },
+    {
+      "position": "Job Title",
+      "dates": "2018 - 2019",
+      "url": "#",
+      "company": "Company Name"
+    }
+  ]
+}

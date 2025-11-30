@@ -1,0 +1,15 @@
+{
+  "title": "Hobbies",
+  "icon": "bi bi-controller",
+  "list": [
+    {
+      "hobby": "Cooking"
+    },
+    {
+      "hobby": "Hiking"
+    },
+    {
+      "hobby": "Baking"
+    }
+  ]
+}

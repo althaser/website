@@ -1,0 +1,37 @@
+[
+  {
+    "icon": "bi bi-linkedin",
+    "url": "#",
+    "title": "LinkedIn"
+  },
+  {
+    "icon": "bi bi-stack-overflow",
+    "url": "#",
+    "title": "StackOverflow"
+  },
+  {
+    "icon": "bi bi-github",
+    "url": "#",
+    "title": "GitHub"
+  },
+  {
+    "icon": "bi bi-twitter",
+    "url": "#",
+    "title": "Twitter"
+  },
+  {
+    "icon": "ai ai-orcid",
+    "url": "#",
+    "title": "Orcid"
+  },
+  {
+    "icon": "ai ai-google-scholar",
+    "url": "#",
+    "title": "Google Scholar"
+  },
+  {
+    "icon": "ai ai-researchgate",
+    "url": "#",
+    "title": "ResearchGate"
+  }
+]
