@@ -1,0 +1,17 @@
+[
+  {
+    "icon": "fas fa-envelope",
+    "url": "mailto:althaser at gmail dot com",
+    "title": "E-Mail"
+  },
+  {
+    "icon": "fab fa-linkedin-in",
+    "url": "https://www.linkedin.com/in/althaser/",
+    "title": "LinkedIn"
+  },
+  {
+    "icon": "fas fa-file",
+    "url": "#",
+    "title": "CV"
+  }
+]

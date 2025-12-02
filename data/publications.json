@@ -1,0 +1,30 @@
+{
+  "title": "Publications",
+  "icon": "bi bi-book",
+  "format": ["date", "authors", "title", "journal"],
+  "delimiter": "; ",
+  "types": ["Journal Articles", "Proceedings"],
+  "list": [
+    {
+      "title": "[*Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua*](#)",
+      "authors": "F Last, *F Second*, P secondary",
+      "date": "2018",
+      "journal": "Journal of Field 52 (16), 9033-9044",
+      "type": "Journal Articles"
+    },
+    {
+      "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "authors": "F Last, F Second, P secondary",
+      "date": "2018",
+      "journal": "[Journal of Field 52 (16), 9033-9044](#)",
+      "type": "Journal Articles"
+    },
+    {
+      "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+      "authors": "F Last, F Second, P secondary",
+      "date": "2018",
+      "journal": "Journal of Field 52 (16), 9033-9044",
+      "type": "Proceedings"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Skills",
+  "panelId": "skill-panel",
+  "icon": "bi bi-list-check",
+  "list": [
+    {
+      "skill": "Skill 1, Skill 2",
+      "skillrating": 90
+    },
+    {
+      "skill": "Skill 3",
+      "skillrating": 80
+    },
+    {
+      "skill": "Skill 4",
+      "skillrating": 50
+    }
+  ]
+}

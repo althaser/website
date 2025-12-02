@@ -1,0 +1,18 @@
+{{ range .Site.Data.experiences.list }}
+<h4 style="text-decoration: underline">{{ .position }}</h4>
+<p {{if .details }}class="mb-0"{{ end }}>
+  {{ .dates | markdownify }} &middot;
+  {{ if .url }}
+  <a href="{{ .url }}">{{ .company }}</a>
+  {{ else }}
+  {{ .company }}
+  {{ end }}
+</p>
+
+{{ if .details }}
+<ul class="my-2 ms-4 prose prose-stone dark:prose-invert max-w-none list-disc list-outside pl-6">
+  {{ range .details }}
+  <li class="marker:text-gray-700 dark:marker:text-gray-200">{{ . | markdownify }}</li>
+  {{ end }}
+</ul>
+{{ end }} {{ end }}
