@@ -1,5 +1,7 @@
 # Website
 
+[![Pipeline Status](https://github.com/althaser/website/actions/workflows/deploy.yaml/badge.svg)](https://github.com/althaser/website/actions/workflows/deploy.yaml)
+
 The website is a responsive portfolio with a blog and search.
 
 <!-- ## Deployment
