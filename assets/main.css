@@ -53,9 +53,14 @@
   }
   h2.accordion {
     @apply m-0;
+    @apply mt-2 mb-2 pt-[8px] pb-[8px] px-2;
+    @apply rounded-sm cursor-pointer transition-colors;
+    @apply hover:bg-gray-300 dark:hover:bg-darker;
+    display: block;
+    width: 100%;
   }
-  .accordion p {
-    @apply pt-[8px];
+  h2.accordion.active {
+    @apply bg-gray-300 dark:bg-darker;
   }
   ul.pagination .page-item.active > .page-link {
     @apply text-white dark:text-gray-900;
