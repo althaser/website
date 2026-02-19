@@ -13,5 +13,10 @@
     "icon": "fas fa-file",
     "url": "#",
     "title": "CV"
+  },
+  {
+    "icon": "fa-brands fa-w3c",
+    "url": "https://validator.w3.org/nu/?doc=https%3A%2F%2Falthaser.me%2F",
+    "title": "W3C"
   }
 ]
