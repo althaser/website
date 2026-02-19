@@ -109,6 +109,13 @@
   .nav-menu-item {
     @apply hover:no-underline p-2 rounded-sm hover:bg-gray-200 dark:hover:bg-gray-800;
   }
+  .nav-menu-item.active {
+    background-color: rgb(229 231 235); /* Similar to bg-gray-200 */
+    text-decoration-line: none;
+  }
+  .dark .nav-menu-item.active {
+    background-color: rgb(31 41 55); /* Similar to bg-gray-800 */
+  }
   .active {
     @apply overflow-visible;
   }
