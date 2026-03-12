@@ -73,7 +73,7 @@ jobs:
         run: |
           node -v
           npm -v
-          npx tailwindcss --version || true
+          npx tailwindcss --version | head -n1 || true
           npx pagefind --version || true
           hugo version
 
