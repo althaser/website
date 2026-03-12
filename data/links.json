@@ -10,12 +10,12 @@
     {
       "title": "GitLab",
       "url": "https://gitlab.com/althaser",
-      "icon2": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/GitLab_icon.svg/2127px-GitLab_icon.svg.png"
+      "icon2": "https://upload.wikimedia.org/wikipedia/commons/3/35/GitLab_icon.svg"
     },
     {
       "title": "IRC-OFTC",
       "url": "https://www.oftc.net",
-      "icon2": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/OFTC_logo.svg/425px-OFTC_logo.svg.png"
+      "icon2": "https://upload.wikimedia.org/wikipedia/commons/2/28/OFTC_logo.svg"
     },
     {
       "title": "[matrix]",
