@@ -105,30 +105,18 @@
 
   <script>
     const expandAccordion = (elem) => {
-      const allPanels = Array.from(document.querySelectorAll(".panel"));
-      const allAccordion = Array.from(document.querySelectorAll(".accordion"));
+      const allAccordions = document.querySelectorAll(".accordion");
+      const allPanels = document.querySelectorAll(".panel");
 
-      if (!elem.classList.contains("active")) {
-        allAccordion.forEach((acc) => {
-          acc.classList.remove("active");
-        });
-        elem.classList.add("active");
-        allPanels.forEach(function (elem) {
-          elem.style.maxHeight = null;
-        });
-        let activePanel = elem.nextElementSibling;
-        if (
-          activePanel.id != "skill-panel" &&
-          document.querySelector("#skill-panel")
-        ) {
-          let skillBars = Array.from(
-            document.querySelectorAll("#skill-percent")
-          );
-          skillBars.forEach((elem) => {
-            elem.style.width = "0";
-          });
-        }
-        activePanel.style.maxHeight = activePanel.scrollHeight + "px";
+      const isActive = elem.classList.contains("active");
+
+      allAccordions.forEach(acc => acc.classList.remove("active"));
+      allPanels.forEach(panel => panel.style.maxHeight = null);
+
+      if (!isActive) {
+      elem.classList.add("active");
+      const panel = elem.nextElementSibling;
+      panel.style.maxHeight = panel.scrollHeight + "px";
       }
     };
   </script>
