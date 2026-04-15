@@ -1,8 +1,8 @@
-<h1 class="mb-0">{{ .Site.Data.profile.name }}</h1>
-<h2 class="mb-0" style="color:#3b82f6">{{ .Site.Data.profile.tagline }}</h2>
-<div class="mb-4">{{ .Site.Data.profile.location }}</div>
+<h1 class="mb-0">{{ hugo.Data.profile.name }}</h1>
+<h2 class="mb-0" style="color:#3b82f6">{{ hugo.Data.profile.tagline }}</h2>
+<div class="mb-4">{{ hugo.Data.profile.location }}</div>
 <div class="mb-4 flex flex-wrap justify-center">
-  {{ range $key, $value := .Site.Data.social }}
+  {{ range $key, $value := hugo.Data.social }}
   <div class="mx-2">
     <a class="text-2xl" href="{{ .url }}">
       <i class="mt-1 {{ $value.icon }}"></i>
