@@ -1,6 +1,6 @@
 {{ range hugo.Data.education.list }}
 
-<h4 style="text-decoration: underline;">{{ .degree }}</h4>
+{{ partial "accordion/item_heading.html" .degree }}
 <p {{ if .thesis_title }}class="mb-0" {{ end }}>
   {{- .dates }} &middot; {{ .college -}}
 </p>

@@ -1,5 +1,5 @@
 {{ range hugo.Data.experiences.list }}
-<h4 style="text-decoration: underline">{{ .position }}</h4>
+{{ partial "accordion/item_heading.html" .position }}
 <p {{if .details }}class="mb-0"{{ end }}>
   {{ .dates | markdownify }} &middot;
   {{ if .url }}

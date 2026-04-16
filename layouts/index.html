@@ -14,19 +14,18 @@
     {{ range .Site.Params.accordion }}
     <div class="px-2">
       {{ $current := index hugo.Data .item }}
+      {{ $panelID := .panel_id | default $current.panelId }}
       <h2 class="accordion {{- if and (.expand) (not $found_expanded) }} active {{- $found_expanded = true }} {{- end }}"
         onclick="expandAccordion(this)"
-        style="cursor: pointer">
+      >
         <i class="{{ $current.icon }}"></i>
         {{ $current.title -}}
       </h2>
 
       <div
         class="panel overflow-hidden px-2 ml-2"
-        {{ if .panel_id }}
-        id="{{ .panel_id }}"
-        {{ end }}
-        {{ if .expand }}
+        {{ if $panelID }}
+        id="{{ $panelID }}"
         {{ end }}
       >
         <div class="">{{ partial (print "accordion/" .item) $ }}</div>

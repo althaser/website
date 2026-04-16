@@ -1,9 +1,9 @@
 {{ range hugo.Data.links.list }}
 <p>
-  <span style="display: inline-block; width: 35px; height: 35px; vertical-align: middle; overflow: hidden;">
-    <img src="{{ .icon2 }}" alt="{{ .title }}" style="width: 100%; height: 100%; object-fit: contain;">
+  <span class="link-icon">
+    <img src="{{ .icon2 }}" alt="{{ .title }}">
   </span>
-  <span style="display: inline-block; vertical-align: middle; font-size: 20px; padding-left: 5px;">
+  <span class="link-label">
     <a href="{{ .url }}" class="{{ .class }} {{ .icon }}"> {{ .title }}</a> {{ .version }}
   </span>
 </p>

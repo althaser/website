@@ -1,0 +1,13 @@
+{{- $publication := .publication -}}
+{{- $format := .format -}}
+{{- $delimiter := .delimiter -}}
+
+<p class="indent-8">
+  {{- $nFormat := len $format -}}
+  {{- range $index, $field := $format -}}
+  {{- index $publication $field | markdownify -}}
+  {{- if ne (add $index 1) $nFormat -}}
+  {{ $delimiter }}
+  {{- end -}}
+  {{- end -}}
+</p>

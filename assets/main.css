@@ -75,6 +75,25 @@
   .profile-photo-container img {
     max-width: 100%;
   }
+  .accordion-item-heading {
+    @apply underline;
+  }
+  .link-icon {
+    @apply inline-block size-[35px] overflow-hidden align-middle;
+  }
+  .link-icon img {
+    @apply size-full object-contain;
+  }
+  .link-label {
+    @apply inline-block align-middle pl-1 text-[20px];
+  }
+  .skill-meter {
+    @apply mt-1 mb-3 h-5 rounded-sm border border-black dark:border-gray-300;
+  }
+  .skill-progress {
+    @apply h-full rounded-sm bg-blue-500 transition-all duration-500 dark:bg-yellow-700;
+    width: 0;
+  }
   .pagefind-ui__search-input {
     @apply w-full rounded-sm border border-gray-500 p-2 text-black;
   }

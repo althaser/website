@@ -1,4 +1,5 @@
 const html = document.documentElement;
+let skillBarsInitialized = false;
 
 const fixThemeToggleIcon = (theme) => {
   const toggles = document.querySelectorAll(".theme-toggle");
@@ -52,6 +53,24 @@ const syncActiveAccordionPanel = () => {
   }
 };
 
+const initializeSkillBars = (root = document) => {
+  if (skillBarsInitialized) {
+    return;
+  }
+
+  const skillBars = root.querySelectorAll("[data-skill-rating]");
+
+  if (!skillBars.length) {
+    return;
+  }
+
+  skillBars.forEach((bar) => {
+    bar.style.width = `${bar.dataset.skillRating}%`;
+  });
+
+  skillBarsInitialized = true;
+};
+
 const expandAccordion = (element) => {
   const accordions = document.querySelectorAll(".accordion");
   const panels = document.querySelectorAll(".panel");
@@ -65,6 +84,7 @@ const expandAccordion = (element) => {
   if (!isActive) {
     element.classList.add("active");
     syncActiveAccordionPanel();
+    initializeSkillBars(element.nextElementSibling ?? document);
   }
 };
 
@@ -86,6 +106,7 @@ setTheme(getPreferredTheme());
 
 window.addEventListener("DOMContentLoaded", () => {
   syncActiveAccordionPanel();
+  initializeSkillBars();
   initializeSearch();
 });
 
