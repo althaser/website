@@ -5,10 +5,11 @@
 {{ $width := .Get "width" | strings.TrimSuffix "px" }}
 {{ $height := .Get "height" | strings.TrimSuffix "px" }}
 
-<a href="{{ $href }}">
+<a href="{{ $href }}" class="link-image-anchor">
   <img
     src="{{ $src }}"
     alt="{{ $alt }}"
+    class="content-inline-image"
     loading="lazy"
     decoding="async"
     {{ with $width }}width="{{ . }}"{{ end }}

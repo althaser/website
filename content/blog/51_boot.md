@@ -7,7 +7,7 @@ description: "Boot Charts"
 draft: false
 ---
 
-{{< img src="https://brand.systemd.io/assets/svg/systemd-dark.svg" alt="systemd" width="200" height="100" >}}
+{{< img src="https://brand.systemd.io/assets/png/systemd-dark.png" alt="systemd" width="200" height="100" >}}
 
 **Systemd - BootCharts**.
 

@@ -1,10 +1,10 @@
 {{ range hugo.Data.links.list }}
-<p>
+<p class="link-row">
   <span class="link-icon">
     <img src="{{ .icon2 }}" alt="{{ .title }}">
   </span>
   <span class="link-label">
-    <a href="{{ .url }}" class="{{ .class }} {{ .icon }}"> {{ .title }}</a> {{ .version }}
+    <a href="{{ .url }}" class="{{ .class }} {{ .icon }}">{{ .title }}</a> {{ .version }}
   </span>
 </p>
 {{ end }}

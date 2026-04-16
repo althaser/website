@@ -7,7 +7,7 @@ description: "Dsh"
 draft: false
 ---
 
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bash_Logo_Colored.svg/2048px-Bash_Logo_Colored.svg.png" alt="dsh" width="70" height="70" >}}
+{{< img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bash_Logo_Colored.svg/1280px-Bash_Logo_Colored.svg.png" alt="dsh" width="70" height="70" >}}
 
 **dsh** dancer's shell, or distributed shell.
 

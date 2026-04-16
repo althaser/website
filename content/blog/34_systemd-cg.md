@@ -7,7 +7,7 @@ description: "Systemd CGroups"
 draft: false
 ---
 
-{{< img src="https://camo.githubusercontent.com/59daa0f195327fac0944329fbeba541d83100a1f45b89dca7f8a10db221a3774/687474703a2f2f6272616e642e73797374656d642e696f2f6173736574732f706167652d6c6f676f2e706e67" alt="systemd" width="300px" height="300px" >}}
+{{< img src="https://brand.systemd.io/assets/png/systemd-dark.png" alt="systemd" width="300px" height="300px" >}}
 
 Systemd CGroups.
 

@@ -2,11 +2,12 @@
 {{ $alt := .Get "alt" | default "Article image" }}
 {{ $width := .Get "width" | strings.TrimSuffix "px" }}
 {{ $height := .Get "height" | strings.TrimSuffix "px" }}
+{{ $class := .Get "class" | default "content-inline-image" }}
 
 <img
   src="{{ $src }}"
   alt="{{ $alt }}"
-  class="content-inline-image"
+  class="{{ $class }}"
   loading="lazy"
   decoding="async"
   {{ with $width }}width="{{ . }}"{{ end }}
