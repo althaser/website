@@ -144,6 +144,7 @@ window.toggleTheme = () => {
 setTheme(getPreferredTheme());
 
 window.addEventListener("DOMContentLoaded", () => {
+  fixThemeToggleIcon(html.classList.contains("dark") ? "dark" : "light");
   initializeEventBindings();
   syncActiveAccordionPanel();
   initializeSkillBars();
