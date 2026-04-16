@@ -1,7 +1,7 @@
 {{ $src := .Get "src" }}
 {{ $alt := .Get "alt" | default "Article image" }}
-{{ $width := .Get "width" }}
-{{ $height := .Get "height" }}
+{{ $width := .Get "width" | strings.TrimSuffix "px" }}
+{{ $height := .Get "height" | strings.TrimSuffix "px" }}
 
 <img
   src="{{ $src }}"

@@ -1,0 +1,20 @@
+{{ with .Site.Params.assets.fontAwesome }}
+<link rel="stylesheet"
+  href="{{ .url }}"
+  integrity="{{ .integrity }}"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+{{ end }}
+{{ with .Site.Params.assets.academiconsUrl }}
+<link
+  rel="stylesheet"
+  href="{{ . }}"
+/>
+{{ end }}
+{{ with .Site.Params.assets.googleFontsUrl }}
+<link
+  rel="stylesheet"
+  href="{{ . }}"
+/>
+{{ end }}

@@ -39,18 +39,36 @@ const getPreferredTheme = () => {
     : "light";
 };
 
-const syncActiveAccordionPanel = () => {
-  const activeAccordion = document.querySelector(".accordion.active");
+const getAccordionItems = () =>
+  Array.from(document.querySelectorAll("[data-accordion-item]"));
 
-  if (!activeAccordion) {
+const getAccordionPanel = (item) => item?.querySelector(".panel");
+
+const getAccordionTrigger = (item) => item?.querySelector("[data-accordion-trigger]");
+
+const syncAccordionItem = (item) => {
+  const panel = getAccordionPanel(item);
+  const trigger = getAccordionTrigger(item);
+  const isActive = item?.classList.contains("active");
+
+  if (!panel || !trigger) {
     return;
   }
 
-  const panel = activeAccordion.nextElementSibling;
+  trigger.setAttribute("aria-expanded", isActive ? "true" : "false");
 
-  if (panel) {
+  if (isActive) {
+    panel.hidden = false;
     panel.style.maxHeight = `${panel.scrollHeight}px`;
+    initializeSkillBars(panel);
+  } else {
+    panel.style.maxHeight = null;
+    panel.hidden = true;
   }
+};
+
+const syncActiveAccordionPanel = () => {
+  getAccordionItems().forEach(syncAccordionItem);
 };
 
 const initializeSkillBars = (root = document) => {
@@ -72,24 +90,24 @@ const initializeSkillBars = (root = document) => {
 };
 
 const expandAccordion = (element) => {
-  if (!element) {
+  const item = element?.matches?.("[data-accordion-item]")
+    ? element
+    : element?.closest?.("[data-accordion-item]");
+
+  if (!item) {
     return;
   }
 
-  const accordions = document.querySelectorAll(".accordion");
-  const panels = document.querySelectorAll(".panel");
-  const isActive = element.classList.contains("active");
+  const items = getAccordionItems();
+  const isActive = item.classList.contains("active");
 
-  accordions.forEach((accordion) => accordion.classList.remove("active"));
-  panels.forEach((panel) => {
-    panel.style.maxHeight = null;
-  });
+  items.forEach((accordionItem) => accordionItem.classList.remove("active"));
 
   if (!isActive) {
-    element.classList.add("active");
-    syncActiveAccordionPanel();
-    initializeSkillBars(element.nextElementSibling ?? document);
+    item.classList.add("active");
   }
+
+  syncActiveAccordionPanel();
 };
 
 const initializeSearch = () => {
@@ -106,7 +124,7 @@ const initializeEventBindings = () => {
       const targetSelector = trigger.dataset.accordionTarget;
       const target = targetSelector
         ? trigger.closest(targetSelector) ?? document.querySelector(targetSelector)
-        : trigger;
+        : trigger.closest("[data-accordion-item]") ?? trigger;
 
       expandAccordion(target);
     });
@@ -122,8 +140,6 @@ const initializeEventBindings = () => {
 window.toggleTheme = () => {
   setTheme(html.classList.contains("dark") ? "light" : "dark");
 };
-
-window.expandAccordion = expandAccordion;
 
 setTheme(getPreferredTheme());
 

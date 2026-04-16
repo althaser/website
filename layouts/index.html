@@ -12,29 +12,13 @@
   <div class="col-span-3 relative">
     {{ $found_expanded := false }}
     {{ range .Site.Params.accordion }}
-    <div class="px-2">
       {{ $current := index hugo.Data .item }}
       {{ $hasDescription := and (isset $current "description") $current.description }}
       {{ $hasList := and (isset $current "list") (gt (len $current.list) 0) }}
       {{ if or $hasDescription $hasList }}
-      {{ $panelID := .panel_id | default $current.panelId }}
-      <h2 class="accordion {{- if and (.expand) (not $found_expanded) }} active {{- $found_expanded = true }} {{- end }}"
-        data-accordion-trigger
-      >
-        <i class="{{ $current.icon }}"></i>
-        {{ $current.title -}}
-      </h2>
-
-      <div
-        class="panel overflow-hidden px-2 ml-2"
-        {{ if $panelID }}
-        id="{{ $panelID }}"
-        {{ end }}
-      >
-        <div class="">{{ partial (print "accordion/" .item) $ }}</div>
-      </div>
+      {{ partial "accordion/section.html" (dict "page" $ "config" . "data" $current "itemKey" .item "foundExpanded" $found_expanded) }}
+      {{ if and (.expand) (not $found_expanded) }}{{ $found_expanded = true }}{{ end }}
       {{ end }}
-    </div>
     {{ end }}
   </div>
 </div>

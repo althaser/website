@@ -1,0 +1,36 @@
+{{ $page := .page }}
+{{ $config := .config }}
+{{ $data := .data }}
+{{ $itemKey := .itemKey }}
+{{ $panelID := $config.panel_id | default $data.panelId | default (printf "accordion-panel-%s" $itemKey) }}
+{{ $buttonID := printf "%s-button" $panelID }}
+{{ $isExpanded := and $config.expand (not .foundExpanded) }}
+
+<div class="px-2 accordion-item {{ if $isExpanded }}active{{ end }}" data-accordion-item>
+  <h2 class="m-0">
+    <button
+      id="{{ $buttonID }}"
+      type="button"
+      class="accordion-trigger"
+      aria-expanded="{{ if $isExpanded }}true{{ else }}false{{ end }}"
+      aria-controls="{{ $panelID }}"
+      data-accordion-trigger
+    >
+      <span class="flex items-center gap-2">
+        <i class="{{ $data.icon }}" aria-hidden="true"></i>
+        <span>{{ $data.title }}</span>
+      </span>
+      <i class="chevron fas fa-chevron-right" aria-hidden="true"></i>
+    </button>
+  </h2>
+
+  <div
+    id="{{ $panelID }}"
+    class="panel overflow-hidden px-2 ml-2"
+    role="region"
+    aria-labelledby="{{ $buttonID }}"
+    {{ if not $isExpanded }}hidden{{ end }}
+  >
+    <div>{{ partial (print "accordion/" $itemKey) $page }}</div>
+  </div>
+</div>

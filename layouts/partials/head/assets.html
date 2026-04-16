@@ -1,0 +1,25 @@
+{{ $css := resources.Get "main.css" | css.TailwindCSS }}
+{{ $js := resources.Get "js/site.js" }}
+{{ if hugo.IsProduction }}
+{{ with $css | minify | fingerprint }}
+<link
+  rel="stylesheet"
+  href="{{ .RelPermalink }}"
+  integrity="{{ .Data.Integrity | safeHTMLAttr }}"
+  crossorigin="anonymous"
+/>
+{{ end }}
+{{ else}}
+<link href="{{ $css.RelPermalink }}" rel="stylesheet" />
+{{ end }}
+{{ if hugo.IsProduction }}
+{{ with $js | minify | fingerprint }}
+<script
+  src="{{ .RelPermalink }}"
+  integrity="{{ .Data.Integrity | safeHTMLAttr }}"
+  crossorigin="anonymous"
+></script>
+{{ end }}
+{{ else }}
+<script src="{{ $js.RelPermalink }}"></script>
+{{ end }}

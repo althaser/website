@@ -1,0 +1,18 @@
+{{ $href := .Get "href" }}
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" | default "Link image" }}
+{{ $label := .Get "label" | default $alt }}
+{{ $width := .Get "width" | strings.TrimSuffix "px" }}
+{{ $height := .Get "height" | strings.TrimSuffix "px" }}
+
+<a href="{{ $href }}">
+  <img
+    src="{{ $src }}"
+    alt="{{ $alt }}"
+    loading="lazy"
+    decoding="async"
+    {{ with $width }}width="{{ . }}"{{ end }}
+    {{ with $height }}height="{{ . }}"{{ end }}
+  >
+  {{ $label }}
+</a>
