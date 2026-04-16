@@ -111,10 +111,13 @@
     @apply underline;
   }
   .link-icon {
-    @apply inline-block size-[35px] overflow-hidden align-middle;
+    @apply inline-flex size-[35px] items-center justify-center overflow-hidden align-middle;
   }
   .link-icon img {
     @apply size-full object-contain;
+  }
+  .link-icon i {
+    @apply text-[1.6rem];
   }
   .link-label {
     @apply inline-block align-middle pl-1 text-[20px];
@@ -131,6 +134,19 @@
   }
   .content-inline-image {
     @apply my-2 max-w-full rounded-sm;
+  }
+  .link-card-grid {
+    @apply my-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  .link-card {
+    @apply flex min-h-32 flex-col items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white/80 p-4 text-center shadow-sm transition-colors;
+    @apply hover:border-blue-400 hover:bg-gray-100 hover:no-underline dark:border-gray-700 dark:bg-gray-900/60 dark:hover:border-yellow-300 dark:hover:bg-dark;
+  }
+  .link-card-image {
+    @apply max-h-24 max-w-24 rounded-sm object-contain;
+  }
+  .link-card-label {
+    @apply text-sm font-semibold leading-snug text-blue-500 dark:text-yellow-300;
   }
   .pagefind-ui__search-input {
     @apply w-full rounded-sm border border-gray-500 p-2 text-black;
