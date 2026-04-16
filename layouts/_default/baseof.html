@@ -9,7 +9,7 @@
       {{- block "main" . }}
       {{- end }}
     </main>
-    {{ if and (not .IsHome) (not .Site.Params.theme.singlepage) }}
+    {{ if and (not .IsHome) (not .Site.Params.theme.singlePage) }}
     {{ partial "footer" . }}
     {{ end }}
   </body>

@@ -1,11 +1,11 @@
 {{ define "main" }}
 <div class="prose dark:prose-invert max-w-none">
-  <div style="display: flex; justify-content: space-between; align-items: center;">
+  <div class="flex items-center justify-between gap-4">
     <h1 class="standard {{ if eq .Kind `term` }}font-italic{{ end }}">
         {{ if eq .Kind "term" }}#{{ .Data.Term }}{{ else }}{{- .Title -}}{{ end }}
     </h1>
-    <a href="https://althaser.me/index.xml">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg" alt="blog-rss" style="width:30px; height:30px;">
+    <a href="{{ `index.xml` | absURL }}" aria-label="RSS feed">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg" alt="blog-rss" class="h-[30px] w-[30px]">
     </a>
   </div>
   {{ range $key, $val := (.Paginator 10).Pages }}
@@ -17,9 +17,9 @@
         onclick="expandAccordion(this.parentElement)"
         class="cursor-pointer chevron p-2 mr-4 fas fa-chevron-right rounded-sm text-blue-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700"
       ></i>
-      <a href="{{ .Permalink | relURL }}"
-        ><h2 class="not-prose accordion m-0 font-bold">{{- .Title -}}</h2></a
-      >
+      <h2 class="not-prose accordion m-0 font-bold">
+        <a href="{{ .RelPermalink }}">{{- .Title -}}</a>
+      </h2>
     </div>
     <div
       id="panel-item-{{ $key }}"

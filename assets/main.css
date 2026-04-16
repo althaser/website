@@ -21,6 +21,12 @@
 }
 
 @layer utilities {
+  html {
+    touch-action: manipulation;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
   h1 {
     @apply text-4xl mb-5 mt-1;
   }
@@ -61,6 +67,31 @@
   }
   h2.accordion.active {
     @apply bg-gray-300 dark:bg-darker;
+  }
+  .panel {
+    max-height: 0;
+    transition: 0.3s ease-out;
+  }
+  .profile-photo-container img {
+    max-width: 100%;
+  }
+  .pagefind-ui__search-input {
+    @apply w-full rounded-sm border border-gray-500 p-2 text-black;
+  }
+  .pagefind-ui__search-clear {
+    display: none;
+  }
+  .dark .pagefind-ui__search-input {
+    @apply border-gray-500 bg-[#322d2d] text-white;
+  }
+  .dark .pagefind-ui__search-input::placeholder {
+    color: #8f8f8f;
+  }
+  .chevron {
+    transition: 300ms linear rotate;
+  }
+  .active > .chevron {
+    transform: rotate(90deg);
   }
   ul.pagination .page-item.active > .page-link {
     @apply text-white dark:text-gray-900;

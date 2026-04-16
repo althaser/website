@@ -22,13 +22,6 @@
   <meta name="description" content="{{ .Site.Params.description }}" />
   <meta name="author" content="{{ .Site.Params.author }}" />
   <link rel="icon" href="{{ `favicon.ico` | relURL }}" type="image/x-icon" />
-  <!-- Check https://cdnjs.com/libraries/font-awesome/5.15.4 -->
-  <!-- <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  /> -->
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
@@ -45,6 +38,7 @@
   />
 
   {{ $css := resources.Get "main.css" | css.TailwindCSS }}
+  {{ $js := resources.Get "js/site.js" }}
   {{ if hugo.IsProduction }}
   {{ with $css | minify | fingerprint }}
   <link
@@ -56,141 +50,15 @@
   {{ end }} {{ else}}
   <link href="{{ $css.RelPermalink }}" rel="stylesheet" />
   {{ end }}
-
-  <style>
-    /* General */
-    html {
-      touch-action: manipulation;
-      scroll-behavior: smooth;
-      overflow-y: scroll;
-      scrollbar-gutter: stable;
-    }
-
-    .panel {
-      max-height: 0;
-      transition: 0.3s ease-out;
-    }
-
-    .profile-photo-container img {
-        max-width: 100%;
-    }
-
-    /* Search */
-    .pagefind-ui__search-input {
-      color: black;
-      width: 100%;
-      padding: 0.5em;
-      border-radius: 0.25em;
-      border: 1px solid gray;
-    }
-    .pagefind-ui__search-clear {
-      display: none;
-    }
-    .dark .pagefind-ui__search-input {
-      color: white;
-      background-color: #322d2d;
-      width: 100%;
-      padding: 0.5em;
-      border-radius: 0.25em;
-      border: 1px solid gray;
-    }
-    .dark .pagefind-ui__search-input::placeholder {
-      color: #8f8f8f;
-    }
-    .chevron {
-      transition: 300ms linear rotate;
-    }
-    .active > .chevron {
-      transform: rotate(90deg);
-    }
-  </style>
-
-  <script>
-    const expandAccordion = (elem) => {
-      const allAccordions = document.querySelectorAll(".accordion");
-      const allPanels = document.querySelectorAll(".panel");
-
-      const isActive = elem.classList.contains("active");
-
-      allAccordions.forEach(acc => acc.classList.remove("active"));
-      allPanels.forEach(panel => panel.style.maxHeight = null);
-
-      if (!isActive) {
-      elem.classList.add("active");
-      const panel = elem.nextElementSibling;
-      panel.style.maxHeight = panel.scrollHeight + "px";
-      }
-    };
-  </script>
-
-  <script>
-    let html = document.querySelector("html");
-    let theme = window.localStorage.getItem("theme");
-
-    const setTheme = (theme) => {
-      html.classList.remove("light");
-      if (theme === "dark") {
-        html.classList.add("dark");
-        window.localStorage.setItem("theme", "dark");
-      } else {
-        html.classList.remove("dark");
-        window.localStorage.setItem("theme", "light");
-      }
-      fixThemeToggleIcon(theme);
-    };
-
-    const fixThemeToggleIcon = (theme) => {
-      let themeToggle = document.querySelector(".theme-toggle");
-      if (themeToggle) {
-        if (theme === "dark") {
-          themeToggle.classList.remove("fa-moon");
-          themeToggle.classList.add("fa-sun");
-        } else {
-          themeToggle.classList.remove("fa-sun");
-          themeToggle.classList.add("fa-moon");
-        }
-      }
-    };
-
-    if (theme == null) {
-      if (html.classList.contains("dark")) {
-        theme = "dark";
-      } else if (html.classList.contains("light")) {
-        theme = "light";
-      } else {
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
-        if (prefersDark) {
-          theme = "dark";
-        } else {
-          theme = "light";
-        }
-      }
-    }
-
-    setTheme(theme);
-
-    const toggleTheme = () => {
-      html.classList.contains("dark") ? setTheme("light") : setTheme("dark");
-    };
-
-    window.onload = () => {
-      fixThemeToggleIcon(theme);
-
-      let defaultActivePanel = document.querySelector(".accordion.active");
-      if (defaultActivePanel) {
-        defaultActivePanel.nextElementSibling.style.maxHeight =
-          defaultActivePanel.nextElementSibling.scrollHeight + "px";
-      }
-    };
-
-    window.onresize = () => {
-      let defaultActivePanel = document.querySelector(".accordion.active");
-      if (defaultActivePanel) {
-        defaultActivePanel.nextElementSibling.style.maxHeight =
-          defaultActivePanel.nextElementSibling.scrollHeight + "px";
-      }
-    };
-  </script>
+  {{ if hugo.IsProduction }}
+  {{ with $js | minify | fingerprint }}
+  <script
+    src="{{ .RelPermalink }}"
+    integrity="{{ .Data.Integrity | safeHTMLAttr }}"
+    crossorigin="anonymous"
+  ></script>
+  {{ end }}
+  {{ else }}
+  <script src="{{ $js.RelPermalink }}"></script>
+  {{ end }}
 </head>
