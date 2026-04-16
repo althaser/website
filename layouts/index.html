@@ -16,7 +16,7 @@
       {{ $current := index hugo.Data .item }}
       {{ $panelID := .panel_id | default $current.panelId }}
       <h2 class="accordion {{- if and (.expand) (not $found_expanded) }} active {{- $found_expanded = true }} {{- end }}"
-        onclick="expandAccordion(this)"
+        data-accordion-trigger
       >
         <i class="{{ $current.icon }}"></i>
         {{ $current.title -}}

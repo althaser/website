@@ -72,6 +72,10 @@ const initializeSkillBars = (root = document) => {
 };
 
 const expandAccordion = (element) => {
+  if (!element) {
+    return;
+  }
+
   const accordions = document.querySelectorAll(".accordion");
   const panels = document.querySelectorAll(".panel");
   const isActive = element.classList.contains("active");
@@ -96,6 +100,25 @@ const initializeSearch = () => {
   }
 };
 
+const initializeEventBindings = () => {
+  document.querySelectorAll("[data-accordion-trigger]").forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const targetSelector = trigger.dataset.accordionTarget;
+      const target = targetSelector
+        ? trigger.closest(targetSelector) ?? document.querySelector(targetSelector)
+        : trigger;
+
+      expandAccordion(target);
+    });
+  });
+
+  document.querySelectorAll("[data-theme-toggle]").forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      window.toggleTheme();
+    });
+  });
+};
+
 window.toggleTheme = () => {
   setTheme(html.classList.contains("dark") ? "light" : "dark");
 };
@@ -105,6 +128,7 @@ window.expandAccordion = expandAccordion;
 setTheme(getPreferredTheme());
 
 window.addEventListener("DOMContentLoaded", () => {
+  initializeEventBindings();
   syncActiveAccordionPanel();
   initializeSkillBars();
   initializeSearch();

@@ -1,13 +1,13 @@
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL1PZQ4MJH"></script>
+  {{ with .Site.Params.analytics.googleTagId }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
-    gtag('config', 'G-GL1PZQ4MJH');
+    gtag('config', '{{ . }}');
   </script>
+  {{ end }}
   {{ if .IsHome }}
   <title>{{ .Site.Title }}</title>
   {{ else }}
@@ -22,20 +22,26 @@
   <meta name="description" content="{{ .Site.Params.description }}" />
   <meta name="author" content="{{ .Site.Params.author }}" />
   <link rel="icon" href="{{ `favicon.ico` | relURL }}" type="image/x-icon" />
+  {{ with .Site.Params.assets.fontAwesome }}
   <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    href="{{ .url }}"
+    integrity="{{ .integrity }}"
     crossorigin="anonymous"
     referrerpolicy="no-referrer"
   />
+  {{ end }}
+  {{ with .Site.Params.assets.academiconsUrl }}
   <link
     rel="stylesheet"
-    href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css"
+    href="{{ . }}"
   />
+  {{ end }}
+  {{ with .Site.Params.assets.googleFontsUrl }}
   <link
     rel="stylesheet"
-    href="//fonts.googleapis.com/css?family=Didact+Gothic%7CRoboto:400%7CRoboto+Mono"
+    href="{{ . }}"
   />
+  {{ end }}
 
   {{ $css := resources.Get "main.css" | css.TailwindCSS }}
   {{ $js := resources.Get "js/site.js" }}
