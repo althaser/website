@@ -1,4 +1,4 @@
-{{ $count := .Page.Scratch.Get "figcount" | default 1 }}
+{{ $count := .Page.Scratch.Get "figure_count" | default 1 }}
 {{ .Page.Scratch.Set "figure_count" (add $count 1) }}
 
 <figure
@@ -6,13 +6,14 @@
   class="mt-4 pt-2 text-center flex flex-col justify-center items-center"
 >
   <img
-    class="rounded-sm"
+    class="content-figure-image"
     src="{{ (.Get `src`) }}"
-    alt="{{ .Get `alt` }}"
-    style="max-width: 90%; max-height: 95vh; min-width: 250px; min-height: 250px !important;"
+    alt="{{ .Get `alt` | default (.Get `caption`) | default `Figure image` }}"
+    loading="lazy"
+    decoding="async"
   />
   {{ if .Get "caption" }}
-  <figcaption class="mt-2">
+  <figcaption class="mt-2 text-sm">
     Figure {{ $count }}: <em>{{ .Get `caption` }}</em>
   </figcaption>
   {{ end }}

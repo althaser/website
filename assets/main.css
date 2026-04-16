@@ -94,6 +94,9 @@
     @apply h-full rounded-sm bg-blue-500 transition-all duration-500 dark:bg-yellow-700;
     width: 0;
   }
+  .content-figure-image {
+    @apply min-h-[250px] min-w-[250px] max-w-[90%] max-h-[95vh] rounded-sm;
+  }
   .pagefind-ui__search-input {
     @apply w-full rounded-sm border border-gray-500 p-2 text-black;
   }

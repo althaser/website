@@ -4,8 +4,8 @@
 <div class="mb-4 flex flex-wrap justify-center">
   {{ range $key, $value := hugo.Data.social }}
   <div class="mx-2">
-    <a class="text-2xl" href="{{ .url }}">
-      <i class="mt-1 {{ $value.icon }}"></i>
+    <a class="text-2xl" href="{{ .url }}" aria-label="{{ $value.title }}" title="{{ $value.title }}">
+      <i class="mt-1 {{ $value.icon }}" aria-hidden="true"></i>
     </a>
   </div>
   {{ end }}
