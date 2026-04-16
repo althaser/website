@@ -1,0 +1,8 @@
+{{ $alt := .Text | default "Article image" }}
+<img
+  src="{{ .Destination | safeURL }}"
+  alt="{{ $alt }}"
+  class="content-inline-image"
+  loading="lazy"
+  decoding="async"
+/>

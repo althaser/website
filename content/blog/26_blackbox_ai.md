@@ -7,7 +7,7 @@ description: "BlackBox - AI"
 draft: false
 ---
 
-<img src="https://www.blackbox.ai/apple-touch-icon.png" alt="blackbox ai" width="100" height="100">
+{{< img src="https://www.blackbox.ai/apple-touch-icon.png" alt="blackbox ai" width="100" height="100" >}}
 
 **BlackBox AI** supports the following **models**:
 - **BlackBox AI**

@@ -97,6 +97,9 @@
   .content-figure-image {
     @apply min-h-[250px] min-w-[250px] max-w-[90%] max-h-[95vh] rounded-sm;
   }
+  .content-inline-image {
+    @apply my-2 max-w-full rounded-sm;
+  }
   .pagefind-ui__search-input {
     @apply w-full rounded-sm border border-gray-500 p-2 text-black;
   }

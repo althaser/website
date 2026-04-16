@@ -9,7 +9,7 @@ draft: false
 
 # Remote TouchPad
 
-<img src="https://dl.flathub.org/repo/appstream/x86_64/icons/128x128/com.github.unrud.RemoteTouchpad.png" alt="remote touchpad" width="90" height="90">
+{{< img src="https://dl.flathub.org/repo/appstream/x86_64/icons/128x128/com.github.unrud.RemoteTouchpad.png" alt="remote touchpad" width="90" height="90" >}}
 
 Control mouse and keyboard from the webbrowser of a smartphone (or any other device with a touchscreen). To take control open the displayed URL or scan the QR code.
 
@@ -19,7 +19,7 @@ https://github.com/Unrud/remote-touchpad
 
 # Unified Remote
 
-<img src="https://play-lh.googleusercontent.com/0Tz2uTthM78_Z7TWC0tEWkoSetmudHFJKtHt7_0hEtdjoXrk2wqGkO9V1lWmFIzX1ww" alt="unified remote" width="90" height="90">
+{{< img src="https://play-lh.googleusercontent.com/0Tz2uTthM78_Z7TWC0tEWkoSetmudHFJKtHt7_0hEtdjoXrk2wqGkO9V1lWmFIzX1ww" alt="unified remote" width="90" height="90" >}}
 
 The one-and-only remote for your computer.
 Turn your smartphone into a universal remote control.

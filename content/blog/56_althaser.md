@@ -7,7 +7,7 @@ description: "althaser"
 draft: false
 ---
 
-<img src="https://althaser.me/images/profile2.png" alt="althaser" width="400" height="200">
+{{< img src="https://althaser.me/images/profile2.png" alt="althaser" width="400" height="200" >}}
 
 ```shell
 [(status)] /quote nickserv info althaser

@@ -7,14 +7,14 @@ description: "Wireguard - VPN"
 draft: false
 ---
 
-<img src="https://www.wireguard.com/img/wireguard.svg" alt="wireguard" width="800px" height="800px">
+{{< img src="https://www.wireguard.com/img/wireguard.svg" alt="wireguard" width="800px" height="800px" >}}
 
 **WireGuard** is a simple, fast and modern VPN implementation. It is widely deployed and can be used cross-platform.
 
 # Setup WireGuard
 
 ## Server - Raspberry Pi
-<img src="https://www.raspberrypi.com/app/uploads/2020/06/raspberrry_pi_logo.png" alt="raspberypi" width="50px" height="50px">
+{{< img src="https://www.raspberrypi.com/app/uploads/2020/06/raspberrry_pi_logo.png" alt="raspberypi" width="50px" height="50px" >}}
 
 1. **Enable Port Fowarding** via **systctl.conf** setting up the following
 ```shell
@@ -202,7 +202,7 @@ root@raspberrypi:~# sudo tree /etc/wireguard/
 ```
 
 ## Client - Laptop
-<img src="https://static.thenounproject.com/png/1388614-200.png" alt="laptop" width="80px" height="80px">
+{{< img src="https://static.thenounproject.com/png/1388614-200.png" alt="laptop" width="80px" height="80px" >}}
 
 1. Install **WireGuard**.
 ```shell

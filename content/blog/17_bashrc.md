@@ -7,7 +7,7 @@ description: "Bashrc"
 draft: false
 ---
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bash_Logo_Colored.svg/2048px-Bash_Logo_Colored.svg.png" alt="bashrc" width="70" height="70">
+{{< img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bash_Logo_Colored.svg/2048px-Bash_Logo_Colored.svg.png" alt="bashrc" width="70" height="70" >}}
 
 Bashrc configuration file:
 

@@ -7,7 +7,7 @@ description: "Neal Fun"
 draft: false
 ---
 
-<img src="https://neal.fun/general/logo.svg" alt="nealfun" width="250" height="250">
+{{< img src="https://neal.fun/general/logo.svg" alt="nealfun" width="250" height="250" >}}
 
 A tiny website by neal.
 

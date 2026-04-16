@@ -7,7 +7,7 @@ description: "Git Pulls"
 draft: false
 ---
 
-<img src="https://avatars.githubusercontent.com/u/18133?s=280&v=4" alt="git-pulls" width="200" height="100">
+{{< img src="https://avatars.githubusercontent.com/u/18133?s=280&v=4" alt="git-pulls" width="200" height="100" >}}
 
 **Git Pulls**.
 

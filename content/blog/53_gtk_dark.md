@@ -7,7 +7,7 @@ description: "GTK Theme"
 draft: false
 ---
 
-<img src="https://www.gtk.org/assets/img/logo-gtk-sm.png" alt="gtk-theme" width="200" height="100">
+{{< img src="https://www.gtk.org/assets/img/logo-gtk-sm.png" alt="gtk-theme" width="200" height="100" >}}
 
 **GTK Theme**.
 

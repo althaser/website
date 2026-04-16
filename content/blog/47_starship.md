@@ -7,7 +7,7 @@ description: "Starship"
 draft: false
 ---
 
-<img src="https://starship.rs/logo.svg" alt="starship" width="300" height="300">
+{{< img src="https://starship.rs/logo.svg" alt="starship" width="300" height="300" >}}
 
 **Starship** The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 

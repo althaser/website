@@ -7,7 +7,7 @@ description: "Raspberry Pi"
 draft: false
 ---
 
-<img src="https://www.raspberrypi.com/app/uploads/2020/06/raspberrry_pi_logo.png" alt="raspberypi" width="150px" height="150px">
+{{< img src="https://www.raspberrypi.com/app/uploads/2020/06/raspberrry_pi_logo.png" alt="raspberypi" width="150px" height="150px" >}}
 
 **Raspberry Pi** Micro Computing or single-board computer (SBC).
 

@@ -7,7 +7,7 @@ description: "PIP Upgrade Packages"
 draft: false
 ---
 
-<img src="https://pypi.org/static/images/logo-small.8998e9d1.svg" alt="pip" width="200" height="100">
+{{< img src="https://pypi.org/static/images/logo-small.8998e9d1.svg" alt="pip" width="200" height="100" >}}
 
 **PIP Upgrade Packages**.
 

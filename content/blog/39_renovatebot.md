@@ -7,7 +7,7 @@ description: "Renovatebot"
 draft: false
 ---
 
-<img src="https://docs.renovatebot.com/assets/images/logo.png" alt="renovatebot" width="200px" height="200px">
+{{< img src="https://docs.renovatebot.com/assets/images/logo.png" alt="renovatebot" width="200px" height="200px" >}}
 
 **Renovatebot** - Automated Dependency Updates
 

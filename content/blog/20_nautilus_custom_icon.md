@@ -7,7 +7,7 @@ description: "Nautilus Custom Icon File"
 draft: false
 ---
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/65/GNOME_Files_icon_2019.svg" alt="Nautilus-custom-icon" width="90" height="90">
+{{< img src="https://upload.wikimedia.org/wikipedia/commons/6/65/GNOME_Files_icon_2019.svg" alt="Nautilus-custom-icon" width="90" height="90" >}}
 
 Custom Icons in Nautilus is not allowed anymore since version 46. It  works for directories from UI only. Thus it is required to set a custom icon through command-line:
 

@@ -7,7 +7,7 @@ description: "Awesome-Selfhosted"
 draft: false
 ---
 
-<img src="https://awesome-selfhosted.net/_static/logo.svg" alt="awesome-selfhosted" width="70" height="70">
+{{< img src="https://awesome-selfhosted.net/_static/logo.svg" alt="awesome-selfhosted" width="70" height="70" >}}
 
 Self-hosting is the practice of hosting and managing applications on your own server(s) instead of consuming from SaaSS providers.
 
