@@ -4,7 +4,7 @@
     <h1 class="standard {{ if eq .Kind `term` }}font-italic{{ end }}">
         {{ if eq .Kind "term" }}#{{ .Data.Term }}{{ else }}{{- .Title -}}{{ end }}
     </h1>
-    <a href="{{ `index.xml` | absURL }}" aria-label="RSS feed">
+    <a href="{{ `index.xml` | absURL }}" aria-label="RSS feed" title="RSS feed">
         <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_Feed-icon.svg" alt="blog-rss" class="h-[30px] w-[30px]">
     </a>
   </div>
@@ -25,7 +25,7 @@
           aria-hidden="true"
         ></i>
       </button>
-      <h2 class="not-prose accordion m-0 font-bold">
+      <h2 class="not-prose accordion blog-list-heading m-0 font-bold">
         <a href="{{ .RelPermalink }}">{{- .Title -}}</a>
       </h2>
     </div>
