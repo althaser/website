@@ -4,6 +4,7 @@
     <a
       href="{{ .PrevInSection.Permalink | relURL }}"
       title="{{ .PrevInSection.Title }}"
+      data-prev-post
     >
       <i class="nav-menu fas fa-chevron-circle-left"></i>
     </a>
@@ -16,6 +17,7 @@
     <a
       href="{{ .NextInSection.Permalink | relURL }}"
       title="{{ .NextInSection.Title }}"
+      data-next-post
     >
       <i class="nav-menu fas fa-chevron-circle-right"></i>
     </a>

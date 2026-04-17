@@ -118,6 +118,28 @@ const initializeSearch = () => {
   }
 };
 
+const initializePostNavigation = () => {
+  document.addEventListener("keydown", (event) => {
+    const target = event.target;
+    const isEditable =
+      target instanceof HTMLElement &&
+      (target.isContentEditable ||
+        ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+
+    if (isEditable) {
+      return;
+    }
+
+    if (event.key === "ArrowLeft") {
+      document.querySelector("[data-prev-post]")?.click();
+    }
+
+    if (event.key === "ArrowRight") {
+      document.querySelector("[data-next-post]")?.click();
+    }
+  });
+};
+
 const initializeEventBindings = () => {
   document.querySelectorAll("[data-accordion-trigger]").forEach((trigger) => {
     trigger.addEventListener("click", () => {
@@ -146,6 +168,7 @@ setTheme(getPreferredTheme());
 window.addEventListener("DOMContentLoaded", () => {
   fixThemeToggleIcon(html.classList.contains("dark") ? "dark" : "light");
   initializeEventBindings();
+  initializePostNavigation();
   syncActiveAccordionPanel();
   initializeSkillBars();
   initializeSearch();
