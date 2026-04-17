@@ -2,8 +2,8 @@
 {{ $src := .Get "src" }}
 {{ $alt := .Get "alt" | default "Link image" }}
 {{ $label := .Get "label" | default $alt }}
-{{ $width := .Get "width" | strings.TrimSuffix "px" }}
-{{ $height := .Get "height" | strings.TrimSuffix "px" }}
+{{ $width := .Get "width" | default "120" | strings.TrimSuffix "px" }}
+{{ $height := .Get "height" | default "120" | strings.TrimSuffix "px" }}
 
 <a href="{{ $href }}" class="link-card">
   <img
