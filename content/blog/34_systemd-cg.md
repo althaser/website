@@ -5,9 +5,12 @@ tags: ["cgroups", "systemd"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Systemd CGroups"
 draft: false
+hero_images:
+  - src: "https://brand.systemd.io/assets/png/systemd-dark.png"
+    alt: "systemd"
+    width: "300px"
+    height: "300px"
 ---
-
-{{< img src="https://brand.systemd.io/assets/png/systemd-dark.png" alt="systemd" width="300px" height="300px" >}}
 
 Systemd CGroups.
 

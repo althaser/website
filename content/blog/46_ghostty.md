@@ -5,9 +5,12 @@ tags: ["ghostty", "terminal", "shell"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Ghostty"
 draft: false
+hero_images:
+  - src: "https://ghostty.org/_next/static/media/ghostty-wordmark.815bf882.svg"
+    alt: "ghostty"
+    width: "300"
+    height: "300"
 ---
-
-{{< img src="https://ghostty.org/_next/static/media/ghostty-wordmark.815bf882.svg" alt="ghostty" width="300" height="300" >}}
 
 **Ghostty** is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration.
 

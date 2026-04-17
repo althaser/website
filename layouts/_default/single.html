@@ -6,6 +6,23 @@
   <p class="mb-1">{{ .Date.Format "January 2, 2006" }}</p>
   <p>&mdash;</p>
 </div>
+{{ with .Params.hero_images }}
+<div class="content">
+  {{ range . }}
+  {{ $width := .width | default "" | strings.TrimSuffix "px" }}
+  {{ $height := .height | default "" | strings.TrimSuffix "px" }}
+  <img
+    src="{{ .src }}"
+    alt="{{ .alt | default `Article image` }}"
+    class="content-inline-image"
+    loading="lazy"
+    decoding="async"
+    {{ with $width }}width="{{ . }}"{{ end }}
+    {{ with $height }}height="{{ . }}"{{ end }}
+  />
+  {{ end }}
+</div>
+{{ end }}
 <div class="content">
   {{ .Content }}
 </div>

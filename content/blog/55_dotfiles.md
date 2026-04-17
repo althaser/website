@@ -5,9 +5,12 @@ tags: ["dotfiles", "configurations"]
 categories: ["software", "applications", "tools"]
 description: "Dotfiles"
 draft: false
+hero_images:
+  - src: "https://miro.medium.com/v2/resize:fit:1400/1*_Vl2vhvWMUSctKZmxFACDw.png"
+    alt: "dotfiles"
+    width: "400"
+    height: "200"
 ---
-
-{{< img src="https://miro.medium.com/v2/resize:fit:1400/1*_Vl2vhvWMUSctKZmxFACDw.png" alt="dotfiles" width="400" height="200" >}}
 
 **Dotfiles**.
 

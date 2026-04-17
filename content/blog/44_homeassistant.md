@@ -5,9 +5,12 @@ tags: ["homeassistant"]
 categories: ["linux", "software", "applications", "tools"]
 description: "HomeAssistant"
 draft: false
+hero_images:
+  - src: "https://design.home-assistant.io/images/brand/logo.png"
+    alt: "homeassistant"
+    width: "200"
+    height: "200"
 ---
-
-{{< img src="https://design.home-assistant.io/images/brand/logo.png" alt="homeassistant" width="200" height="200" >}}
 
 **HomeAssistant** Open source home automation that puts local control and privacy first.
 

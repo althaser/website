@@ -5,9 +5,12 @@ tags: ["python", "pip", "packages"]
 categories: ["software", "applications", "tools"]
 description: "PIP Upgrade Packages"
 draft: false
+hero_images:
+  - src: "https://pypi.org/static/images/logo-small.8998e9d1.svg"
+    alt: "pip"
+    width: "200"
+    height: "100"
 ---
-
-{{< img src="https://pypi.org/static/images/logo-small.8998e9d1.svg" alt="pip" width="200" height="100" >}}
 
 **PIP Upgrade Packages**.
 

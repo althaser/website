@@ -5,9 +5,12 @@ tags: ["althaser", "nickname"]
 categories: ["nickname"]
 description: "althaser"
 draft: false
+hero_images:
+  - src: "https://althaser.me/images/profile2.png"
+    alt: "althaser"
+    width: "400"
+    height: "200"
 ---
-
-{{< img src="https://althaser.me/images/profile2.png" alt="althaser" width="400" height="200" >}}
 
 ```shell
 [(status)] /quote nickserv info althaser

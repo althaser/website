@@ -5,9 +5,12 @@ tags: ["security", "scanner", "vulnerabilities", "python"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Nuclei - Vulnerability Scanner"
 draft: false
+hero_images:
+  - src: "https://github.com/projectdiscovery/nuclei/raw/dev/static/nuclei-cover-image.png"
+    alt: "nuclei"
+    width: "800px"
+    height: "600px"
 ---
-
-{{< img src="https://github.com/projectdiscovery/nuclei/raw/dev/static/nuclei-cover-image.png" alt="nuclei" width="800px" height="600px" >}}
 
 **Nuclei** is a modern, high-performance vulnerability scanner that leverages simple YAML-based templates. It empowers you to design custom vulnerability detection scenarios that mimic real-world conditions, leading to zero false positives.
 

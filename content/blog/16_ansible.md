@@ -5,9 +5,12 @@ tags: ["ansible", "python", "automation"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Ansible - Callbacks"
 draft: false
+hero_images:
+  - src: "https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg"
+    alt: "ansible"
+    width: "100"
+    height: "100"
 ---
-
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" alt="ansible" width="100" height="100" >}}
 
 Calculate **timers** for each task and **timers by each role** at the end of ansible run:
 

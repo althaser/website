@@ -5,9 +5,12 @@ tags: ["blackbox", "ai"]
 categories: ["ai", "gpt"]
 description: "BlackBox - AI"
 draft: false
+hero_images:
+  - src: "https://fahimai.com/wp-content/uploads/2024/04/CTA-5.png"
+    alt: "blackbox ai"
+    width: "100"
+    height: "100"
 ---
-
-{{< img src="https://fahimai.com/wp-content/uploads/2024/04/CTA-5.png" alt="blackbox ai" width="100" height="100" >}}
 
 **BlackBox AI** supports the following **models**:
 - **BlackBox AI**

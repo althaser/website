@@ -5,9 +5,12 @@ tags: ["fun", "awesome"]
 categories: ["universe", "science"]
 description: "Neal Fun"
 draft: false
+hero_images:
+  - src: "https://neal.fun/general/logo.svg"
+    alt: "nealfun"
+    width: "250"
+    height: "250"
 ---
-
-{{< img src="https://neal.fun/general/logo.svg" alt="nealfun" width="250" height="250" >}}
 
 A tiny website by neal.
 

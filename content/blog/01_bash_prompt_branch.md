@@ -5,9 +5,12 @@ tags: ["bash", "branch", "git", "configurations"]
 categories: ["linux", "software", "applications", "tools"]
 description: "How to setup bashrc to support branch name in its prompt"
 draft: false
+hero_images:
+  - src: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bash_Logo_Colored.svg/1280px-Bash_Logo_Colored.svg.png"
+    alt: "Bash"
+    width: "70"
+    height: "70"
 ---
-
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Bash_Logo_Colored.svg/1280px-Bash_Logo_Colored.svg.png" alt="Bash" width="70" height="70" >}}
 
 https://medium.com/@chiraggandhi70726/how-to-add-git-branch-name-to-bash-prompt-b112b93606e
 

@@ -5,9 +5,12 @@ tags: ["scc", "code"]
 categories: ["linux", "software", "applications", "tools"]
 description: "SCC - Sloc Cloc and Code"
 draft: false
+hero_images:
+  - src: "https://github.com/boyter/scc/raw/master/scc.jpg"
+    alt: "scc"
+    width: "300px"
+    height: "100px"
 ---
-
-{{< img src="https://github.com/boyter/scc/raw/master/scc.jpg" alt="scc" width="300px" height="100px" >}}
 
 **Sloc, Cloc and Code**: **scc** is a very fast accurate code counter with complexity calculations and COCOMO estimates written in pure Go
 

@@ -5,9 +5,12 @@ tags: ["security", "renovatebot", "updates"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Renovatebot"
 draft: false
+hero_images:
+  - src: "https://docs.renovatebot.com/assets/images/logo.png"
+    alt: "renovatebot"
+    width: "200px"
+    height: "200px"
 ---
-
-{{< img src="https://docs.renovatebot.com/assets/images/logo.png" alt="renovatebot" width="200px" height="200px" >}}
 
 **Renovatebot** - Automated Dependency Updates
 

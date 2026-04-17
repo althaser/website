@@ -5,9 +5,12 @@ tags: ["editor", "code", "fork", "ai"]
 categories: ["software", "applications", "tools"]
 description: "Void Editor"
 draft: false
+hero_images:
+  - src: "https://voideditor.com/void/slice_of_void.png"
+    alt: "void-editor"
+    width: "100"
+    height: "100"
 ---
-
-{{< img src="https://voideditor.com/void/slice_of_void.png" alt="void-editor" width="100" height="100" >}}
 
 **Void Editor** The open source AI code editor.
 

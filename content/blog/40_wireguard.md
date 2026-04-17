@@ -5,9 +5,12 @@ tags: ["security", "vpn"]
 categories: ["linux", "software", "applications", "tools", "raspberrypi"]
 description: "Wireguard - VPN"
 draft: false
+hero_images:
+  - src: "https://www.wireguard.com/img/wireguard.svg"
+    alt: "wireguard"
+    width: "800px"
+    height: "800px"
 ---
-
-{{< img src="https://www.wireguard.com/img/wireguard.svg" alt="wireguard" width="800px" height="800px" >}}
 
 **WireGuard** is a simple, fast and modern VPN implementation. It is widely deployed and can be used cross-platform.
 

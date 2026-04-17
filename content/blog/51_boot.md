@@ -5,9 +5,12 @@ tags: ["systemd", "bootchart"]
 categories: ["software", "applications", "tools"]
 description: "Boot Charts"
 draft: false
+hero_images:
+  - src: "https://brand.systemd.io/assets/png/systemd-dark.png"
+    alt: "systemd"
+    width: "200"
+    height: "100"
 ---
-
-{{< img src="https://brand.systemd.io/assets/png/systemd-dark.png" alt="systemd" width="200" height="100" >}}
 
 **Systemd - BootCharts**.
 

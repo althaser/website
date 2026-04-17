@@ -5,10 +5,16 @@ tags: ["hugo", "domain", "static", "website"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Hugo - Deploy and Set Custom Domain on GitHub Pages"
 draft: false
+hero_images:
+  - src: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+    alt: "GitHub"
+    width: "70"
+    height: "70"
+  - src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmG0sTTujYLYv0fIIepY8CGiS6fY6rlvNlTA&s"
+    alt: "Hugo"
+    width: "140"
+    height: "140"
 ---
-
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="70" height="70" >}}
-{{< img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmG0sTTujYLYv0fIIepY8CGiS6fY6rlvNlTA&s" alt="Hugo" width="140" height="140" >}}
 
 #### GitHub Pages -> Custom Domain
 https://github.com/althaser/website/settings/pages

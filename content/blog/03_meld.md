@@ -5,9 +5,12 @@ tags: ["diff", "compare"]
 categories: ["linux", "software", "applications", "tools"]
 description: "Open Source Software to visualize differences and merge data"
 draft: false
+hero_images:
+  - src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTRcOYI-q2llXebDhuWLmxD-3FbaLOguyxNQ&s"
+    alt: "Meld"
+    width: "70"
+    height: "70"
 ---
-
-{{< img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTRcOYI-q2llXebDhuWLmxD-3FbaLOguyxNQ&s" alt="Meld" width="70" height="70" >}}
 
 **Meld** helps you compare files, directories, and version controlled projects. It provides two- and three-way comparison of both files and directories, and has support for many popular version control systems.
 
