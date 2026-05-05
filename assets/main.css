@@ -1,5 +1,37 @@
 @import "tailwindcss";
-@config './tailwind.config.js';
+
+@theme {
+  --color-darkest: var(--color-stone-900);
+  --color-darker: var(--color-stone-800);
+  --color-dark: var(--color-stone-700);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@plugin "@tailwindcss/typography";
+
+@source "../../content/**/*.md";
+@source "../../layouts/**/*.html";
+@source "../../themes/**/layouts/**/*.html";
+
+@utility prose {
+  --tw-prose-bullets: var(--color-stone-700);
+  --tw-prose-counters: var(--color-stone-700);
+  --tw-prose-links: var(--color-blue-500);
+  --tw-prose-quote-borders: var(--color-stone-400);
+
+  --tw-prose-invert-bullets: var(--color-stone-200);
+  --tw-prose-invert-counters: var(--color-stone-200);
+  --tw-prose-invert-links: var(--color-yellow-300);
+  --tw-prose-invert-quote-borders: var(--color-stone-400);
+
+  &:is(.prose-invert, .dark &) {
+    --tw-prose-bullets: var(--tw-prose-invert-bullets);
+    --tw-prose-counters: var(--tw-prose-invert-counters);
+    --tw-prose-links: var(--tw-prose-invert-links);
+    --tw-prose-quote-borders: var(--tw-prose-invert-quote-borders);
+  }
+}
 
 @layer base {
   *,
@@ -50,7 +82,7 @@
     @apply outline-2 outline-offset-2 outline-blue-500 dark:outline-yellow-300;
   }
   body {
-    @apply text-base bg-stone-50 dark:text-stone-50 dark:bg-darkest;
+    @apply text-base bg-stone-50 text-stone-900 dark:text-stone-50 dark:bg-darkest;
   }
   summary {
     @apply block text-sm;
@@ -58,8 +90,36 @@
   blockquote {
     @apply bg-gray-100 dark:bg-dark rounded-sm;
   }
+  mark {
+    @apply bg-yellow-300 text-gray-800 dark:bg-yellow-500 dark:text-gray-900;
+  }
   p {
     @apply mt-2 mb-2;
+  }
+  .prose {
+    @apply max-w-none;
+
+    a {
+      @apply no-underline! hover:underline!;
+    }
+
+    code::before,
+    code::after {
+      content: none !important;
+    }
+
+    pre {
+      background-color: #272822 !important;
+      @apply text-gray-200!;
+    }
+
+    blockquote {
+      @apply p-1 m-0 bg-gray-100 dark:bg-dark rounded-sm;
+
+      p {
+        @apply m-0! p-1;
+      }
+    }
   }
   .panel {
     max-height: 0;
@@ -189,12 +249,12 @@
 
 @layer components {
   ul.pagination {
-    @apply flex flex-row justify-center;
+    @apply flex flex-row justify-center list-none;
     .page-link {
-      @apply px-2 sm:px-4 py-1 hover:text-gray-200 dark:hover:text-gray-800 hover:bg-blue-500  dark:hover:bg-yellow-300;
+      @apply px-2 sm:px-4 py-1 hover:text-gray-200 dark:hover:text-gray-800 hover:bg-blue-500 dark:hover:bg-yellow-300;
     }
     .active {
-      @apply bg-blue-500 pointer-events-none  dark:bg-yellow-300;
+      @apply bg-blue-500 pointer-events-none dark:bg-yellow-300;
       .page-link {
         @apply text-gray-200 dark:text-gray-800;
       }
