@@ -13,3 +13,5 @@ hero_images:
 ---
 
 Tailscale: https://tailscale.com/blog/how-tailscale-works
+
+Headscale: https://headscale.net/stable/
