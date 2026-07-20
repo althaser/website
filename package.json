@@ -10,12 +10,12 @@
   "author": "Darshan Baral",
   "license": "MIT",
   "devDependencies": {
-    "@tailwindcss/cli": "4.3.2",
+    "@tailwindcss/cli": "4.3.3",
     "@tailwindcss/forms": "0.5.11",
     "@tailwindcss/typography": "0.5.20",
     "autoprefixer": "10.5.3",
     "postcss": "8.5.19",
     "postcss-cli": "11.0.1",
-    "tailwindcss": "4.3.2"
+    "tailwindcss": "4.3.3"
   }
 }
