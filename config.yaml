@@ -2,6 +2,15 @@ baseURL: "https://althaser.me/"
 locale: en-us
 build:
   writeStats: true
+security:
+  exec:
+    allow:
+      - '^(dart-)?sass$'
+      - '^go$'
+      - '^git$'
+      - '^node$'
+      - '^postcss$'
+      - '^tailwindcss$'
 # https://www.markdownguide.org/tools/hugo/
 # https://gohugo.io/getting-started/configuration-markup/#goldmark
 markup:
