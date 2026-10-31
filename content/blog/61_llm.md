@@ -33,6 +33,13 @@ $ ollama run hf.co/<user>/<repo>
 
 With 6 GB of VRAM, models up to ~8B (Q4) fit fully on the GPU. Bigger models such as `qwen3.6:35b` still run, split between GPU and RAM (slower).
 
+The Ollama library only sorts by popularity or date, not quality. To compare models:
+
+- LMArena: https://arena.ai/leaderboard, ranked by people's votes
+- Artificial Analysis: https://artificialanalysis.ai/, benchmarks with an open weights filter and model sizes
+
+Then check the model's size on `https://ollama.com/library/<model>/tags` to see if it fits your GPU.
+
 ### Run Qwen3.5 4B
 
 ```shell
