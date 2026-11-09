@@ -369,10 +369,10 @@
     @apply inline-flex items-center gap-1;
   }
   .terminal {
-    @apply mt-4 overflow-hidden rounded-xl bg-terminal shadow-lg ring-1 ring-black/40;
+    @apply mt-4 overflow-hidden rounded-xl bg-gray-200 shadow-lg ring-1 ring-black/15 dark:bg-terminal dark:ring-black/40;
   }
   .terminal-bar {
-    @apply grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-headerbar px-2 py-1.5 text-gray-200;
+    @apply grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-gray-300 px-2 py-1.5 text-link dark:bg-headerbar dark:text-gray-200;
   }
   .terminal-bar-start {
     @apply flex justify-start;
@@ -384,7 +384,7 @@
     @apply inline-flex size-8 items-center justify-center rounded-md text-sm;
   }
   .terminal-control {
-    @apply inline-flex size-6 items-center justify-center rounded-full bg-white/10 text-[0.65rem];
+    @apply inline-flex size-6 items-center justify-center rounded-full bg-black/10 text-[0.65rem] dark:bg-white/10;
   }
   .terminal-control .icon {
     @apply w-[1em];
@@ -393,37 +393,37 @@
     @apply truncate text-sm font-bold;
   }
   .terminal-screen {
-    @apply m-0 h-[24rem] overflow-hidden whitespace-pre p-3 font-mono text-xs leading-relaxed sm:p-4 sm:text-sm text-gray-200;
+    @apply m-0 h-[24rem] overflow-hidden whitespace-pre p-3 font-mono text-xs leading-relaxed text-gray-800 sm:p-4 sm:text-sm dark:text-gray-200;
   }
   .terminal-cursor {
-    @apply inline-block h-[1.1em] w-[0.6em] translate-y-[0.2em] animate-blink bg-gray-200;
+    @apply inline-block h-[1.1em] w-[0.6em] translate-y-[0.2em] animate-blink bg-gray-800 dark:bg-gray-200;
   }
   .term-green {
-    @apply text-green-400;
+    @apply text-green-700 dark:text-green-400;
   }
   .term-blue {
-    @apply text-blue-400;
+    @apply text-blue-700 dark:text-blue-400;
   }
   .term-yellow {
-    @apply text-yellow-300;
+    @apply text-amber-600 dark:text-yellow-300;
   }
   .term-red {
-    @apply text-orange-500;
+    @apply text-orange-600 dark:text-orange-500;
   }
   .term-magenta {
-    @apply text-fuchsia-400;
+    @apply text-fuchsia-700 dark:text-fuchsia-400;
   }
   .term-cyan {
-    @apply text-cyan-400;
+    @apply text-cyan-700 dark:text-cyan-400;
   }
   .term-gray {
-    @apply text-gray-400;
+    @apply text-gray-500 dark:text-gray-400;
   }
   .term-matrix-head {
-    @apply text-green-100;
+    @apply text-green-950 dark:text-green-100;
   }
   .term-matrix-dim {
-    @apply text-green-700;
+    @apply text-green-400 dark:text-green-700;
   }
 }
 
