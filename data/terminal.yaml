@@ -21,6 +21,7 @@ sessions:
 
   - cmd: "pi \"what is althaser.me about?\""
     lineDelay: 120
+    pause: 7200
     output: |
       {magenta}π{/} {gray}reading https://althaser.me ...{/}
       {green}✓{/} {gray}fetched 30 pages{/}
