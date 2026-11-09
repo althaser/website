@@ -380,6 +380,83 @@ const initializeTerminal = () => {
     html += "\n";
   };
 
+  const matrix = async (duration) => {
+    const glyphs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=<>?";
+    const randomGlyph = () => glyphs[Math.floor(Math.random() * glyphs.length)];
+    const probe = document.createElement("span");
+    probe.textContent = "M".repeat(100);
+    screen.replaceChildren(probe);
+    const charWidth = probe.getBoundingClientRect().width / 100;
+    const style = getComputedStyle(screen);
+    const charHeight = parseFloat(style.lineHeight);
+    const innerWidth = screen.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const innerHeight = screen.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    const cols = Math.max(1, Math.floor(innerWidth / charWidth));
+    const rows = Math.max(1, Math.floor(innerHeight / charHeight));
+    const grid = Array.from({ length: rows }, () => Array.from({ length: cols }, randomGlyph));
+    const newDrop = (start) => ({
+      y: start ? -Math.random() * rows * 2 : -Math.random() * rows,
+      speed: 0.3 + Math.random() * 0.7,
+      length: 4 + Math.floor(Math.random() * rows),
+    });
+    const drops = Array.from({ length: cols }, () => newDrop(true));
+    const end = performance.now() + duration;
+
+    screen.scrollTop = 0;
+
+    while (performance.now() < end) {
+      await whenVisible();
+      const lines = [];
+
+      for (let row = 0; row < rows; row += 1) {
+        let line = "";
+        let current = null;
+        let run = "";
+
+        for (let col = 0; col < cols; col += 1) {
+          const drop = drops[col];
+          const distance = Math.floor(drop.y) - row;
+          let cls = "";
+
+          if (distance === 0) {
+            cls = "term-matrix-head";
+          } else if (distance > 0 && distance < drop.length) {
+            cls = distance < drop.length / 2 ? "term-green" : "term-matrix-dim";
+          }
+
+          if (cls && Math.random() < 0.05) {
+            grid[row][col] = randomGlyph();
+          }
+
+          if (cls !== current) {
+            line += current ? `<span class="${current}">${escapeHtml(run)}</span>` : run;
+            current = cls;
+            run = "";
+          }
+
+          run += cls ? grid[row][col] : " ";
+        }
+
+        line += current ? `<span class="${current}">${escapeHtml(run)}</span>` : run;
+        lines.push(line);
+      }
+
+      screen.innerHTML = lines.join("\n");
+
+      drops.forEach((drop, col) => {
+        drop.y += drop.speed;
+
+        if (drop.y - drop.length > rows) {
+          drops[col] = newDrop(false);
+        }
+      });
+
+      await sleep(60);
+    }
+
+    screen.replaceChildren();
+  };
+
   const run = async () => {
     for (;;) {
       let delay = 900;
@@ -400,6 +477,11 @@ const initializeTerminal = () => {
       await type("clear", delay + (config.clearDelay ?? 5000));
       html = "";
       render();
+
+      if (config.matrix) {
+        await matrix(config.matrix.duration ?? 8000);
+        html = "";
+      }
     }
   };
 

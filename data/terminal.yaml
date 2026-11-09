@@ -1,6 +1,8 @@
 title: "althaser@laptop: ~"
 prompt: "{green}althaser@laptop{/}:{blue}~{/} $ "
 clearDelay: 5000
+matrix:
+  duration: 16000
 sessions:
   - cmd: "uptime -p"
     output: |

@@ -393,7 +393,7 @@
     @apply truncate text-sm font-bold;
   }
   .terminal-screen {
-    @apply m-0 h-[24rem] overflow-auto scheme-dark [scrollbar-color:var(--color-gray-600)_transparent] whitespace-pre p-3 font-mono text-xs leading-relaxed sm:p-4 sm:text-sm text-gray-200;
+    @apply m-0 h-[24rem] overflow-hidden whitespace-pre p-3 font-mono text-xs leading-relaxed sm:p-4 sm:text-sm text-gray-200;
   }
   .terminal-cursor {
     @apply inline-block h-[1.1em] w-[0.6em] translate-y-[0.2em] animate-blink bg-gray-200;
@@ -418,6 +418,12 @@
   }
   .term-gray {
     @apply text-gray-400;
+  }
+  .term-matrix-head {
+    @apply text-green-100;
+  }
+  .term-matrix-dim {
+    @apply text-green-700;
   }
 }
 
