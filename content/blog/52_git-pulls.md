@@ -16,26 +16,26 @@ hero_images:
 
 ```shell
 $ for dir in ~/Development/gitlab.com/elara-raspberrypi/*; do cd $dir && echo -e "\e[1;34m$PWD\e[0m" && git pull && cd; done
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/ansible
+/home/althaser/Development/gitlab.com/elara-raspberrypi/ansible
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm
 fatal: not a git repository (or any of the parent directories): .git
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/renovatebot
+/home/althaser/Development/gitlab.com/elara-raspberrypi/renovatebot
 Already up-to-date.
 
 $ for dir in ~/Development/gitlab.com/elara-raspberrypi/docker-swarm/*; do cd $dir && echo -e "\e[1;34m$PWD\e[0m" && git pull && cd; done
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/ci-templates
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/ci-templates
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/gitlab-runner
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/gitlab-runner
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/monitoring
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/monitoring
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/networking
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/networking
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/pihole
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/pihole
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/tools
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/tools
 Already up-to-date.
-/home/pbeja/Development/gitlab.com/elara-raspberrypi/docker-swarm/wireguard
+/home/althaser/Development/gitlab.com/elara-raspberrypi/docker-swarm/wireguard
 Already up-to-date.
 ```

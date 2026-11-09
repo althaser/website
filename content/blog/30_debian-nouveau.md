@@ -20,10 +20,10 @@ Troubleshooting the open source **Nouveau** driver on Debian with an old NVIDIA 
 
 **Nouveau** driver not running in Debian:
 ```shell
-althaser@Sirius:~ $ lspci |grep -i VGA
+althaser@laptop:~ $ lspci |grep -i VGA
 02:00.0 VGA compatible controller: NVIDIA Corporation GT216M [GeForce GT 330M] (rev a2)
 
-althaser@Sirius:~ $ sudo less /var/log/syslog
+althaser@laptop:~ $ sudo less /var/log/syslog
 2024-11-03T00:20:02.562878+00:00 Sirius kernel: nouveau 0000:02:00.0: firmware: failed to load nouveau/nva5_fuc084 (-2)
 2024-11-03T00:20:02.562909+00:00 Sirius kernel: nouveau 0000:02:00.0: firmware: failed to load nouveau/nva5_fuc084 (-2)
 2024-11-03T00:20:02.562913+00:00 Sirius kernel: nouveau 0000:02:00.0: Direct firmware load for nouveau/nva5_fuc084 failed with error -2
@@ -62,7 +62,7 @@ It didn't work! I had to install via `nvidia-driver` and after reboot manually l
 **nouveau** module is loaded and running:
 
 ```shell
-althaser@Sirius:~ $ lsmod |grep nouveau
+althaser@laptop:~ $ lsmod |grep nouveau
 nouveau              3153920  28
 drm_gpuvm              45056  1 nouveau
 mxm_wmi                12288  1 nouveau
@@ -78,7 +78,7 @@ drm                   765952  19 gpu_sched,drm_kms_helper,drm_exec,drm_gpuvm,drm
 video                  81920  2 samsung_laptop,nouveau
 wmi                    32768  3 video,mxm_wmi,nouveau
 
-althaser@Sirius:~ $ dpkg -l |grep nvidia
+althaser@laptop:~ $ dpkg -l |grep nvidia
 ii  firmware-nvidia-gsp                              535.183.06-2                              amd64        NVIDIA GSP firmware
 ii  glx-alternative-nvidia                           1.2.2                                     amd64        allows the selection of NVIDIA as GLX provider
 ii  libegl-nvidia0:amd64                             535.183.06-2                              amd64        NVIDIA binary EGL library
@@ -136,7 +136,7 @@ ii  nvidia-vulkan-icd:amd64                          535.183.06-2               
 ii  nvidia-vulkan-icd:i386                           535.183.06-2                              i386         NVIDIA Vulkan installable client driver (ICD)
 ii  xserver-xorg-video-nvidia                        535.183.06-2                              amd64        NVIDIA binary Xorg driver
 
-althaser@Sirius:~ $ tree /lib/firmware/nvidia/
+althaser@laptop:~ $ tree /lib/firmware/nvidia/
 /lib/firmware/nvidia/
 └── 535.183.06
     ├── gsp_ga10x.bin
@@ -147,22 +147,22 @@ althaser@Sirius:~ $ tree /lib/firmware/nvidia/
 None of this is needed! because those complained firmware files are only needed for **video decoding**. Thus, let's revert all changes and use `lightdm` with `nouveau`.
 
 ```shell
-althaser@Sirius:~ $ sudo apt purge *nvidia*
+althaser@laptop:~ $ sudo apt purge *nvidia*
 
-althaser@Sirius:~ $ rm /etc/X11/xorg.conf
+althaser@laptop:~ $ rm /etc/X11/xorg.conf
 
-althaser@Sirius:~ $ sudo apt install lightdm
+althaser@laptop:~ $ sudo apt install lightdm
 
-althaser@Sirius:~ $ systemctl reboot
+althaser@laptop:~ $ systemctl reboot
 
-althaser@Sirius:~ $ tree /usr/lib/modprobe.d/
+althaser@laptop:~ $ tree /usr/lib/modprobe.d/
 /usr/lib/modprobe.d/
 ├── aliases.conf
 ├── fbdev-blacklist.conf
 └── systemd.conf
 
 1 directory, 3 files
-althaser@Sirius:~ $ tree /etc/modprobe.d/
+althaser@laptop:~ $ tree /etc/modprobe.d/
 /etc/modprobe.d/
 ├── dkms.conf
 ├── intel-microcode-blacklist.conf

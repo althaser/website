@@ -17,7 +17,7 @@ hero_images:
 https://github.com/boyter/scc
 
 ```shell
-beja@Sirius:~/go$ bin/scc -p ~/Downloads/linux-6.12.7/
+althaser@laptop:~/go $ bin/scc -p ~/Downloads/linux-6.12.7/
 ───────────────────────────────────────────────────────────────────────────────
 Language                 Files     Lines   Blanks  Comments     Code Complexity
 ───────────────────────────────────────────────────────────────────────────────
@@ -171,8 +171,8 @@ Estimated People Required (organic) 562.34
 Processed 1459971652 bytes, 1459.972 megabytes (SI)
 ───────────────────────────────────────────────────────────────────────────────
 
-beja@Sirius:~$ docker run --rm -it -v "/home/beja/Development/github-althaser/website:/pwd"  ghcr.io/lhoupert/scc:master scc --version
+althaser@laptop:~ $ docker run --rm -it -v "/home/althaser/Development/github-althaser/website:/pwd"  ghcr.io/lhoupert/scc:master scc --version
 scc version 3.3.0 (beta)
 
-beja@Sirius:~$ docker run --rm -it -v "/home/beja/Development/github-althaser/website:/pwd"  ghcr.io/lhoupert/scc:master scc /pwd
+althaser@laptop:~ $ docker run --rm -it -v "/home/althaser/Development/github-althaser/website:/pwd"  ghcr.io/lhoupert/scc:master scc /pwd
 ```

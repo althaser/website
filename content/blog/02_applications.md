@@ -281,7 +281,7 @@ https://projectdiscovery.io/nuclei
 https://github.com/projectdiscovery/nuclei
 
 ```shell
-pbeja@Sirius:~/go $ bin/nuclei -u https://althaser.eu
+althaser@laptop:~/go $ bin/nuclei -u https://althaser.eu
 
                      __     _
    ____  __  _______/ /__  (_)

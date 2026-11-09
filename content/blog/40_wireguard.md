@@ -25,28 +25,28 @@ Step by step guide to set up a WireGuard VPN with a Raspberry Pi as the server: 
 
 1. **Enable Port Fowarding** via **systctl.conf** setting up the following
 ```shell
-root@raspberrypi:~# vim /etc/sysctl.conf
+root@raspberrypi:~ # vim /etc/sysctl.conf
 net.ipv4.ip_forward = 1
 ```
 
 2. Reload **sysctl** configurations.
 ```shell
-root@raspberrypi:~# sysctl -p
+root@raspberrypi:~ # sysctl -p
 ```
 
 3. Install **ufw** firewall.
 ```shell
-root@raspberrypi:~# apt install ufw
+root@raspberrypi:~ # apt install ufw
 ```
 
 4. Allow **openssh** and enable **ufw**.
 ```shell
-root@raspberrypi:~# ufw allow openssh
+root@raspberrypi:~ # ufw allow openssh
 
-root@raspberrypi:~# ufw enable
+root@raspberrypi:~ # ufw enable
 Firewall is active and enabled on system startup
 
-root@raspberrypi:~# ufw status
+root@raspberrypi:~ # ufw status
 Status: active
 To                         Action      From
 --                         ------      ----
@@ -56,16 +56,16 @@ OpenSSH (v6)               ALLOW       Anywhere (v6)
 
 5. Install **WireGuard**.
 ```shell
-root@raspberrypi:~# apt install wireguard
+root@raspberrypi:~ # apt install wireguard
 ```
 
 6. Generate WireGuard Server keys (**privatekey** and **publickey**).
 ```shell
-root@raspberrypi:~# cd /etc/wireguard/
+root@raspberrypi:~ # cd /etc/wireguard/
 
-root@raspberrypi:/etc/wireguard# umask 077; wg genkey | tee privatekey | wg pubkey > publickey
+root@raspberrypi:/etc/wireguard # umask 077; wg genkey | tee privatekey | wg pubkey > publickey
 
-root@raspberrypi:/etc/wireguard# ls -lah /etc/wireguard/
+root@raspberrypi:/etc/wireguard # ls -lah /etc/wireguard/
 total 24K
 drwx------   2 root root 4.0K Jan 25 23:06 .
 drwxr-xr-x 136 root root  12K Jan 25 23:06 ..
@@ -75,9 +75,9 @@ drwxr-xr-x 136 root root  12K Jan 25 23:06 ..
 
 7. Generate **WireGuard** Client keys.
 ```shell
-root@raspberrypi:~# mkdir -p /etc/wireguard/clients/beja
+root@raspberrypi:~ # mkdir -p /etc/wireguard/clients/beja
 
-root@raspberrypi:~# tree /etc/wireguard/
+root@raspberrypi:~ # tree /etc/wireguard/
 /etc/wireguard/
 ├── clients
 │   └── beja
@@ -85,24 +85,24 @@ root@raspberrypi:~# tree /etc/wireguard/
 └── publickey
 3 directories, 2 files
 
-root@raspberrypi:~# wg genkey | tee /etc/wireguard/clients/beja/beja.key
+root@raspberrypi:~ # wg genkey | tee /etc/wireguard/clients/beja/beja.key
 <client-private-key>
 
-root@raspberrypi:~# cat /etc/wireguard/clients/beja/beja.key | wg pubkey | tee /etc/wireguard/clients/beja/beja.pub
+root@raspberrypi:~ # cat /etc/wireguard/clients/beja/beja.key | wg pubkey | tee /etc/wireguard/clients/beja/beja.pub
 <client-public-key>
 
-root@raspberrypi:~# chmod 400 /etc/wireguard/{privatekey,publickey} /etc/wireguard/clients/beja/beja.{key,pub}
+root@raspberrypi:~ # chmod 400 /etc/wireguard/{privatekey,publickey} /etc/wireguard/clients/beja/beja.{key,pub}
 ```
 
 8. Check default **gateway** interface that is used to connect to the internet.
 ```shell
-root@raspberrypi:/etc/wireguard# ip route list default
+root@raspberrypi:/etc/wireguard # ip route list default
 default via 192.168.1.1 dev wlan0 proto dhcp src 192.168.1.13 metric 600
 ```
 
 9. Create **WireGuard** configuration `/etc/wireguard/wg-rasp.conf` and replace the interface in NAT configuration section from the previous step. `<wg-rasp>` and `<wlan0>`.
 ```shell
-root@raspberrypi:~# vim /etc/wireguard/wg-rasp.conf
+root@raspberrypi:~ # vim /etc/wireguard/wg-rasp.conf
 [Interface]
 # Wireguard interface will be run at 10.20.0.1
 Address = 10.20.0.1/24
@@ -131,11 +131,11 @@ AllowedIPs = 10.20.0.2/32
 
 10. Add `51820/udp` rule to **ufw** firewall.
 ```shell
-root@raspberrypi:/etc/wireguard# ufw allow 51820/udp
+root@raspberrypi:/etc/wireguard # ufw allow 51820/udp
 Rule added
 Rule added (v6)
 
-root@raspberrypi:/etc/wireguard# ufw status
+root@raspberrypi:/etc/wireguard # ufw status
 Status: active
 To                         Action      From
 --                         ------      ----
@@ -147,12 +147,12 @@ OpenSSH (v6)               ALLOW       Anywhere (v6)
 
 11. Managing **WireGuard** service.
 ```shell
-root@raspberrypi:/etc/wireguard# systemctl start wg-quick@wg-rasp.service
+root@raspberrypi:/etc/wireguard # systemctl start wg-quick@wg-rasp.service
 
-root@raspberrypi:/etc/wireguard# systemctl enable wg-quick@wg-rasp.service
+root@raspberrypi:/etc/wireguard # systemctl enable wg-quick@wg-rasp.service
 Created symlink /etc/systemd/system/multi-user.target.wants/wg-quick@wg-rasp.service → /lib/systemd/system/wg-quick@.service.
 
-root@raspberrypi:/etc/wireguard# systemctl status wg-quick@wg-rasp.service
+root@raspberrypi:/etc/wireguard # systemctl status wg-quick@wg-rasp.service
 ● wg-quick@wg-rasp.service - WireGuard via wg-quick(8) for wg-rasp
      Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled; preset: enabled)
      Active: active (exited) since Sat 2025-01-25 23:20:02 WET; 27s ago
@@ -175,13 +175,13 @@ Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] iptables -t nat -I POSTROUTING -
 Jan 25 23:20:02 raspberrypi wg-quick[4346]: [#] ip6tables -t nat -I POSTROUTING -o wlan0 -j M>
 Jan 25 23:20:02 raspberrypi systemd[1]: Finished wg-quick@wg-rasp.service - WireGuard via wg-quic>
 
-root@raspberrypi:/etc/wireguard# ip a show wg-rasp
+root@raspberrypi:/etc/wireguard # ip a show wg-rasp
 5: wg-rasp: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
     inet 10.20.0.1/24 scope global wg-rasp
        valid_lft forever preferred_lft forever
 
-root@raspberrypi:/etc/wireguard# ip --color a show wg-rasp
+root@raspberrypi:/etc/wireguard # ip --color a show wg-rasp
 5: wg-rasp: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
     inet 10.20.0.1/24 scope global wg-rasp
@@ -196,7 +196,7 @@ $ sudo wg-quick down /etc/wireguard/wg-rasp.conf
 
 13. Check all configurations.
 ```shell
-root@raspberrypi:~# sudo tree /etc/wireguard/
+root@raspberrypi:~ # sudo tree /etc/wireguard/
 /etc/wireguard/
 ├── clients
 │   └── beja
@@ -213,12 +213,12 @@ root@raspberrypi:~# sudo tree /etc/wireguard/
 
 1. Install **WireGuard**.
 ```shell
-root@laptop:~# apt install wireguard-tools
+root@laptop:~ # apt install wireguard-tools
 ```
 
 2. Create **WireGuard** configurations.
 ```shell
-root@laptop:~# vim /etc/wireguard/wg-rasp-beja.conf
+root@laptop:~ # vim /etc/wireguard/wg-rasp-beja.conf
 [Interface]
 # Define the IP address for the client - must be matched with wg-rasp on the Wireguard Server
 Address = 10.20.0.2/24
@@ -245,7 +245,7 @@ PersistentKeepalive = 25
 
 3. Start **WireGuard** connection.
 ```shell
-root@laptop:~# wg-quick up wg-rasp-beja
+root@laptop:~ # wg-quick up wg-rasp-beja
 [#] ip link add wg-rasp-beja type wireguard
 [#] wg setconf wg-rasp-beja /dev/fd/63
 [#] ip -4 address add 10.20.0.2/24 dev wg-rasp-beja
@@ -261,13 +261,13 @@ root@laptop:~# wg-quick up wg-rasp-beja
 
 4. Check connections
 ```shell
-root@laptop:~# ip a show wg-rasp-beja
+root@laptop:~ # ip a show wg-rasp-beja
 13: wg-rasp-beja: <POINTOPOINT,NOARP,UP,LOWER_UP> mtu 1420 qdisc noqueue state UNKNOWN group default qlen 1000
     link/none
     inet 10.20.0.2/24 scope global wg-rasp-beja
        valid_lft forever preferred_lft forever
 
-root@laptop:~# ping -c3 10.20.0.1
+root@laptop:~ # ping -c3 10.20.0.1
 PING 10.20.0.1 (10.20.0.1) 56(84) bytes of data.
 64 bytes from 10.20.0.1: icmp_seq=1 ttl=64 time=4.02 ms
 64 bytes from 10.20.0.1: icmp_seq=2 ttl=64 time=6.69 ms
@@ -276,7 +276,7 @@ PING 10.20.0.1 (10.20.0.1) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2003ms
 rtt min/avg/max/mdev = 4.017/5.905/7.009/1.341 ms
 
-root@laptop:~# ping -c3 10.20.0.2
+root@laptop:~ # ping -c3 10.20.0.2
 PING 10.20.0.2 (10.20.0.2) 56(84) bytes of data.
 64 bytes from 10.20.0.2: icmp_seq=1 ttl=64 time=0.077 ms
 64 bytes from 10.20.0.2: icmp_seq=2 ttl=64 time=0.062 ms
@@ -285,7 +285,7 @@ PING 10.20.0.2 (10.20.0.2) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2035ms
 rtt min/avg/max/mdev = 0.058/0.065/0.077/0.008 ms
 
-root@laptop:~# ping -c3 1.1.1.1
+root@laptop:~ # ping -c3 1.1.1.1
 PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 64 bytes from 1.1.1.1: icmp_seq=1 ttl=58 time=26.0 ms
 64 bytes from 1.1.1.1: icmp_seq=2 ttl=58 time=27.1 ms
@@ -294,7 +294,7 @@ PING 1.1.1.1 (1.1.1.1) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2002ms
 rtt min/avg/max/mdev = 26.007/27.202/28.545/1.041 ms
 
-root@laptop:~# ping -c3 google.com
+root@laptop:~ # ping -c3 google.com
 PING google.com (2a00:1450:4003:80d::200e) 56 data bytes
 64 bytes from mad07s24-in-x0e.1e100.net (2a00:1450:4003:80d::200e): icmp_seq=1 ttl=118 time=29.2 ms
 64 bytes from mad07s24-in-x0e.1e100.net (2a00:1450:4003:80d::200e): icmp_seq=2 ttl=118 time=29.7 ms
@@ -303,7 +303,7 @@ PING google.com (2a00:1450:4003:80d::200e) 56 data bytes
 3 packets transmitted, 3 received, 0% packet loss, time 2004ms
 rtt min/avg/max/mdev = 24.318/27.749/29.713/2.434 ms
 
-root@laptop:~# sudo wg show
+root@laptop:~ # sudo wg show
 interface: wg-rasp-beja
   public key: <client-public-key>
   private key: (hidden)
@@ -325,7 +325,7 @@ $ sudo wg-quick down wg-rasp-beja
 
 6. Check configurations.
 ```shell
-root@laptop:~# tree /etc/wireguard/
+root@laptop:~ # tree /etc/wireguard/
 /etc/wireguard/
 ├── wg-rasp-beja.conf
 └── wg-tank-beja.conf
@@ -335,10 +335,10 @@ root@laptop:~# tree /etc/wireguard/
 
 7. Import to GNOME NetworkManager sessions:
 ```shell
-pbeja@cspt0060:~ $ sudo nmcli connection import type wireguard file /etc/wireguard/wg-elara.conf
+althaser@laptop:~ $ sudo nmcli connection import type wireguard file /etc/wireguard/wg-elara.conf
 Connection 'wg-elara' (2f88f973-5bfb-46ee-a6c0-33d8dbf12de9) successfully added.
 
-pbeja@cspt0060:~ $ nmcli connection modify wg-elara connection.autoconnect no
+althaser@laptop:~ $ nmcli connection modify wg-elara connection.autoconnect no
 ```
 
 8. done :)

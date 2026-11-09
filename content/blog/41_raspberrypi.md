@@ -205,16 +205,16 @@ ExecStart=/usr/local/bin/node_exporter-1.8.2.linux-arm64/node_exporter
 [Install]
 WantedBy=multi-user.target
 
-althaser@raspberrypi: $ sudo systemctl daemon-reload
+althaser@raspberrypi:~ $ sudo systemctl daemon-reload
 
-althaser@raspberrypi: $ sudo systemctl enable node_exporter
+althaser@raspberrypi:~ $ sudo systemctl enable node_exporter
 Created symlink /etc/systemd/system/multi-user.target.wants/node_exporter.service → /lib/systemd/system/node_exporter.service.
 
-althaser@raspberrypi: $ sudo chmod +x /usr/local/bin/node_exporter-1.8.2.linux-arm64/node_exporter
+althaser@raspberrypi:~ $ sudo chmod +x /usr/local/bin/node_exporter-1.8.2.linux-arm64/node_exporter
 
-althaser@raspberrypi: $ sudo systemctl start node_exporter
+althaser@raspberrypi:~ $ sudo systemctl start node_exporter
 
-althaser@raspberrypi: $ sudo systemctl status node_exporter
+althaser@raspberrypi:~ $ sudo systemctl status node_exporter
 ● node_exporter.service - Node Exporter Service
      Loaded: loaded (/lib/systemd/system/node_exporter.service; enabled; preset: enabled)
      Active: active (running) since Sun 2025-01-26 15:51:35 WET; 1s ago

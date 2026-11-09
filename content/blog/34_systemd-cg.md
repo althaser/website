@@ -19,7 +19,7 @@ https://systemd.io/
 https://github.com/systemd/systemd
 
 ```shell
-pbeja@Sirius:~ $ systemd-cgls
+althaser@laptop:~ $ systemd-cgls
 CGroup /:
 -.slice
 ├─user.slice
@@ -74,7 +74,7 @@ CGroup /:
 │   │ │ │ ├─25697 /usr/libexec/gvfsd-network --spawner :1.27 /org/gtk/gvfs/exec_spaw/2
 │   │ │ │ ├─25714 /usr/libexec/gvfsd-dnssd --spawner :1.27 /org/gtk/gvfs/exec_spaw/4
 
-pbeja@Sirius:~ $ systemd-cgtop
+althaser@laptop:~ $ systemd-cgtop
 CGroup                                                      Tasks   %CPU     Memory  Input/s Output/s
 user.slice                                                  1423    148.6    11.6G   -        -
 user.slice/user-1000.slice                                  1423    148.7    11.6G   -        -
