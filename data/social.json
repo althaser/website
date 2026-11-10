@@ -1,13 +1,13 @@
 [
   {
-    "icon": "solid/envelope",
-    "url": "mailto:althaser at gmail dot com",
-    "title": "E-Mail"
-  },
-  {
     "icon": "solid/file",
     "url": "#",
     "title": "CV"
+  },
+  {
+    "icon": "solid/envelope",
+    "url": "mailto:althaser at gmail dot com",
+    "title": "E-Mail"
   },
   {
     "icon": "brands/w3c",
