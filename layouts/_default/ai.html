@@ -18,6 +18,7 @@
     </div>
     <div class="terminal-screen" data-terminal-screen></div>
   </div>
+  <p class="terminal-eta not-prose" data-terminal-eta aria-hidden="true" hidden></p>
   <script type="application/json" data-terminal-script>{{ hugo.Data.terminal | jsonify | safeJS }}</script>
 </div>
 {{ end }}

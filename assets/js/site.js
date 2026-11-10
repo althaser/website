@@ -1173,8 +1173,97 @@ const initializeTerminal = () => {
     crt.remove();
   };
 
-  const run = async () => {
+  const countdown = () => {
+    const eta = document.querySelector("[data-terminal-eta]");
+
+    if (!config.shutdown) {
+      return { next: () => {}, done: () => {} };
+    }
+
+    const { cols } = measureGrid();
+    screen.replaceChildren();
+    const typing = (cmd, delay, interrupt) => delay + cmd.length * 90 + 350 + (interrupt ? 250 : 0);
+    const printing = (lines = []) => lines.reduce((total, line) => total + (line.includes("OK") ? 200 : 80), 0);
+    const effectTime = {
+      sl: () => (cols + locomotive[0].length + coal[0].length) * 44,
+      cbonsai: (session) => 2500 + (session.hold ?? 4000),
+    };
+    const estimates = [];
+
     if (config.boot) {
+      const settings = config.boot;
+      estimates.push(700 + printing(settings.lines) + 1200 + (settings.user ?? "").length * 125 + 1500 + 1800 + 700);
+    }
+
+    let delay = 900;
+    sessions.forEach((session) => {
+      const effect = effects[session.effect] ? (effectTime[session.effect]?.(session) ?? session.duration ?? 10000) : 0;
+      estimates.push(typing(session.cmd, delay, session.interrupt) + effect + outputLines(session).length * (session.lineDelay ?? 35));
+      delay = session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
+    });
+    estimates.push(typing("clear", delay + (config.clearDelay ?? 0)) + (config.matrix ? (config.matrix.duration ?? 8000) : 0));
+
+    if (config.shutdown) {
+      const settings = config.shutdown;
+      estimates.push(
+        typing(settings.cmd ?? "shutdown -h now", settings.idle ?? 10000) +
+          (settings.broadcast ? 1800 : 0) + 700 + printing(settings.lines) + 900 + 1500,
+      );
+    }
+
+    let hiddenAt = null;
+    let hiddenTotal = 0;
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        hiddenAt = performance.now();
+      } else if (hiddenAt !== null) {
+        hiddenTotal += performance.now() - hiddenAt;
+        hiddenAt = null;
+      }
+    });
+    const now = () => (hiddenAt ?? performance.now()) - hiddenTotal;
+    const format = (ms) => {
+      const seconds = Math.ceil(Math.max(0, ms) / 1000);
+      return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")} remaining`;
+    };
+
+    let index = -1;
+    let started = 0;
+    let timer = null;
+    const remaining = () =>
+      estimates.slice(index + 1).reduce((total, value) => total + value, 0) + Math.max(0, estimates[index] - (now() - started));
+    const show = () => {
+      if (eta) {
+        eta.textContent = format(remaining());
+      }
+    };
+
+    if (eta) {
+      eta.hidden = false;
+    }
+
+    return {
+      next: () => {
+        index += 1;
+        started = now();
+        show();
+        timer ??= window.setInterval(show, 250);
+      },
+      done: () => {
+        window.clearInterval(timer);
+        index = estimates.length;
+        if (eta) {
+          eta.textContent = "powered off";
+        }
+      },
+    };
+  };
+
+  const run = async () => {
+    const clock = countdown();
+
+    if (config.boot) {
+      clock.next();
       await boot(config.boot);
     }
 
@@ -1182,6 +1271,7 @@ const initializeTerminal = () => {
       let delay = 900;
 
       for (const session of sessions) {
+        clock.next();
         await type(session.cmd, delay, session.interrupt);
 
         if (effects[session.effect]) {
@@ -1200,6 +1290,7 @@ const initializeTerminal = () => {
         delay = session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
       }
 
+      clock.next();
       await type("clear", delay + (config.clearDelay ?? 0));
       html = "";
       render();
@@ -1210,6 +1301,7 @@ const initializeTerminal = () => {
       }
 
       if (config.shutdown) {
+        clock.next();
         await type(config.shutdown.cmd ?? "shutdown -h now", config.shutdown.idle ?? 10000);
         const settings = config.shutdown;
 
@@ -1226,6 +1318,7 @@ const initializeTerminal = () => {
         await printLines(settings.lines);
         await sleep(900);
         await powerOff();
+        clock.done();
         return;
       }
     }
