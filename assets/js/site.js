@@ -355,7 +355,17 @@ const initializeTerminal = () => {
     return;
   }
 
-  const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+  let hiddenAt = document.hidden ? performance.now() : null;
+  let hiddenTotal = 0;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      hiddenAt = performance.now();
+    } else if (hiddenAt !== null) {
+      hiddenTotal += performance.now() - hiddenAt;
+      hiddenAt = null;
+    }
+  });
+  const visibleNow = () => (hiddenAt ?? performance.now()) - hiddenTotal;
   const whenVisible = () =>
     document.hidden
       ? new Promise((resolve) => {
@@ -368,6 +378,32 @@ const initializeTerminal = () => {
           document.addEventListener("visibilitychange", handler);
         })
       : Promise.resolve();
+  const sleep = async (ms) => {
+    const end = visibleNow() + ms;
+
+    for (let left = ms; left > 0; left = end - visibleNow()) {
+      await whenVisible();
+      await new Promise((resolve) => window.setTimeout(resolve, left));
+    }
+  };
+
+  const timing = {
+    key: [45, 90],
+    loginKey: [70, 110],
+    printOk: [90, 220],
+    print: [25, 110],
+    afterType: 350,
+    interrupt: 250,
+    prompt: 900,
+    effectPause: 2200,
+    pause: 7200,
+    lineDelay: 35,
+    boot: { start: 700, login: 1200, password: 4000, welcome: 1800, window: 700 },
+    shutdown: { idle: 10000, broadcast: 1800, clear: 700, halt: 900, crt: 1500, wipe: 180 },
+    nms: { steps: 12, step: 50, hold: 1500, frame: 60 },
+  };
+  const jitter = ([min, spread]) => min + Math.random() * spread;
+  const mean = ([min, spread]) => min + spread / 2;
 
   let html = "";
   let following = true;
@@ -387,10 +423,15 @@ const initializeTerminal = () => {
     const top = screen.scrollTop;
     screen.classList.add("is-locked");
     screen.scrollTop = 0;
-    await effect();
-    screen.innerHTML = html;
-    screen.scrollTop = following ? screen.scrollHeight : top;
-    screen.classList.remove("is-locked");
+
+    try {
+      await effect();
+    } finally {
+      screen.classList.remove("is-tight", "is-canvas");
+      screen.innerHTML = html;
+      screen.scrollTop = following ? screen.scrollHeight : top;
+      screen.classList.remove("is-locked");
+    }
   };
 
   const type = async (cmd, delay, interrupt = false) => {
@@ -399,18 +440,17 @@ const initializeTerminal = () => {
     await sleep(delay);
 
     for (const char of cmd) {
-      await whenVisible();
       html += escapeHtml(char);
       render(cursor, true);
-      await sleep(45 + Math.random() * 90);
+      await sleep(jitter(timing.key));
     }
 
-    await sleep(350);
+    await sleep(timing.afterType);
 
     if (interrupt) {
       html += "^C";
       render();
-      await sleep(250);
+      await sleep(timing.interrupt);
     }
 
     html += "\n";
@@ -432,95 +472,106 @@ const initializeTerminal = () => {
     };
   };
 
-  const renderGrid = (grid) => {
-    screen.innerHTML = grid
-      .map((cells) => {
-        let line = "";
-        let current = null;
-        let run = "";
+  const cellsHtml = (cells) => {
+    let line = "";
+    let color = "";
+    let run = "";
+    const flush = () => {
+      if (run) {
+        line += color ? `<span class="${color}">${escapeHtml(run)}</span>` : escapeHtml(run);
+      }
+      run = "";
+    };
 
-        cells.forEach((cell) => {
-          const cls = cell?.color ?? "";
+    cells.forEach((cell) => {
+      const next = cell?.color ?? "";
 
-          if (cls !== current) {
-            line += current ? `<span class="${current}">${escapeHtml(run)}</span>` : run;
-            current = cls;
-            run = "";
-          }
-
-          run += cell ? cell.char : " ";
-        });
-
-        return line + (current ? `<span class="${current}">${escapeHtml(run)}</span>` : run);
-      })
-      .join("\n");
-  };
-
-  const matrix = async (duration) => {
-    const glyphs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=<>?";
-    const randomGlyph = () => glyphs[Math.floor(Math.random() * glyphs.length)];
-    const { cols, rows } = measureGrid();
-    const grid = Array.from({ length: rows }, () => Array.from({ length: cols }, randomGlyph));
-    const newDrop = (start) => ({
-      y: start ? -Math.random() * rows * 2 : -Math.random() * rows,
-      speed: 0.3 + Math.random() * 0.7,
-      length: 4 + Math.floor(Math.random() * rows),
-    });
-    const drops = Array.from({ length: cols }, () => newDrop(true));
-    const end = performance.now() + duration;
-
-    while (performance.now() < end) {
-      await whenVisible();
-      const lines = [];
-
-      for (let row = 0; row < rows; row += 1) {
-        let line = "";
-        let current = null;
-        let run = "";
-
-        for (let col = 0; col < cols; col += 1) {
-          const drop = drops[col];
-          const distance = Math.floor(drop.y) - row;
-          let cls = "";
-
-          if (distance === 0) {
-            cls = "term-matrix-head";
-          } else if (distance > 0 && distance < drop.length) {
-            cls = distance < drop.length / 2 ? "term-green" : "term-matrix-dim";
-          }
-
-          if (cls && Math.random() < 0.05) {
-            grid[row][col] = randomGlyph();
-          }
-
-          if (cls !== current) {
-            line += current ? `<span class="${current}">${escapeHtml(run)}</span>` : run;
-            current = cls;
-            run = "";
-          }
-
-          run += cls ? grid[row][col] : " ";
-        }
-
-        line += current ? `<span class="${current}">${escapeHtml(run)}</span>` : run;
-        lines.push(line);
+      if (next !== color) {
+        flush();
+        color = next;
       }
 
-      screen.innerHTML = lines.join("\n");
+      run += cell?.char ?? " ";
+    });
+    flush();
 
-      drops.forEach((drop, col) => {
-        drop.y += drop.speed;
+    return line;
+  };
+  const blankGrid = (rows, cols) => Array.from({ length: rows }, () => Array(cols).fill(null));
 
-        if (drop.y - drop.length > rows) {
-          drops[col] = newDrop(false);
+  const animateGrid = async ({ duration = Infinity, interval, tight = false }, setup) => {
+    screen.classList.toggle("is-tight", tight);
+    const { cols, rows } = measureGrid();
+    const draw = setup(cols, rows);
+    const start = visibleNow();
+
+    for (let frame = 0; visibleNow() - start < duration; frame += 1) {
+      const grid = draw(blankGrid(rows, cols), frame, visibleNow() - start);
+
+      if (!grid) {
+        return;
+      }
+
+      screen.innerHTML = grid.map(cellsHtml).join("\n");
+      await sleep(interval);
+    }
+  };
+
+  const stamp = (grid, row, col, lines, color) => {
+    lines.forEach((line, i) => {
+      [...line].forEach((char, j) => {
+        const r = row + i;
+        const c = Math.round(col) + j;
+
+        if (char !== " " && r >= 0 && r < grid.length && c >= 0 && c < grid[0].length) {
+          grid[r][c] = { char, color };
         }
       });
-
-      await sleep(60);
-    }
-
-    screen.replaceChildren();
+    });
   };
+
+  const matrix = (duration) =>
+    animateGrid({ duration, interval: 60 }, (cols, rows) => {
+      const glyphs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=<>?";
+      const randomGlyph = () => glyphs[Math.floor(Math.random() * glyphs.length)];
+      const chars = Array.from({ length: rows }, () => Array.from({ length: cols }, randomGlyph));
+      const newDrop = (start) => ({
+        y: start ? -Math.random() * rows * 2 : -Math.random() * rows,
+        speed: 0.3 + Math.random() * 0.7,
+        length: 4 + Math.floor(Math.random() * rows),
+      });
+      const drops = Array.from({ length: cols }, () => newDrop(true));
+
+      return (grid) => {
+        drops.forEach((drop, col) => {
+          for (let row = 0; row < rows; row += 1) {
+            const distance = Math.floor(drop.y) - row;
+            let color = "";
+
+            if (distance === 0) {
+              color = "term-matrix-head";
+            } else if (distance > 0 && distance < drop.length) {
+              color = distance < drop.length / 2 ? "term-green" : "term-matrix-dim";
+            }
+
+            if (color) {
+              if (Math.random() < 0.05) {
+                chars[row][col] = randomGlyph();
+              }
+              grid[row][col] = { char: chars[row][col], color };
+            }
+          }
+
+          drop.y += drop.speed;
+
+          if (drop.y - drop.length > rows) {
+            drops[col] = newDrop(false);
+          }
+        });
+
+        return grid;
+      };
+    });
 
   const locomotive = [
     "      ====        ________                ___________ ",
@@ -565,240 +616,196 @@ const initializeTerminal = () => {
     ["                 (  ) (@@) ( )  (@)  ()    @@    O     @     O", "            (@@@)", "        (    )", "     (@@@@)", "", "   (   )"],
   ];
 
-  const train = async () => {
-    const { cols, rows } = measureGrid();
-    const width = locomotive[0].length + coal[0].length;
-    const smokeRows = Math.max(0, Math.min(smoke[0].length, rows - coal.length));
-    const top = Math.max(0, Math.floor((rows - smokeRows - coal.length) / 2));
+  const trainWidth = locomotive[0].length + coal[0].length;
 
-    for (let x = cols; x > -width; x -= 1) {
-      await whenVisible();
-      const body = [...locomotive, ...wheels[((x % 3) + 3) % 3]].map((line, i) => line + coal[i]);
-      const puff = smoke[Math.floor(x / 4) % 2 === 0 ? 0 : 1];
-      const frame = [...puff.slice(puff.length - smokeRows), ...body];
-      const lines = Array.from({ length: rows }, () => "");
+  const train = () =>
+    animateGrid({ interval: 40 }, (cols, rows) => {
+      const smokeRows = Math.max(0, Math.min(smoke[0].length, rows - coal.length));
+      const top = Math.max(0, Math.floor((rows - smokeRows - coal.length) / 2));
 
-      frame.forEach((line, i) => {
-        const row = top + i;
+      return (grid, frame) => {
+        const x = cols - frame;
 
-        if (row >= rows) {
+        if (x <= -trainWidth) {
+          return null;
+        }
+
+        const body = [...locomotive, ...wheels[((x % 3) + 3) % 3]].map((line, i) => line + coal[i]);
+        const puff = smoke[Math.floor(x / 4) % 2 === 0 ? 0 : 1];
+        stamp(grid, top, x, [...puff.slice(puff.length - smokeRows), ...body]);
+
+        return grid;
+      };
+    });
+
+  const pipes = (duration) =>
+    animateGrid({ duration, interval: 30, tight: true }, (cols, rows) => {
+      const colors = ["term-green", "term-blue", "term-yellow", "term-red", "term-magenta", "term-cyan"];
+      const straight = ["┃", "━", "┃", "━"];
+      const corners = {
+        "0-1": "┏", "0-3": "┓", "2-1": "┗", "2-3": "┛",
+        "1-0": "┛", "1-2": "┓", "3-0": "┗", "3-2": "┏",
+      };
+      const steps = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+      const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
+      const newPipe = () => ({
+        row: Math.floor(Math.random() * rows),
+        col: Math.floor(Math.random() * cols),
+        dir: Math.floor(Math.random() * 4),
+        color: randomColor(),
+      });
+      let grid = blankGrid(rows, cols);
+      let drawn = 0;
+      const active = [newPipe(), newPipe()];
+
+      return () => {
+        active.forEach((pipe) => {
+          let next = pipe.dir;
+
+          if (Math.random() < 0.13) {
+            next = (pipe.dir + (Math.random() < 0.5 ? 1 : 3)) % 4;
+          }
+
+          grid[pipe.row][pipe.col] = {
+            char: next === pipe.dir ? straight[next] : corners[`${pipe.dir}-${next}`],
+            color: pipe.color,
+          };
+          drawn += 1;
+          pipe.dir = next;
+          pipe.row += steps[next][0];
+          pipe.col += steps[next][1];
+
+          if (pipe.row < 0 || pipe.row >= rows || pipe.col < 0 || pipe.col >= cols) {
+            pipe.row = (pipe.row + rows) % rows;
+            pipe.col = (pipe.col + cols) % cols;
+            pipe.color = randomColor();
+          }
+        });
+
+        if (drawn > rows * cols * 0.7) {
+          grid = blankGrid(rows, cols);
+          drawn = 0;
+        }
+
+        return grid;
+      };
+    });
+
+  const bonsai = async (hold) => {
+    await animateGrid({ interval: 45 }, (cols, rows) => {
+      const pot = [
+        ":_______________________:",
+        " \\_____________________/",
+        "  (_)               (_)",
+      ];
+      const grid = blankGrid(rows, cols);
+      const center = Math.floor(cols / 2);
+      const potTop = rows - pot.length;
+      const potLeft = center - Math.floor(pot[0].length / 2);
+      const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+      const put = (row, col, char, color) => {
+        if (row < 0 || row >= potTop || col < 0 || col >= cols) {
           return;
         }
 
-        const start = Math.max(0, -x);
-        const visible = line.slice(start, start + cols - Math.max(0, x));
-        lines[row] = " ".repeat(Math.max(0, x)) + visible;
-      });
-
-      screen.innerHTML = escapeHtml(lines.join("\n"));
-      await sleep(40);
-    }
-  };
-
-  const pipes = async (duration) => {
-    screen.classList.add("is-tight");
-    const { cols, rows } = measureGrid();
-    const colors = ["term-green", "term-blue", "term-yellow", "term-red", "term-magenta", "term-cyan"];
-    const straight = ["┃", "━", "┃", "━"];
-    const corners = {
-      "0-1": "┏", "0-3": "┓", "2-1": "┗", "2-3": "┛",
-      "1-0": "┛", "1-2": "┓", "3-0": "┗", "3-2": "┏",
-    };
-    const steps = [[-1, 0], [0, 1], [1, 0], [0, -1]];
-    const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
-    const newPipe = () => ({
-      row: Math.floor(Math.random() * rows),
-      col: Math.floor(Math.random() * cols),
-      dir: Math.floor(Math.random() * 4),
-      color: randomColor(),
-    });
-    let grid = Array.from({ length: rows }, () => Array(cols).fill(null));
-    let drawn = 0;
-    const active = [newPipe(), newPipe()];
-    const end = performance.now() + duration;
-
-    while (performance.now() < end) {
-      await whenVisible();
-
-      active.forEach((pipe) => {
-        let next = pipe.dir;
-
-        if (Math.random() < 0.13) {
-          next = (pipe.dir + (Math.random() < 0.5 ? 1 : 3)) % 4;
+        if (char === "&" && grid[row][col] && grid[row][col].char !== "&") {
+          return;
         }
 
-        grid[pipe.row][pipe.col] = {
-          char: next === pipe.dir ? straight[next] : corners[`${pipe.dir}-${next}`],
-          color: pipe.color,
-        };
-        drawn += 1;
-        pipe.dir = next;
-        pipe.row += steps[next][0];
-        pipe.col += steps[next][1];
+        grid[row][col] = { char, color };
+      };
 
-        if (pipe.row < 0 || pipe.row >= rows || pipe.col < 0 || pipe.col >= cols) {
-          pipe.row = (pipe.row + rows) % rows;
-          pipe.col = (pipe.col + cols) % cols;
-          pipe.color = randomColor();
+      pot.forEach((line, i) =>
+        [...line].forEach((char, j) => {
+          if (char !== " " && potLeft + j >= 0 && potLeft + j < cols) {
+            grid[potTop + i][potLeft + j] = { char, color: "term-gray" };
+          }
+        }),
+      );
+
+      const trunkLife = Math.max(10, potTop + 4);
+      const woodChar = (dx, dy) => {
+        if (dy === 0) {
+          return Math.random() < 0.5 ? "_" : "~";
         }
-      });
-
-      if (drawn > rows * cols * 0.7) {
-        grid = Array.from({ length: rows }, () => Array(cols).fill(null));
-        drawn = 0;
-      }
-
-      renderGrid(grid);
-
-      await sleep(30);
-    }
-
-    screen.classList.remove("is-tight");
-  };
-
-  const bonsai = async (hold) => {
-    const { cols, rows } = measureGrid();
-    const pot = [
-      ":_______________________:",
-      " \\_____________________/",
-      "  (_)               (_)",
-    ];
-    const grid = Array.from({ length: rows }, () => Array(cols).fill(null));
-    const center = Math.floor(cols / 2);
-    const potTop = rows - pot.length;
-    const potLeft = center - Math.floor(pot[0].length / 2);
-    const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
-    const put = (row, col, char, color) => {
-      if (row < 0 || row >= potTop || col < 0 || col >= cols) {
-        return;
-      }
-
-      if (char === "&" && grid[row][col] && grid[row][col].char !== "&") {
-        return;
-      }
-
-      grid[row][col] = { char, color };
-    };
-
-    pot.forEach((line, i) =>
-      [...line].forEach((char, j) => {
-        if (char !== " " && potLeft + j >= 0 && potLeft + j < cols) {
-          grid[potTop + i][potLeft + j] = { char, color: "term-gray" };
+        if (dx < 0) {
+          return "\\";
         }
-      }),
-    );
+        return dx > 0 ? "/" : "|";
+      };
+      let branches = [{ row: potTop - 1, col: center, type: "trunk", life: trunkLife, age: 0 }];
+      let ticks = 0;
 
-    const trunkLife = Math.max(10, potTop + 4);
-    const woodChar = (dx, dy) => {
-      if (dy === 0) {
-        return Math.random() < 0.5 ? "_" : "~";
-      }
-      if (dx < 0) {
-        return "\\";
-      }
-      return dx > 0 ? "/" : "|";
-    };
-    let branches = [{ row: potTop - 1, col: center, type: "trunk", life: trunkLife, age: 0 }];
-    let ticks = 0;
+      return () => {
+        if (!branches.length || ticks >= 400) {
+          return null;
+        }
 
-    while (branches.length && ticks < 400) {
-      await whenVisible();
-      const spawned = [];
+        const spawned = [];
 
-      branches.forEach((branch) => {
-        branch.life -= 1;
-        branch.age += 1;
-        let dx = 0;
-        let dy = 0;
+        branches.forEach((branch) => {
+          branch.life -= 1;
+          branch.age += 1;
+          let dx = 0;
+          let dy = 0;
 
-        if (branch.type === "leaf" || branch.life < 4) {
-          dx = random(-2, 2);
-          dy = random(-1, 0);
-          put(branch.row, branch.col, "&", "term-green");
+          if (branch.type === "leaf" || branch.life < 4) {
+            dx = random(-2, 2);
+            dy = random(-1, 0);
+            put(branch.row, branch.col, "&", "term-green");
 
-          if (branch.type !== "leaf") {
-            for (let i = 0; i < 2 && branches.length + spawned.length < 140; i += 1) {
-              spawned.push({ row: branch.row, col: branch.col, type: "leaf", life: random(3, 6), age: 0 });
+            if (branch.type !== "leaf") {
+              for (let i = 0; i < 2 && branches.length + spawned.length < 140; i += 1) {
+                spawned.push({ row: branch.row, col: branch.col, type: "leaf", life: random(3, 6), age: 0 });
+              }
+            }
+          } else {
+            if (branch.type === "trunk") {
+              dy = branch.age < 3 || Math.random() < 0.6 ? -1 : 0;
+              dx = Math.random() < 0.55 ? 0 : random(-1, 1);
+            } else {
+              dx = (branch.type === "left" ? -1 : 1) * (Math.random() < 0.3 ? 2 : 1);
+              dy = Math.random() < 0.4 ? -1 : 0;
+            }
+
+            const char = woodChar(dx, dy);
+            put(branch.row, branch.col, char, "term-yellow");
+
+            if (Math.abs(dx) === 2 && dy === 0) {
+              put(branch.row, branch.col + dx / 2, char, "term-yellow");
+            }
+
+            const chance = branch.type === "trunk" ? 0.3 : 0.15;
+            if (branch.age > 3 && branches.length + spawned.length < 140 && Math.random() < chance) {
+              spawned.push({
+                row: branch.row,
+                col: branch.col,
+                type: branch.type === "trunk" ? (Math.random() < 0.5 ? "left" : "right") : branch.type,
+                life: random(6, 12),
+                age: 0,
+              });
             }
           }
-        } else {
-          if (branch.type === "trunk") {
-            dy = branch.age < 3 || Math.random() < 0.6 ? -1 : 0;
-            dx = Math.random() < 0.55 ? 0 : random(-1, 1);
-          } else {
-            dx = (branch.type === "left" ? -1 : 1) * (Math.random() < 0.3 ? 2 : 1);
-            dy = Math.random() < 0.4 ? -1 : 0;
-          }
 
-          const char = woodChar(dx, dy);
-          put(branch.row, branch.col, char, "term-yellow");
+          branch.row = Math.min(potTop - 1, Math.max(0, branch.row + dy));
+          branch.col = Math.min(cols - 1, Math.max(0, branch.col + dx));
+        });
 
-          if (Math.abs(dx) === 2 && dy === 0) {
-            put(branch.row, branch.col + dx / 2, char, "term-yellow");
-          }
+        branches = [...branches.filter((branch) => branch.life > 0), ...spawned];
+        ticks += 1;
 
-          const chance = branch.type === "trunk" ? 0.3 : 0.15;
-          if (branch.age > 3 && branches.length + spawned.length < 140 && Math.random() < chance) {
-            spawned.push({
-              row: branch.row,
-              col: branch.col,
-              type: branch.type === "trunk" ? (Math.random() < 0.5 ? "left" : "right") : branch.type,
-              life: random(6, 12),
-              age: 0,
-            });
-          }
-        }
-
-        branch.row = Math.min(potTop - 1, Math.max(0, branch.row + dy));
-        branch.col = Math.min(cols - 1, Math.max(0, branch.col + dx));
-      });
-
-      branches = [...branches.filter((branch) => branch.life > 0), ...spawned];
-      renderGrid(grid);
-      ticks += 1;
-      await sleep(45);
-    }
+        return grid;
+      };
+    });
 
     await sleep(hold);
-  };
-
-  const animateGrid = async (duration, interval, tight, setup) => {
-    screen.classList.toggle("is-tight", tight);
-    const { cols, rows } = measureGrid();
-    const draw = setup(cols, rows);
-    const start = performance.now();
-    let frame = 0;
-
-    while (performance.now() - start < duration) {
-      await whenVisible();
-      const grid = Array.from({ length: rows }, () => Array(cols).fill(null));
-      draw(grid, frame, performance.now() - start);
-      renderGrid(grid);
-      frame += 1;
-      await sleep(interval);
-    }
-
-    screen.classList.remove("is-tight");
-  };
-
-  const stamp = (grid, row, col, lines, color) => {
-    lines.forEach((line, i) => {
-      [...line].forEach((char, j) => {
-        const r = row + i;
-        const c = Math.round(col) + j;
-
-        if (char !== " " && r >= 0 && r < grid.length && c >= 0 && c < grid[0].length) {
-          grid[r][c] = { char, color };
-        }
-      });
-    });
   };
 
   const fishColors = ["term-green", "term-blue", "term-yellow", "term-red", "term-magenta", "term-cyan"];
   const pick = (items) => items[Math.floor(Math.random() * items.length)];
 
   const aquarium = (duration) =>
-    animateGrid(duration, 70, false, (cols, rows) => {
+    animateGrid({ duration, interval: 70 }, (cols, rows) => {
       const waves = [
         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
         "^^^^ ^^^  ^^^   ^^^    ^^^^      ^^^  ^^",
@@ -907,6 +914,8 @@ const initializeTerminal = () => {
             shark = newShark();
           }
         }
+
+        return grid;
       };
     });
 
@@ -993,11 +1002,10 @@ const initializeTerminal = () => {
         }),
       );
     };
-    const start = performance.now();
+    const start = visibleNow();
     let frame = 0;
 
-    while (performance.now() - start < duration) {
-      await whenVisible();
+    while (visibleNow() - start < duration) {
       context.fillStyle = sky;
       context.fillRect(0, 0, width, height);
 
@@ -1032,7 +1040,7 @@ const initializeTerminal = () => {
         }
       });
 
-      const message = `You have nyaned for ${Math.floor((performance.now() - start) / 1000)} seconds!`;
+      const message = `You have nyaned for ${Math.floor((visibleNow() - start) / 1000)} seconds!`;
       let fontSize = Math.max(11, size * 2);
       context.font = `${fontSize}px ${fontFamily}`;
       while (fontSize > 8 && context.measureText(message).width > width - 16) {
@@ -1047,13 +1055,10 @@ const initializeTerminal = () => {
       frame += 1;
       await sleep(70);
     }
-
-    screen.classList.remove("is-canvas");
-    screen.replaceChildren();
   };
 
   const aafire = (duration) =>
-    animateGrid(duration, 60, true, (cols, rows) => {
+    animateGrid({ duration, interval: 60, tight: true }, (cols, rows) => {
       const palette = " .:-=+*#%@";
       const colors = ["", "term-fire-1", "term-fire-1", "term-fire-2", "term-fire-2", "term-fire-3", "term-fire-3", "term-fire-4", "term-fire-4", "term-fire-5"];
       const max = 1;
@@ -1081,6 +1086,8 @@ const initializeTerminal = () => {
             }
           }
         }
+
+        return grid;
       };
     });
 
@@ -1088,76 +1095,74 @@ const initializeTerminal = () => {
     const lines = outputLines(session).map((line) => [...line]);
     const base = html;
     const glyph = () => String.fromCharCode(33 + Math.floor(Math.random() * 94));
-    const reveal = session.duration ?? 3000;
+    const reveal = option(session, "duration");
     const revealAt = lines.map((chars) => chars.map(() => Math.random() * reveal));
     const total = lines.reduce((sum, chars) => sum + chars.length, 0);
+    const { steps, step, hold, frame } = timing.nms;
     const draw = (shown, elapsed) => {
       let count = 0;
       const body = lines
-        .map((chars, row) => {
-          let line = "";
-          let run = "";
-          let blue = false;
-          const flush = () => {
-            line += blue ? `<span class="term-blue">${escapeHtml(run)}</span>` : escapeHtml(run);
-            run = "";
-          };
+        .map((chars, row) =>
+          cellsHtml(
+            chars.flatMap((char, col) => {
+              count += 1;
 
-          chars.forEach((char, col) => {
-            count += 1;
-            if (count > shown) {
-              return;
-            }
-            const decrypted = char === " " || elapsed >= revealAt[row][col];
-            const isBlue = decrypted && char !== " ";
-            if (isBlue !== blue) {
-              flush();
-              blue = isBlue;
-            }
-            run += decrypted ? char : glyph();
-          });
-          flush();
-          return line;
-        })
+              if (count > shown) {
+                return [];
+              }
+
+              const decrypted = char === " " || elapsed >= revealAt[row][col];
+              return [{ char: decrypted ? char : glyph(), color: decrypted && char !== " " ? "term-blue" : "" }];
+            }),
+          ),
+        )
         .join("\n");
       html = `${base}${body}\n`;
       render("");
     };
 
-    for (let step = 1; step <= 12; step += 1) {
-      await whenVisible();
-      draw(Math.ceil((total * step) / 12), -1);
-      await sleep(50);
+    for (let index = 1; index <= steps; index += 1) {
+      draw(Math.ceil((total * index) / steps), -1);
+      await sleep(step);
     }
 
-    await sleep(1500);
-    const start = performance.now();
+    await sleep(hold);
+    const start = visibleNow();
 
-    while (performance.now() - start < reveal) {
-      await whenVisible();
-      draw(total, performance.now() - start);
-      await sleep(60);
+    while (visibleNow() - start < reveal) {
+      draw(total, visibleNow() - start);
+      await sleep(frame);
     }
 
     draw(total, reveal);
   };
 
   const effects = {
-    nms: (session) => nms(session),
-    sl: () => train(),
-    pipes: (session) => pipes(session.duration ?? 12000),
-    cbonsai: (session) => bonsai(session.hold ?? 4000),
-    asciiquarium: (session) => aquarium(session.duration ?? 12000),
-    nyancat: (session) => nyancat(session.duration ?? 10000),
-    aafire: (session) => aafire(session.duration ?? 10000),
+    sl: { run: () => train(), estimate: (session, cols) => (cols + trainWidth) * 44 },
+    pipes: { duration: 12000, run: (session) => pipes(option(session, "duration")) },
+    cbonsai: {
+      hold: 4000,
+      run: (session) => bonsai(option(session, "hold")),
+      estimate: (session) => 2500 + option(session, "hold"),
+    },
+    asciiquarium: { duration: 12000, run: (session) => aquarium(option(session, "duration")) },
+    nyancat: { duration: 10000, run: (session) => nyancat(option(session, "duration")) },
+    aafire: { duration: 10000, run: (session) => aafire(option(session, "duration")) },
+    cmatrix: { duration: 8000, run: (session) => matrix(option(session, "duration")) },
+    nms: {
+      inline: true,
+      duration: 3000,
+      run: (session) => nms(session),
+      estimate: (session) => timing.nms.steps * timing.nms.step + timing.nms.hold + option(session, "duration"),
+    },
   };
+  const option = (session, key) => session[key] ?? effects[session.effect]?.[key];
 
   const printLines = async (lines = []) => {
     for (const line of lines) {
-      await whenVisible();
       html += `${markup(line)}\n`;
       render("");
-      await sleep(line.includes("OK") ? 90 + Math.random() * 220 : 25 + Math.random() * 110);
+      await sleep(jitter(line.includes("OK") ? timing.printOk : timing.print));
     }
   };
 
@@ -1169,39 +1174,36 @@ const initializeTerminal = () => {
     return `${day} ${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${zone}`;
   };
 
-  const passwordDelay = 4000;
-
   const boot = async (settings) => {
     const terminal = screen.closest(".terminal");
     terminal?.classList.add("is-booting");
     html = "";
     render("");
-    await sleep(700);
+    await sleep(timing.boot.start);
 
     await printLines(settings.lines);
 
     html += `\n${escapeHtml(settings.issue ?? "")}\n\n${escapeHtml(settings.login ?? "login: ")}`;
     render();
-    await sleep(1200);
+    await sleep(timing.boot.login);
 
     for (const char of settings.user ?? "") {
-      await whenVisible();
       html += escapeHtml(char);
       render();
-      await sleep(70 + Math.random() * 110);
+      await sleep(jitter(timing.loginKey));
     }
 
     html += "\nPassword: ";
     render();
-    await sleep(passwordDelay);
+    await sleep(timing.boot.password);
     html += `\n\n${escapeHtml(settings.welcome ?? "")}\n`;
     render("");
-    await sleep(1800);
+    await sleep(timing.boot.welcome);
 
     showWindow();
     html = "";
     render();
-    await sleep(700);
+    await sleep(timing.boot.window);
   };
 
   const powerOff = async () => {
@@ -1215,12 +1217,12 @@ const initializeTerminal = () => {
     terminal.append(crt);
     terminal.classList.add("is-booting");
 
-    const finished = new Promise((resolve) => {
-      crt.addEventListener("animationend", resolve, { once: true });
-      window.setTimeout(resolve, 2000);
-    });
+    const finished = Promise.race([
+      new Promise((resolve) => crt.addEventListener("animationend", resolve, { once: true })),
+      sleep(timing.shutdown.crt + 500),
+    ]);
 
-    await sleep(180);
+    await sleep(timing.shutdown.wipe);
     html = "";
     render("");
     await finished;
@@ -1236,57 +1238,46 @@ const initializeTerminal = () => {
 
     const { cols } = measureGrid();
     screen.replaceChildren();
-    const typing = (cmd, delay, interrupt) => delay + cmd.length * 90 + 350 + (interrupt ? 250 : 0);
-    const printing = (lines = []) => lines.reduce((total, line) => total + (line.includes("OK") ? 200 : 80), 0);
-    const effectTime = {
-      sl: () => (cols + locomotive[0].length + coal[0].length) * 44,
-      cbonsai: (session) => 2500 + (session.hold ?? 4000),
-      nms: (session) => 600 + 1500 + (session.duration ?? 3000),
+    const typing = (cmd, delay, interrupt) =>
+      delay + cmd.length * mean(timing.key) + timing.afterType + (interrupt ? timing.interrupt : 0);
+    const printing = (lines = []) =>
+      lines.reduce((total, line) => total + mean(line.includes("OK") ? timing.printOk : timing.print), 0);
+    const sessionTime = (session, delay) => {
+      const effect = effects[session.effect];
+      const effectTime = effect ? (effect.estimate?.(session, cols) ?? option(session, "duration")) : 0;
+      const outputTime = effect?.inline ? 0 : outputLines(session).length * (session.lineDelay ?? timing.lineDelay);
+      return typing(session.cmd, delay, session.interrupt) + effectTime + outputTime;
     };
-    const sessionTime = (session, delay) =>
-      typing(session.cmd, delay, session.interrupt) +
-      (effects[session.effect] ? (effectTime[session.effect]?.(session) ?? session.duration ?? 10000) : 0) +
-      (session.effect === "nms" ? 0 : outputLines(session).length * (session.lineDelay ?? 35));
     const estimates = [];
 
     if (config.boot) {
       const settings = config.boot;
-      estimates.push(700 + printing(settings.lines) + 1200 + (settings.user ?? "").length * 125 + passwordDelay + 1800 + 700);
+      const { start, login, password, welcome, window: show } = timing.boot;
+      estimates.push(start + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show);
     }
 
-    let delay = 900;
+    let delay = timing.prompt;
     sessions.forEach((session) => {
       estimates.push(sessionTime(session, delay));
       delay = nextDelay(session);
     });
-    estimates.push(
-      typing("clear", delay + (config.clearDelay ?? 0)) +
-        (config.matrix ? typing(config.matrix.cmd ?? "cmatrix", 900) + (config.matrix.duration ?? 8000) : 0),
-    );
+    estimates.push(typing("clear", delay + (config.clearDelay ?? 0)));
+
+    if (matrixSession) {
+      estimates.push(sessionTime(matrixSession, timing.prompt));
+    }
 
     if (config.goodbye) {
-      estimates.push(sessionTime(config.goodbye, 900));
+      estimates.push(sessionTime(config.goodbye, timing.prompt));
     }
 
-    if (config.shutdown) {
-      const settings = config.shutdown;
-      estimates.push(
-        typing(settings.cmd ?? "shutdown -h now", settings.idle ?? 10000) +
-          (settings.broadcast ? 1800 : 0) + 700 + printing(settings.lines) + 900 + 1500,
-      );
-    }
+    const settings = config.shutdown;
+    const { idle, broadcast, clear, halt, crt } = timing.shutdown;
+    estimates.push(
+      typing(settings.cmd ?? "shutdown -h now", settings.idle ?? idle) +
+        (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + crt,
+    );
 
-    let hiddenAt = null;
-    let hiddenTotal = 0;
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        hiddenAt = performance.now();
-      } else if (hiddenAt !== null) {
-        hiddenTotal += performance.now() - hiddenAt;
-        hiddenAt = null;
-      }
-    });
-    const now = () => (hiddenAt ?? performance.now()) - hiddenTotal;
     const format = (ms) => {
       const seconds = Math.ceil(Math.max(0, ms) / 1000);
       return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")} remaining`;
@@ -1296,7 +1287,7 @@ const initializeTerminal = () => {
     let started = 0;
     let timer = null;
     const remaining = () =>
-      estimates.slice(index + 1).reduce((total, value) => total + value, 0) + Math.max(0, estimates[index] - (now() - started));
+      estimates.slice(index + 1).reduce((total, value) => total + value, 0) + Math.max(0, estimates[index] - (visibleNow() - started));
     const show = () => {
       if (eta) {
         eta.textContent = format(remaining());
@@ -1310,7 +1301,7 @@ const initializeTerminal = () => {
     return {
       next: () => {
         index += 1;
-        started = now();
+        started = visibleNow();
         show();
         timer ??= window.setInterval(show, 250);
       },
@@ -1324,25 +1315,28 @@ const initializeTerminal = () => {
     };
   };
 
-  const nextDelay = (session) => session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
+  const nextDelay = (session) =>
+    session.pause ?? (effects[session.effect] || session.interrupt ? timing.effectPause : timing.pause);
+  const matrixSession = config.matrix && { cmd: "cmatrix", ...config.matrix, effect: "cmatrix" };
 
   const runSession = async (session, delay) => {
+    const effect = effects[session.effect];
     await type(session.cmd, delay, session.interrupt);
 
-    if (session.effect === "nms") {
-      await effects.nms(session);
-    } else if (effects[session.effect]) {
-      await fullscreen(() => effects[session.effect](session));
+    if (effect?.inline) {
+      await effect.run(session);
+      return nextDelay(session);
     }
 
-    if (session.effect !== "nms") {
-      for (const [index, line] of outputLines(session).entries()) {
-        await whenVisible();
-        const content = session.lolcat ? rainbow(line, index) : markup(line);
-        html += session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
-        render("");
-        await sleep(session.lineDelay ?? 35);
-      }
+    if (effect) {
+      await fullscreen(() => effect.run(session));
+    }
+
+    for (const [index, line] of outputLines(session).entries()) {
+      const content = session.lolcat ? rainbow(line, index) : markup(line);
+      html += session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
+      render("");
+      await sleep(session.lineDelay ?? timing.lineDelay);
     }
 
     return nextDelay(session);
@@ -1357,7 +1351,7 @@ const initializeTerminal = () => {
     }
 
     for (;;) {
-      let delay = 900;
+      let delay = timing.prompt;
 
       for (const session of sessions) {
         clock.next();
@@ -1369,34 +1363,34 @@ const initializeTerminal = () => {
       html = "";
       render();
 
-      if (config.matrix) {
-        await type(config.matrix.cmd ?? "cmatrix", 900);
-        await fullscreen(() => matrix(config.matrix.duration ?? 8000));
+      if (matrixSession) {
+        clock.next();
+        await runSession(matrixSession, timing.prompt);
         html = "";
       }
 
       if (config.goodbye) {
         clock.next();
-        await runSession(config.goodbye, 900);
+        await runSession(config.goodbye, timing.prompt);
       }
 
       if (config.shutdown) {
-        clock.next();
-        await type(config.shutdown.cmd ?? "shutdown -h now", config.shutdown.idle ?? 10000);
         const settings = config.shutdown;
+        clock.next();
+        await type(settings.cmd ?? "shutdown -h now", settings.idle ?? timing.shutdown.idle);
 
         if (settings.broadcast) {
           html += `\n${markup(settings.broadcast.replace("{now}", timestamp())).replace(/\n+$/, "")}\n`;
           render("");
-          await sleep(1800);
+          await sleep(timing.shutdown.broadcast);
         }
 
         screen.closest(".terminal")?.classList.add("is-booting");
         html = "";
         render("");
-        await sleep(700);
+        await sleep(timing.shutdown.clear);
         await printLines(settings.lines);
-        await sleep(900);
+        await sleep(timing.shutdown.halt);
         await powerOff();
         clock.done();
         const power = document.querySelector("[data-terminal-power]");
