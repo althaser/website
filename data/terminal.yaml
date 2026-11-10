@@ -213,7 +213,7 @@ sessions:
             {debian}▀█▄{/}                         {ubuntu}▀▀████ ▀██████{/}         {arch}▄█▀▀             ▀▀█▄{/}
                {debian}▀▄{/}                           {ubuntu}▀▀▀ ▀▀█▀▀{/}          {arch}▀                   ▀{/}
 
-               {debian}debian{/}                      {ubuntu}ubuntu{/}                    {arch}arch linux{/}
+               {debian}Debian{/}                      {ubuntu}Ubuntu{/}                    {arch}Arch Linux{/}
 
                      {freebsd}▄▄                 ▄{/}                    {openbsd}▄{/}
                     {freebsd}█████ ▄▄███████▄▄▄████{/}              {openbsd}▄█▄█▄██▄ ▄{/}
@@ -230,7 +230,7 @@ sessions:
                          {freebsd}▀▀█████████▀{/}                   {openbsd}▀▀▀█████▀█{/}
                              {freebsd}▀▀▀▀{/}                             {openbsd}▀{/}
 
-                            {freebsd}freebsd{/}                     {openbsd}openbsd{/}
+                            {freebsd}FreeBSD{/}                     {openbsd}OpenBSD{/}
 
   - cmd: "ls -l | nms"
     effect: nms
