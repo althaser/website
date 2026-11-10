@@ -315,13 +315,14 @@ const initializeTerminal = () => {
     return;
   }
 
-  const showWindow = () => screen.closest(".terminal")?.classList.remove("is-booting");
+  const terminal = screen.closest(".terminal");
+  const setBooting = (booting) => terminal?.classList.toggle("is-booting", booting);
 
   let config;
   try {
     config = JSON.parse(source.textContent);
   } catch {
-    showWindow();
+    setBooting(false);
     return;
   }
 
@@ -329,7 +330,7 @@ const initializeTerminal = () => {
   const sessions = config.sessions ?? [];
 
   if (!sessions.length) {
-    showWindow();
+    setBooting(false);
     return;
   }
 
@@ -351,7 +352,7 @@ const initializeTerminal = () => {
   const cursor = '<span class="terminal-cursor"></span>';
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    showWindow();
+    setBooting(false);
     screen.innerHTML =
       sessions
         .map(
@@ -427,6 +428,10 @@ const initializeTerminal = () => {
     if (following) {
       screen.scrollTop = screen.scrollHeight;
     }
+  };
+  const clearScreen = (tail = cursor) => {
+    html = "";
+    render(tail);
   };
   const fullscreen = async (effect) => {
     const top = screen.scrollTop;
@@ -1177,10 +1182,8 @@ const initializeTerminal = () => {
   };
 
   const boot = async (settings) => {
-    const terminal = screen.closest(".terminal");
-    terminal?.classList.add("is-booting");
-    html = "";
-    render("");
+    setBooting(true);
+    clearScreen("");
     await sleep(timing.boot.start);
 
     await printLines(settings.lines);
@@ -1202,22 +1205,20 @@ const initializeTerminal = () => {
     render("");
     await sleep(timing.boot.welcome);
 
-    showWindow();
-    html = "";
-    render();
+    setBooting(false);
+    clearScreen();
     await sleep(timing.boot.window);
   };
 
   const powerOff = async () => {
     await whenVisible();
-    const terminal = screen.closest(".terminal");
     const crt = document.createElement("div");
     const height = screen.offsetHeight;
     crt.className = "terminal-crt";
     crt.style.top = `${screen.offsetTop + height / 2}px`;
     crt.style.setProperty("--crt-height", `${height}px`);
     terminal.append(crt);
-    terminal.classList.add("is-booting");
+    setBooting(true);
 
     const finished = Promise.race([
       new Promise((resolve) => crt.addEventListener("animationend", resolve, { once: true })),
@@ -1225,8 +1226,7 @@ const initializeTerminal = () => {
     ]);
 
     await sleep(timing.shutdown.wipe);
-    html = "";
-    render("");
+    clearScreen("");
     await finished;
     crt.remove();
   };
@@ -1360,13 +1360,12 @@ const initializeTerminal = () => {
 
       clock.next();
       await type("clear", delay + (config.clearDelay ?? 0));
-      html = "";
-      render();
+      clearScreen();
 
       if (matrixSession) {
         clock.next();
         await runSession(matrixSession, timing.prompt);
-        html = "";
+        clearScreen("");
       }
 
       if (config.goodbye) {
@@ -1385,9 +1384,8 @@ const initializeTerminal = () => {
           await sleep(timing.shutdown.broadcast);
         }
 
-        screen.closest(".terminal")?.classList.add("is-booting");
-        html = "";
-        render("");
+        setBooting(true);
+        clearScreen("");
         await sleep(timing.shutdown.clear);
         await printLines(settings.lines);
         await sleep(timing.shutdown.halt);
