@@ -317,6 +317,7 @@ const initializeTerminal = () => {
 
   const terminal = screen.closest(".terminal");
   const setBooting = (booting) => terminal?.classList.toggle("is-booting", booting);
+  const resetScreen = () => screen.classList.remove("is-locked", "is-tight", "is-canvas");
 
   let config;
   try {
@@ -438,10 +439,9 @@ const initializeTerminal = () => {
       await effect();
     } finally {
       if (token === generation) {
-        screen.classList.remove("is-tight", "is-canvas");
+        resetScreen();
         screen.innerHTML = html;
         screen.scrollTop = following ? screen.scrollHeight : top;
-        screen.classList.remove("is-locked");
       }
     }
   };
@@ -1366,6 +1366,11 @@ const initializeTerminal = () => {
   }
 
   const power = document.querySelector("[data-terminal-power]");
+  const showPower = (visible) => {
+    if (power) {
+      power.hidden = !visible;
+    }
+  };
 
   const progress = () => {
     const container = document.querySelector("[data-terminal-progress]");
@@ -1420,6 +1425,8 @@ const initializeTerminal = () => {
         timer ??= window.setInterval(show, 250);
       },
       done: () => {
+        window.clearInterval(timer);
+        timer = null;
         index = steps.length;
         show();
       },
@@ -1441,9 +1448,7 @@ const initializeTerminal = () => {
 
         if (config.shutdown) {
           clock.done();
-          if (power) {
-            power.hidden = false;
-          }
+          showPower(true);
           return;
         }
       }
@@ -1456,11 +1461,9 @@ const initializeTerminal = () => {
 
   const seek = (index) => {
     generation += 1;
-    if (power) {
-      power.hidden = true;
-    }
+    showPower(false);
     terminal?.querySelector(".terminal-crt")?.remove();
-    screen.classList.remove("is-locked", "is-tight", "is-canvas");
+    resetScreen();
     setBooting(false);
     html = steps.slice(0, index).reduce((previous, step) => step.after(previous), "");
     render(cursor, true);
