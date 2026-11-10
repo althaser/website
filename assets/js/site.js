@@ -315,10 +315,13 @@ const initializeTerminal = () => {
     return;
   }
 
+  const showWindow = () => screen.closest(".terminal")?.classList.remove("is-booting");
+
   let config;
   try {
     config = JSON.parse(source.textContent);
   } catch {
+    showWindow();
     return;
   }
 
@@ -326,6 +329,7 @@ const initializeTerminal = () => {
   const sessions = config.sessions ?? [];
 
   if (!sessions.length) {
+    showWindow();
     return;
   }
 
@@ -343,6 +347,7 @@ const initializeTerminal = () => {
   const cursor = '<span class="terminal-cursor"></span>';
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    showWindow();
     screen.innerHTML =
       sessions
         .flatMap((session) => [markup(prompt) + escapeHtml(session.cmd), ...outputLines(session).map(markup)])
@@ -1065,6 +1070,23 @@ const initializeTerminal = () => {
     aafire: (session) => aafire(session.duration ?? 10000),
   };
 
+  const printLines = async (lines = []) => {
+    for (const line of lines) {
+      await whenVisible();
+      html += `${markup(line)}\n`;
+      render("");
+      await sleep(line.includes("OK") ? 90 + Math.random() * 220 : 25 + Math.random() * 110);
+    }
+  };
+
+  const timestamp = () => {
+    const now = new Date();
+    const pad = (value) => String(value).padStart(2, "0");
+    const zone = new Intl.DateTimeFormat("en-US", { timeZoneName: "short" }).formatToParts(now).find((part) => part.type === "timeZoneName")?.value ?? "UTC";
+    const day = now.toLocaleDateString("en-US", { weekday: "short" });
+    return `${day} ${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${zone}`;
+  };
+
   const boot = async (settings) => {
     const terminal = screen.closest(".terminal");
     terminal?.classList.add("is-booting");
@@ -1072,12 +1094,7 @@ const initializeTerminal = () => {
     render("");
     await sleep(700);
 
-    for (const line of settings.lines ?? []) {
-      await whenVisible();
-      html += `${markup(line)}\n`;
-      render("");
-      await sleep(line.includes("OK") ? 90 + Math.random() * 220 : 25 + Math.random() * 110);
-    }
+    await printLines(settings.lines);
 
     html += `\n${escapeHtml(settings.issue ?? "")}\n\n${escapeHtml(settings.login ?? "login: ")}`;
     render();
@@ -1097,7 +1114,7 @@ const initializeTerminal = () => {
     render("");
     await sleep(1800);
 
-    terminal?.classList.remove("is-booting");
+    showWindow();
     html = "";
     render();
     await sleep(700);
@@ -1154,18 +1171,14 @@ const initializeTerminal = () => {
     }
 
     crt.remove();
-    await sleep(2500);
   };
 
   const run = async () => {
-    let powered = false;
+    if (config.boot) {
+      await boot(config.boot);
+    }
 
     for (;;) {
-      if (config.boot && !powered) {
-        await boot(config.boot);
-        powered = true;
-      }
-
       let delay = 900;
 
       for (const session of sessions) {
@@ -1198,10 +1211,22 @@ const initializeTerminal = () => {
 
       if (config.shutdown) {
         await type(config.shutdown.cmd ?? "shutdown -h now", config.shutdown.idle ?? 10000);
+        const settings = config.shutdown;
+
+        if (settings.broadcast) {
+          html += `\n${markup(settings.broadcast.replace("{now}", timestamp())).replace(/\n+$/, "")}\n`;
+          render("");
+          await sleep(1800);
+        }
+
+        screen.closest(".terminal")?.classList.add("is-booting");
+        html = "";
         render("");
-        await sleep(600);
+        await sleep(700);
+        await printLines(settings.lines);
+        await sleep(900);
         await powerOff();
-        powered = false;
+        return;
       }
     }
   };

@@ -5,6 +5,35 @@ matrix:
 shutdown:
   cmd: "shutdown -h now"
   idle: 10000
+  broadcast: |
+    Broadcast message from root@laptop on pts/1 ({now}):
+
+    The system will power off now!
+  lines:
+    - "[  {green}OK{/}  ] Removed slice system-modprobe.slice - Slice /system/modprobe."
+    - "[  {green}OK{/}  ] Stopped target graphical.target - Graphical Interface."
+    - "[  {green}OK{/}  ] Stopped target multi-user.target - Multi-User System."
+    - "         Stopping docker.service - Docker Application Container Engine..."
+    - "         Stopping gdm.service - GNOME Display Manager..."
+    - "         Stopping NetworkManager.service - Network Manager..."
+    - "         Stopping ssh.service - OpenBSD Secure Shell server..."
+    - "         Stopping tailscaled.service - Tailscale node agent..."
+    - "[  {green}OK{/}  ] Stopped ssh.service - OpenBSD Secure Shell server."
+    - "[  {green}OK{/}  ] Stopped tailscaled.service - Tailscale node agent."
+    - "[  {green}OK{/}  ] Stopped gdm.service - GNOME Display Manager."
+    - "[  {green}OK{/}  ] Stopped docker.service - Docker Application Container Engine."
+    - "[  {green}OK{/}  ] Stopped NetworkManager.service - Network Manager."
+    - "[  {green}OK{/}  ] Stopped target network-online.target - Network is Online."
+    - "[  {green}OK{/}  ] Stopped systemd-resolved.service - Network Name Resolution."
+    - "[  {green}OK{/}  ] Unmounted boot-efi.mount - /boot/efi."
+    - "[  {green}OK{/}  ] Unmounted home.mount - /home."
+    - "[  {green}OK{/}  ] Reached target umount.target - Unmount All Filesystems."
+    - "[  {green}OK{/}  ] Stopped systemd-journald.service - Journal Service."
+    - "[  {green}OK{/}  ] Reached target shutdown.target - System Shutdown."
+    - "[  {green}OK{/}  ] Reached target final.target - Late Shutdown Services."
+    - "[  {green}OK{/}  ] Finished systemd-poweroff.service - System Power Off."
+    - "[  {green}OK{/}  ] Reached target poweroff.target - System Power Off."
+    - "{gray}[278431.512094]{/} reboot: Power down"
 boot:
   lines:
     - "{gray}[    0.000000]{/} Linux version 7.0.0-43-generic (buildd@ubuntu) #43-Ubuntu SMP PREEMPT_DYNAMIC"

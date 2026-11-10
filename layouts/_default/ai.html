@@ -3,7 +3,7 @@
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
   {{ .Content }}
   <p class="sr-only">A simulated terminal session that types commands and shows their output.</p>
-  <div class="terminal not-prose" aria-hidden="true">
+  <div class="terminal not-prose{{ if hugo.Data.terminal.boot }} is-booting{{ end }}" aria-hidden="true">
     <div class="terminal-bar">
       <span class="terminal-bar-start">
         <span class="terminal-button">{{ partial "icon.html" "solid/plus" }}</span>
