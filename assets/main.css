@@ -420,7 +420,7 @@
     @apply block leading-none;
   }
   .terminal-cursor {
-    @apply inline-block h-[1.1em] w-[0.6em] align-text-bottom animate-blink bg-gray-800 dark:bg-gray-200;
+    @apply inline-block h-[1em] w-[0.6em] align-middle animate-blink bg-gray-800 dark:bg-gray-200;
   }
   .term-green {
     @apply text-green-700 dark:text-green-400;
