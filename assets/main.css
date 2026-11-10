@@ -437,7 +437,7 @@
     @apply inline-flex items-center gap-1;
   }
   .terminal {
-    @apply relative mt-4 overflow-hidden rounded-xl bg-gray-200 shadow-lg ring-1 ring-black/15 dark:bg-terminal dark:ring-black/40;
+    @apply relative mt-4 overflow-hidden rounded-xl bg-terminal shadow-lg ring-1 ring-black/15 dark:ring-black/40;
   }
   .terminal-bar {
     @apply transition-opacity duration-700 grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-gray-300 px-2 py-1.5 text-link dark:bg-headerbar dark:text-link-dark;
@@ -482,7 +482,7 @@
     @apply truncate text-sm font-bold;
   }
   .terminal-screen {
-    @apply m-0 h-[28.5rem] overflow-x-hidden overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:var(--color-gray-400)_transparent] dark:[scrollbar-color:var(--color-gray-600)_transparent] whitespace-pre p-3 font-mono text-xs leading-tight text-gray-800 sm:p-4 sm:text-sm dark:text-gray-200;
+    @apply m-0 h-[28.5rem] overflow-x-hidden overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:var(--color-gray-600)_transparent] whitespace-pre p-3 font-mono text-xs leading-tight text-gray-200 sm:p-4 sm:text-sm;
   }
   .terminal-screen.is-locked {
     @apply overflow-hidden;
@@ -500,52 +500,52 @@
     @apply block leading-none;
   }
   .terminal-cursor {
-    @apply inline-block h-[1em] w-[0.6em] align-middle animate-blink bg-gray-800 dark:bg-gray-200;
+    @apply inline-block h-[1em] w-[0.6em] align-middle animate-blink bg-gray-200;
   }
   .term-green {
-    @apply text-green-700 dark:text-green-400;
+    @apply text-green-400;
   }
   .term-blue {
-    @apply text-blue-700 dark:text-blue-400;
+    @apply text-blue-400;
   }
   .term-yellow {
-    @apply text-amber-600 dark:text-yellow-300;
+    @apply text-yellow-300;
   }
   .term-red {
-    @apply text-orange-600 dark:text-orange-500;
+    @apply text-orange-500;
   }
   .term-magenta {
-    @apply text-fuchsia-700 dark:text-fuchsia-400;
+    @apply text-fuchsia-400;
   }
   .term-cyan {
-    @apply text-cyan-700 dark:text-cyan-400;
+    @apply text-cyan-400;
   }
   .term-gray {
-    @apply text-gray-500 dark:text-gray-400;
+    @apply text-gray-400;
   }
   .term-rainbow {
-    @apply text-[hsl(var(--hue)_85%_38%)] dark:text-[hsl(var(--hue)_90%_65%)];
+    @apply text-[hsl(var(--hue)_90%_65%)];
   }
   .term-fire-1 {
-    @apply text-red-900 dark:text-red-800;
+    @apply text-red-800;
   }
   .term-fire-2 {
-    @apply text-red-600 dark:text-red-500;
+    @apply text-red-500;
   }
   .term-fire-3 {
-    @apply text-orange-600 dark:text-orange-400;
+    @apply text-orange-400;
   }
   .term-fire-4 {
-    @apply text-amber-500 dark:text-yellow-300;
+    @apply text-yellow-300;
   }
   .term-fire-5 {
-    @apply text-yellow-600 dark:text-yellow-100;
+    @apply text-yellow-100;
   }
   .term-matrix-head {
-    @apply text-green-950 dark:text-green-100;
+    @apply text-green-100;
   }
   .term-matrix-dim {
-    @apply text-green-400 dark:text-green-700;
+    @apply text-green-700;
   }
 }
 
