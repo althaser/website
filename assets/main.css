@@ -372,7 +372,7 @@
     @apply relative mt-4 overflow-hidden rounded-xl bg-gray-200 shadow-lg ring-1 ring-black/15 dark:bg-terminal dark:ring-black/40;
   }
   .terminal-bar {
-    @apply transition-opacity duration-700 grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-gray-300 px-2 py-1.5 text-link dark:bg-headerbar dark:text-gray-200;
+    @apply transition-opacity duration-700 grid grid-cols-[1fr_auto_1fr] items-center gap-2 bg-gray-300 px-2 py-1.5 text-link dark:bg-headerbar dark:text-link-dark;
   }
   .terminal.is-booting {
     @apply bg-black ring-black;
