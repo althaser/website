@@ -1153,6 +1153,8 @@ const initializeTerminal = () => {
     return `${day} ${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${zone}`;
   };
 
+  const passwordDelay = 4000;
+
   const boot = async (settings) => {
     const terminal = screen.closest(".terminal");
     terminal?.classList.add("is-booting");
@@ -1175,7 +1177,7 @@ const initializeTerminal = () => {
 
     html += "\nPassword: ";
     render();
-    await sleep(1500);
+    await sleep(passwordDelay);
     html += `\n\n${escapeHtml(settings.welcome ?? "")}\n`;
     render("");
     await sleep(1800);
@@ -1233,7 +1235,7 @@ const initializeTerminal = () => {
 
     if (config.boot) {
       const settings = config.boot;
-      estimates.push(700 + printing(settings.lines) + 1200 + (settings.user ?? "").length * 125 + 1500 + 1800 + 700);
+      estimates.push(700 + printing(settings.lines) + 1200 + (settings.user ?? "").length * 125 + passwordDelay + 1800 + 700);
     }
 
     let delay = 900;
@@ -1246,8 +1248,8 @@ const initializeTerminal = () => {
         (config.matrix ? typing(config.matrix.cmd ?? "cmatrix", 900) + (config.matrix.duration ?? 8000) : 0),
     );
 
-    if (config.nms) {
-      estimates.push(sessionTime({ ...config.nms, effect: "nms" }, 900));
+    if (config.goodbye) {
+      estimates.push(sessionTime(config.goodbye, 900));
     }
 
     if (config.shutdown) {
@@ -1356,9 +1358,9 @@ const initializeTerminal = () => {
         html = "";
       }
 
-      if (config.nms) {
+      if (config.goodbye) {
         clock.next();
-        await runSession({ ...config.nms, effect: "nms" }, 900);
+        await runSession(config.goodbye, 900);
       }
 
       if (config.shutdown) {
