@@ -2,6 +2,9 @@ title: "althaser@laptop: ~"
 prompt: "{green}althaser@laptop{/}:{blue}~{/} $ "
 matrix:
   duration: 16000
+shutdown:
+  cmd: "shutdown -h now"
+  idle: 10000
 boot:
   lines:
     - "{gray}[    0.000000]{/} Linux version 7.0.0-43-generic (buildd@ubuntu) #43-Ubuntu SMP PREEMPT_DYNAMIC"

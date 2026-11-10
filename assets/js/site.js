@@ -1103,12 +1103,69 @@ const initializeTerminal = () => {
     await sleep(700);
   };
 
-  const run = async () => {
-    if (config.boot) {
-      await boot(config.boot);
-    }
+  const powerOff = async () => {
+    await whenVisible();
+    const terminal = screen.closest(".terminal");
+    const crt = document.createElement("div");
+    const height = screen.offsetHeight;
+    crt.className = "terminal-crt";
+    crt.style.top = `${screen.offsetTop + height / 2}px`;
+    terminal.append(crt);
+    terminal.classList.add("is-booting");
+
+    const width = terminal.clientWidth;
+    const frames = [
+      [0, width, height, 0, 0, 0, 0],
+      [180, width, height, 0.85, 0, 0, 0],
+      [675, width, 2, 1, 18, 4, 0.9],
+      [1125, 6, 2, 1, 22, 8, 0.95],
+      [1275, 4, 4, 1, 16, 6, 0.9],
+      [1500, 2, 2, 0, 6, 2, 0],
+    ];
+    const start = performance.now();
+    let cleared = false;
 
     for (;;) {
+      const elapsed = performance.now() - start;
+      const index = frames.findIndex(([time]) => time > elapsed);
+
+      if (index === -1) {
+        break;
+      }
+
+      const from = frames[index - 1] ?? frames[0];
+      const to = frames[index];
+      const raw = (elapsed - from[0]) / Math.max(1, to[0] - from[0]);
+      const t = raw * raw * (3 - 2 * raw);
+      const [, w, h, opacity, blur, spread, alpha] = from.map((value, i) => value + (to[i] - value) * t);
+      crt.style.width = `${w}px`;
+      crt.style.height = `${h}px`;
+      crt.style.opacity = opacity;
+      crt.style.borderRadius = Math.min(w, h) < 12 ? "9999px" : "0";
+      crt.style.boxShadow = `0 0 ${blur}px ${spread}px rgb(255 255 255 / ${alpha})`;
+
+      if (!cleared && elapsed > 180) {
+        html = "";
+        render("");
+        cleared = true;
+      }
+
+      await sleep(16);
+    }
+
+    crt.remove();
+    await sleep(2500);
+  };
+
+  const run = async () => {
+    let powered = false;
+
+    for (;;) {
+      if (config.boot && !powered) {
+        await boot(config.boot);
+        powered = true;
+      }
+
       let delay = 900;
 
       for (const session of sessions) {
@@ -1137,6 +1194,14 @@ const initializeTerminal = () => {
       if (config.matrix) {
         await matrix(config.matrix.duration ?? 8000);
         html = "";
+      }
+
+      if (config.shutdown) {
+        await type(config.shutdown.cmd ?? "shutdown -h now", config.shutdown.idle ?? 10000);
+        render("");
+        await sleep(600);
+        await powerOff();
+        powered = false;
       }
     }
   };
