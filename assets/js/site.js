@@ -370,16 +370,26 @@ const initializeTerminal = () => {
       : Promise.resolve();
 
   let html = "";
+  let following = true;
+  screen.addEventListener("scroll", () => {
+    if (!screen.classList.contains("is-locked")) {
+      following = screen.scrollHeight - screen.scrollTop - screen.clientHeight < 8;
+    }
+  });
   const render = (tail = cursor, force = false) => {
-    const following = force || screen.scrollHeight - screen.scrollTop - screen.clientHeight < 8;
+    following ||= force;
     screen.innerHTML = html + tail;
     if (following) {
       screen.scrollTop = screen.scrollHeight;
     }
   };
   const fullscreen = async (effect) => {
+    const top = screen.scrollTop;
     screen.classList.add("is-locked");
+    screen.scrollTop = 0;
     await effect();
+    screen.innerHTML = html;
+    screen.scrollTop = following ? screen.scrollHeight : top;
     screen.classList.remove("is-locked");
   };
 
@@ -458,8 +468,6 @@ const initializeTerminal = () => {
     });
     const drops = Array.from({ length: cols }, () => newDrop(true));
     const end = performance.now() + duration;
-
-    screen.scrollTop = 0;
 
     while (performance.now() < end) {
       await whenVisible();
@@ -1325,7 +1333,6 @@ const initializeTerminal = () => {
       await effects.nms(session);
     } else if (effects[session.effect]) {
       await fullscreen(() => effects[session.effect](session));
-      render("");
     }
 
     if (session.effect !== "nms") {
