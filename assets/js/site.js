@@ -334,6 +334,12 @@ const initializeTerminal = () => {
   const markup = (text) =>
     escapeHtml(text).replace(/\{(green|blue|yellow|red|magenta|cyan|gray)\}(.*?)\{\/\}/g, '<span class="term-$1">$2</span>');
   const outputLines = (session) => (session.output ? session.output.replace(/\n+$/, "").split("\n") : []);
+  const rainbow = (text, row) =>
+    [...text]
+      .map((char, col) =>
+        char === " " ? char : `<span class="term-rainbow" style="--hue:${Math.round((405 - col * 1.8 - row * 3) % 360)}">${escapeHtml(char)}</span>`,
+      )
+      .join("");
   const cursor = '<span class="terminal-cursor"></span>';
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -364,7 +370,7 @@ const initializeTerminal = () => {
     screen.scrollTop = screen.scrollHeight;
   };
 
-  const type = async (cmd, delay) => {
+  const type = async (cmd, delay, interrupt = false) => {
     html += markup(prompt);
     render();
     await sleep(delay);
@@ -377,12 +383,17 @@ const initializeTerminal = () => {
     }
 
     await sleep(350);
+
+    if (interrupt) {
+      html += "^C";
+      render();
+      await sleep(250);
+    }
+
     html += "\n";
   };
 
-  const matrix = async (duration) => {
-    const glyphs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=<>?";
-    const randomGlyph = () => glyphs[Math.floor(Math.random() * glyphs.length)];
+  const measureGrid = () => {
     const probe = document.createElement("span");
     probe.textContent = "M".repeat(100);
     screen.replaceChildren(probe);
@@ -391,8 +402,41 @@ const initializeTerminal = () => {
     const charHeight = parseFloat(style.lineHeight);
     const innerWidth = screen.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
     const innerHeight = screen.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
-    const cols = Math.max(1, Math.floor(innerWidth / charWidth));
-    const rows = Math.max(1, Math.floor(innerHeight / charHeight));
+
+    return {
+      cols: Math.max(1, Math.floor(innerWidth / charWidth)),
+      rows: Math.max(1, Math.floor(innerHeight / charHeight)),
+    };
+  };
+
+  const renderGrid = (grid) => {
+    screen.innerHTML = grid
+      .map((cells) => {
+        let line = "";
+        let current = null;
+        let run = "";
+
+        cells.forEach((cell) => {
+          const cls = cell?.color ?? "";
+
+          if (cls !== current) {
+            line += current ? `<span class="${current}">${escapeHtml(run)}</span>` : run;
+            current = cls;
+            run = "";
+          }
+
+          run += cell ? cell.char : " ";
+        });
+
+        return line + (current ? `<span class="${current}">${escapeHtml(run)}</span>` : run);
+      })
+      .join("\n");
+  };
+
+  const matrix = async (duration) => {
+    const glyphs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=<>?";
+    const randomGlyph = () => glyphs[Math.floor(Math.random() * glyphs.length)];
+    const { cols, rows } = measureGrid();
     const grid = Array.from({ length: rows }, () => Array.from({ length: cols }, randomGlyph));
     const newDrop = (start) => ({
       y: start ? -Math.random() * rows * 2 : -Math.random() * rows,
@@ -457,24 +501,594 @@ const initializeTerminal = () => {
     screen.replaceChildren();
   };
 
+  const locomotive = [
+    "      ====        ________                ___________ ",
+    "  _D _|  |_______/        \\__I_I_____===__|_________| ",
+    "   |(_)---  |   H\\________/ |   |        =|___ ___|   ",
+    "   /     |  |   H  |  |     |   |         ||_| |_||   ",
+    "  |      |  |   H  |__--------------------| [___] |   ",
+    "  | ________|___H__/__|_____/[][]~\\_______|       |   ",
+    "  |/ |   |-----------I_____I [][] []  D   |=======|__ ",
+  ];
+  const wheels = [
+    [
+      "__/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__ ",
+      " |/-=|___|=    ||    ||    ||    |_____/~\\___/        ",
+      "  \\_/      \\O=====O=====O=====O_/      \\_/            ",
+    ],
+    [
+      "__/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__ ",
+      " |/-=|___|=O=====O=====O=====O   |_____/~\\___/        ",
+      "  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/            ",
+    ],
+    [
+      "__/ =| o |=-O=====O=====O=====O \\ ____Y___________|__ ",
+      " |/-=|___|=    ||    ||    ||    |_____/~\\___/        ",
+      "  \\_/      \\__/  \\__/  \\__/  \\__/      \\_/            ",
+    ],
+  ];
+  const coal = [
+    "                              ",
+    "                              ",
+    "    _________________         ",
+    "   _|                \\_____A  ",
+    " =|                        |  ",
+    " -|                        |  ",
+    "__|________________________|_ ",
+    "|__________________________|_ ",
+    "   |_D__D__D_|  |_D__D__D_|   ",
+    "    \\_/   \\_/    \\_/   \\_/    ",
+  ];
+  const smoke = [
+    ["                 (@@) (  ) (@)  ( )  @@    ()    @     O     @", "            (   )", "        (@@@@)", "     (    )", "", "   (@@@)"],
+    ["                 (  ) (@@) ( )  (@)  ()    @@    O     @     O", "            (@@@)", "        (    )", "     (@@@@)", "", "   (   )"],
+  ];
+
+  const train = async () => {
+    const { cols, rows } = measureGrid();
+    const width = locomotive[0].length + coal[0].length;
+    const smokeRows = Math.max(0, Math.min(smoke[0].length, rows - coal.length));
+    const top = Math.max(0, Math.floor((rows - smokeRows - coal.length) / 2));
+
+    for (let x = cols; x > -width; x -= 1) {
+      await whenVisible();
+      const body = [...locomotive, ...wheels[((x % 3) + 3) % 3]].map((line, i) => line + coal[i]);
+      const puff = smoke[Math.floor(x / 4) % 2 === 0 ? 0 : 1];
+      const frame = [...puff.slice(puff.length - smokeRows), ...body];
+      const lines = Array.from({ length: rows }, () => "");
+
+      frame.forEach((line, i) => {
+        const row = top + i;
+
+        if (row >= rows) {
+          return;
+        }
+
+        const start = Math.max(0, -x);
+        const visible = line.slice(start, start + cols - Math.max(0, x));
+        lines[row] = " ".repeat(Math.max(0, x)) + visible;
+      });
+
+      screen.innerHTML = escapeHtml(lines.join("\n"));
+      await sleep(40);
+    }
+  };
+
+  const pipes = async (duration) => {
+    screen.classList.add("is-tight");
+    const { cols, rows } = measureGrid();
+    const colors = ["term-green", "term-blue", "term-yellow", "term-red", "term-magenta", "term-cyan"];
+    const straight = ["┃", "━", "┃", "━"];
+    const corners = {
+      "0-1": "┏", "0-3": "┓", "2-1": "┗", "2-3": "┛",
+      "1-0": "┛", "1-2": "┓", "3-0": "┗", "3-2": "┏",
+    };
+    const steps = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+    const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
+    const newPipe = () => ({
+      row: Math.floor(Math.random() * rows),
+      col: Math.floor(Math.random() * cols),
+      dir: Math.floor(Math.random() * 4),
+      color: randomColor(),
+    });
+    let grid = Array.from({ length: rows }, () => Array(cols).fill(null));
+    let drawn = 0;
+    const active = [newPipe(), newPipe()];
+    const end = performance.now() + duration;
+
+    while (performance.now() < end) {
+      await whenVisible();
+
+      active.forEach((pipe) => {
+        let next = pipe.dir;
+
+        if (Math.random() < 0.13) {
+          next = (pipe.dir + (Math.random() < 0.5 ? 1 : 3)) % 4;
+        }
+
+        grid[pipe.row][pipe.col] = {
+          char: next === pipe.dir ? straight[next] : corners[`${pipe.dir}-${next}`],
+          color: pipe.color,
+        };
+        drawn += 1;
+        pipe.dir = next;
+        pipe.row += steps[next][0];
+        pipe.col += steps[next][1];
+
+        if (pipe.row < 0 || pipe.row >= rows || pipe.col < 0 || pipe.col >= cols) {
+          pipe.row = (pipe.row + rows) % rows;
+          pipe.col = (pipe.col + cols) % cols;
+          pipe.color = randomColor();
+        }
+      });
+
+      if (drawn > rows * cols * 0.7) {
+        grid = Array.from({ length: rows }, () => Array(cols).fill(null));
+        drawn = 0;
+      }
+
+      renderGrid(grid);
+
+      await sleep(30);
+    }
+
+    screen.classList.remove("is-tight");
+  };
+
+  const bonsai = async (hold) => {
+    const { cols, rows } = measureGrid();
+    const pot = [
+      ":_______________________:",
+      " \\_____________________/",
+      "  (_)               (_)",
+    ];
+    const grid = Array.from({ length: rows }, () => Array(cols).fill(null));
+    const center = Math.floor(cols / 2);
+    const potTop = rows - pot.length;
+    const potLeft = center - Math.floor(pot[0].length / 2);
+    const random = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+    const put = (row, col, char, color) => {
+      if (row < 0 || row >= potTop || col < 0 || col >= cols) {
+        return;
+      }
+
+      if (char === "&" && grid[row][col] && grid[row][col].char !== "&") {
+        return;
+      }
+
+      grid[row][col] = { char, color };
+    };
+
+    pot.forEach((line, i) =>
+      [...line].forEach((char, j) => {
+        if (char !== " " && potLeft + j >= 0 && potLeft + j < cols) {
+          grid[potTop + i][potLeft + j] = { char, color: "term-gray" };
+        }
+      }),
+    );
+
+    const trunkLife = Math.max(10, potTop + 4);
+    const woodChar = (dx, dy) => {
+      if (dy === 0) {
+        return Math.random() < 0.5 ? "_" : "~";
+      }
+      if (dx < 0) {
+        return "\\";
+      }
+      return dx > 0 ? "/" : "|";
+    };
+    let branches = [{ row: potTop - 1, col: center, type: "trunk", life: trunkLife, age: 0 }];
+    let ticks = 0;
+
+    while (branches.length && ticks < 400) {
+      await whenVisible();
+      const spawned = [];
+
+      branches.forEach((branch) => {
+        branch.life -= 1;
+        branch.age += 1;
+        let dx = 0;
+        let dy = 0;
+
+        if (branch.type === "leaf" || branch.life < 4) {
+          dx = random(-2, 2);
+          dy = random(-1, 0);
+          put(branch.row, branch.col, "&", "term-green");
+
+          if (branch.type !== "leaf") {
+            for (let i = 0; i < 2 && branches.length + spawned.length < 140; i += 1) {
+              spawned.push({ row: branch.row, col: branch.col, type: "leaf", life: random(3, 6), age: 0 });
+            }
+          }
+        } else {
+          if (branch.type === "trunk") {
+            dy = branch.age < 3 || Math.random() < 0.6 ? -1 : 0;
+            dx = Math.random() < 0.55 ? 0 : random(-1, 1);
+          } else {
+            dx = (branch.type === "left" ? -1 : 1) * (Math.random() < 0.3 ? 2 : 1);
+            dy = Math.random() < 0.4 ? -1 : 0;
+          }
+
+          const char = woodChar(dx, dy);
+          put(branch.row, branch.col, char, "term-yellow");
+
+          if (Math.abs(dx) === 2 && dy === 0) {
+            put(branch.row, branch.col + dx / 2, char, "term-yellow");
+          }
+
+          const chance = branch.type === "trunk" ? 0.3 : 0.15;
+          if (branch.age > 3 && branches.length + spawned.length < 140 && Math.random() < chance) {
+            spawned.push({
+              row: branch.row,
+              col: branch.col,
+              type: branch.type === "trunk" ? (Math.random() < 0.5 ? "left" : "right") : branch.type,
+              life: random(6, 12),
+              age: 0,
+            });
+          }
+        }
+
+        branch.row = Math.min(potTop - 1, Math.max(0, branch.row + dy));
+        branch.col = Math.min(cols - 1, Math.max(0, branch.col + dx));
+      });
+
+      branches = [...branches.filter((branch) => branch.life > 0), ...spawned];
+      renderGrid(grid);
+      ticks += 1;
+      await sleep(45);
+    }
+
+    await sleep(hold);
+  };
+
+  const animateGrid = async (duration, interval, tight, setup) => {
+    screen.classList.toggle("is-tight", tight);
+    const { cols, rows } = measureGrid();
+    const draw = setup(cols, rows);
+    const start = performance.now();
+    let frame = 0;
+
+    while (performance.now() - start < duration) {
+      await whenVisible();
+      const grid = Array.from({ length: rows }, () => Array(cols).fill(null));
+      draw(grid, frame, performance.now() - start);
+      renderGrid(grid);
+      frame += 1;
+      await sleep(interval);
+    }
+
+    screen.classList.remove("is-tight");
+  };
+
+  const stamp = (grid, row, col, lines, color) => {
+    lines.forEach((line, i) => {
+      [...line].forEach((char, j) => {
+        const r = row + i;
+        const c = Math.round(col) + j;
+
+        if (char !== " " && r >= 0 && r < grid.length && c >= 0 && c < grid[0].length) {
+          grid[r][c] = { char, color };
+        }
+      });
+    });
+  };
+
+  const fishColors = ["term-green", "term-blue", "term-yellow", "term-red", "term-magenta", "term-cyan"];
+  const pick = (items) => items[Math.floor(Math.random() * items.length)];
+
+  const aquarium = (duration) =>
+    animateGrid(duration, 70, false, (cols, rows) => {
+      const waves = [
+        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+        "^^^^ ^^^  ^^^   ^^^    ^^^^      ^^^  ^^",
+        "  ^^^^      ^^^^     ^^^    ^^     ^^^^ ",
+        "^^      ^^^^      ^^^    ^^^^^^         ",
+      ];
+      const kinds = [
+        { right: ["><>"], left: ["<><"] },
+        { right: ["><((('>"], left: ["<')))><"] },
+        { right: ["  __", "\\/ o\\", "/\\__/"], left: [" __", "/o \\/", "\\__/\\"] },
+      ];
+      const top = waves.length + 1;
+      const newFish = (anywhere) => {
+        const kind = pick(kinds);
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        const art = dir > 0 ? kind.right : kind.left;
+        const width = Math.max(...art.map((line) => line.length));
+        return {
+          art,
+          dir,
+          width,
+          row: top + Math.floor(Math.random() * Math.max(1, rows - top - art.length - 2)),
+          col: anywhere ? Math.random() * cols : dir > 0 ? -width : cols,
+          speed: 0.25 + Math.random() * 0.6,
+          color: pick(fishColors),
+        };
+      };
+      const fish = Array.from({ length: Math.max(4, Math.floor((rows * cols) / 220)) }, () => newFish(true));
+      const sharkRight = [
+        "          __        ",
+        "         /  |       ",
+        " \\  ____/   |____   ",
+        "  >(____________ o`-.",
+        " /     \\  \\______vvv/",
+      ];
+      const mirror = { "/": "\\", "\\": "/", "(": ")", ")": "(", "<": ">", ">": "<", "`": "'", "'": "`" };
+      const sharkLeft = sharkRight.map((line) =>
+        [...line.padEnd(21)]
+          .reverse()
+          .map((char) => mirror[char] ?? char)
+          .join(""),
+      );
+      const newShark = () => {
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        return {
+          dir,
+          art: dir > 0 ? sharkRight : sharkLeft,
+          col: dir > 0 ? -22 : cols + 1,
+          row: top + 1 + Math.floor(Math.random() * Math.max(1, rows - top - sharkRight.length - 6)),
+          wait: 15 + Math.floor(Math.random() * 30),
+        };
+      };
+      let shark = newShark();
+      const weeds = Array.from({ length: Math.max(2, Math.floor(cols / 12)) }, () => ({
+        col: Math.floor(Math.random() * (cols - 2)),
+        height: 3 + Math.floor(Math.random() * Math.max(1, Math.min(5, rows / 4))),
+      }));
+      let bubbles = [];
+
+      return (grid, frame) => {
+        waves.forEach((wave, r) => {
+          const shift = Math.floor(frame / (3 + r)) * (r % 2 === 0 ? 1 : -1);
+          for (let c = 0; c < cols; c += 1) {
+            const char = wave[(((c + shift) % wave.length) + wave.length) % wave.length];
+            if (char !== " ") {
+              grid[r][c] = { char, color: r === 0 ? "term-cyan" : "term-blue" };
+            }
+          }
+        });
+
+        weeds.forEach((weed) => {
+          for (let i = 0; i < weed.height; i += 1) {
+            const sway = (i + Math.floor(frame / 8)) % 2;
+            stamp(grid, rows - 1 - i, weed.col + sway, [sway ? ")" : "("], "term-green");
+          }
+        });
+
+        bubbles.forEach((bubble) => {
+          bubble.row -= 0.3;
+          stamp(grid, Math.round(bubble.row), bubble.col, [bubble.row < top + 3 ? "O" : "o"], "term-cyan");
+        });
+        bubbles = bubbles.filter((bubble) => bubble.row > waves.length);
+
+        fish.forEach((one, i) => {
+          one.col += one.dir * one.speed;
+
+          if (one.col > cols + 1 || one.col < -one.width - 1) {
+            fish[i] = newFish(false);
+            return;
+          }
+
+          if (Math.random() < 0.02) {
+            bubbles.push({ row: one.row, col: Math.round(one.dir > 0 ? one.col + one.width : one.col - 1) });
+          }
+
+          stamp(grid, one.row, one.col, one.art, one.color);
+        });
+
+        if (shark.wait > 0) {
+          shark.wait -= 1;
+        } else {
+          shark.col += shark.dir * 0.7;
+          stamp(grid, shark.row, shark.col, shark.art, "term-gray");
+
+          if (shark.col > cols + 2 || shark.col < -24) {
+            shark = newShark();
+          }
+        }
+      };
+    });
+
+  const robotSprite = [
+    "........kk..........",
+    ".......krrk.........",
+    "........kk..........",
+    "........kk..........",
+    "..kkkkkkkkkkkkkkk...",
+    ".kgggggggggggggggk..",
+    "kgglllllllllllllggk.",
+    "kgglkkkkkkkkkkklggk.",
+    "kgglkccwkkkccwklggkk",
+    "kgglkcckkkkcckklggkg",
+    "kgglkkkkkkkkkkklggkk",
+    "kgglkkkcccccckklggk.",
+    "kgglllllllllllllggk.",
+    ".kgggggggggggggggk..",
+    "..kkkkkkkkkkkkkkk...",
+    "....kdddk...kdddk...",
+    "....kdddk...kdddk...",
+    ".....kyk.....kyk....",
+  ];
+  const robotPalette = {
+    k: "#000000",
+    g: "#9aa3ad",
+    l: "#c9d1d9",
+    d: "#5a626b",
+    c: "#39d5ff",
+    w: "#ffffff",
+    r: "#ff3b3b",
+    y: "#ffd23f",
+    o: "#ff8a00",
+  };
+  const sparkles = [
+    ["...", ".w.", "..."],
+    [".w.", "www", ".w."],
+    ["..w..", "..w..", "ww.ww", "..w..", "..w.."],
+    [".w.w.", "w...w", ".....", "w...w", ".w.w."],
+  ];
+
+  const nyancat = async (duration) => {
+    const canvas = document.createElement("canvas");
+    screen.classList.add("is-canvas");
+    screen.replaceChildren(canvas);
+    const width = screen.clientWidth;
+    const height = screen.clientHeight;
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    const context = canvas.getContext("2d");
+    context.scale(ratio, ratio);
+
+    const size = Math.max(3, Math.floor(height / 48));
+    const cols = Math.ceil(width / size);
+    const rows = Math.ceil(height / size);
+    const bands = ["#ff0000", "#ffa500", "#ffff00", "#80ff00", "#0080ff", "#0000b0"];
+    const band = 2;
+    const robotCol = Math.min(Math.floor(cols * 0.52), cols - robotSprite[0].length - 2);
+    const stars = Array.from({ length: Math.max(6, Math.floor(cols / 14)) }, () => ({
+      col: Math.random() * cols,
+      row: Math.floor(Math.random() * rows),
+      phase: Math.floor(Math.random() * sparkles.length),
+    }));
+    const pixel = (col, row, color) => {
+      context.fillStyle = color;
+      context.fillRect(col * size, row * size, size, size);
+    };
+    const sprite = (lines, col, row, palette) => {
+      lines.forEach((line, i) =>
+        [...line].forEach((key, j) => {
+          if (palette[key]) {
+            pixel(col + j, row + i, palette[key]);
+          }
+        }),
+      );
+    };
+    const start = performance.now();
+    let frame = 0;
+
+    while (performance.now() - start < duration) {
+      await whenVisible();
+      context.fillStyle = "#00005f";
+      context.fillRect(0, 0, width, height);
+
+      stars.forEach((star) => {
+        star.col -= 1.5;
+        if (star.col < -6) {
+          star.col = cols + 2;
+          star.row = Math.floor(Math.random() * rows);
+        }
+        const shape = sparkles[(star.phase + Math.floor(frame / 3)) % sparkles.length];
+        sprite(shape, Math.round(star.col), star.row, { w: "#ffffff" });
+      });
+
+      const bob = Math.floor(frame / 4) % 2;
+      const robotRow = Math.floor(rows / 2) - Math.floor(robotSprite.length / 2) + bob;
+      const trailTop = robotRow + 5;
+
+      for (let col = 0; col < robotCol + 2; col += 1) {
+        const wave = Math.floor((col + frame) / 8) % 2;
+        bands.forEach((color, i) => {
+          for (let k = 0; k < band; k += 1) {
+            pixel(col, trailTop + i * band + k - wave, color);
+          }
+        });
+      }
+
+      sprite(robotSprite, robotCol, robotRow, robotPalette);
+      [6, 14].forEach((offset) => {
+        pixel(robotCol + offset, robotRow + robotSprite.length, "#ff8a00");
+        if (frame % 2 === 0) {
+          pixel(robotCol + offset, robotRow + robotSprite.length + 1, "#ffd23f");
+        }
+      });
+
+      const message = `You have nyaned for ${Math.floor((performance.now() - start) / 1000)} seconds!`;
+      let fontSize = Math.max(11, size * 2);
+      context.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      while (fontSize > 8 && context.measureText(message).width > width - 16) {
+        fontSize -= 1;
+        context.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      }
+      context.fillStyle = "#e5e7eb";
+      context.textAlign = "center";
+      context.textBaseline = "bottom";
+      context.fillText(message, width / 2, height - size);
+
+      frame += 1;
+      await sleep(70);
+    }
+
+    screen.classList.remove("is-canvas");
+    screen.replaceChildren();
+  };
+
+  const aafire = (duration) =>
+    animateGrid(duration, 60, true, (cols, rows) => {
+      const palette = " .:-=+*#%@";
+      const colors = ["", "term-fire-1", "term-fire-1", "term-fire-2", "term-fire-2", "term-fire-3", "term-fire-3", "term-fire-4", "term-fire-4", "term-fire-5"];
+      const max = 1;
+      const decay = (2 * max) / (rows * 0.8);
+      const heat = Array.from({ length: rows }, () => new Float32Array(cols));
+
+      return (grid) => {
+        for (let c = 0; c < cols; c += 1) {
+          heat[rows - 1][c] = Math.random() < 0.85 ? max * (0.75 + Math.random() * 0.25) : 0;
+        }
+
+        for (let r = 1; r < rows; r += 1) {
+          for (let c = 0; c < cols; c += 1) {
+            const shift = Math.floor(Math.random() * 3) - 1;
+            const target = Math.min(cols - 1, Math.max(0, c + shift));
+            heat[r - 1][target] = Math.max(0, heat[r][c] - Math.random() * decay);
+          }
+        }
+
+        for (let r = 0; r < rows; r += 1) {
+          for (let c = 0; c < cols; c += 1) {
+            const level = Math.min(palette.length - 1, Math.floor((heat[r][c] / max) * palette.length));
+            if (level > 0) {
+              grid[r][c] = { char: palette[level], color: colors[level] };
+            }
+          }
+        }
+      };
+    });
+
+  const effects = {
+    sl: () => train(),
+    pipes: (session) => pipes(session.duration ?? 12000),
+    cbonsai: (session) => bonsai(session.hold ?? 4000),
+    asciiquarium: (session) => aquarium(session.duration ?? 12000),
+    nyancat: (session) => nyancat(session.duration ?? 10000),
+    aafire: (session) => aafire(session.duration ?? 10000),
+  };
+
   const run = async () => {
     for (;;) {
       let delay = 900;
 
       for (const session of sessions) {
-        await type(session.cmd, delay);
+        await type(session.cmd, delay, session.interrupt);
 
-        for (const line of outputLines(session)) {
+        if (effects[session.effect]) {
+          await effects[session.effect](session);
+          render("");
+        }
+
+        for (const [index, line] of outputLines(session).entries()) {
           await whenVisible();
-          html += `${markup(line)}\n`;
+          const content = session.lolcat ? rainbow(line, index) : markup(line);
+          html += session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
           render("");
           await sleep(session.lineDelay ?? 35);
         }
 
-        delay = session.pause ?? 2200;
+        delay = session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
       }
 
-      await type("clear", delay + (config.clearDelay ?? 5000));
+      await type("clear", delay + (config.clearDelay ?? 0));
       html = "";
       render();
 

@@ -1,9 +1,15 @@
 title: "althaser@laptop: ~"
 prompt: "{green}althaser@laptop{/}:{blue}~{/} $ "
-clearDelay: 5000
 matrix:
   duration: 16000
 sessions:
+  - cmd: "echo \"here goes some easter eggs\""
+    interrupt: true
+
+  - cmd: "hostname"
+    output: |
+      laptop
+
   - cmd: "uptime -p"
     output: |
       up 3 days, 7 hours, 42 minutes
@@ -23,7 +29,6 @@ sessions:
 
   - cmd: "pi \"what is althaser.me about?\""
     lineDelay: 120
-    pause: 7200
     output: |
       {magenta}π{/} {gray}reading https://althaser.me ...{/}
       {green}✓{/} {gray}fetched 30 pages{/}
@@ -32,13 +37,114 @@ sessions:
       some personal links about open source topics and other stuff he
       uses on a daily basis.
 
-  - cmd: "cowsay kkthxbye"
+  - cmd: "sl"
+    effect: sl
+
+  - cmd: "pipes.sh"
+    effect: pipes
+    duration: 12000
+
+  - cmd: "apt moo"
+    output: |2
+                       (__)
+                       (oo)
+                 /------\/
+                / |    ||
+               *  /\---/\
+                  ~~   ~~
+      ..."Have you mooed today?"...
+
+  - cmd: "figlet althaser | lolcat"
+    lolcat: true
+    output: |2
+             _ _   _
+        __ _| | |_| |__   __ _ ___  ___ _ __
+       / _` | | __| '_ \ / _` / __|/ _ \ '__|
+      | (_| | | |_| | | | (_| \__ \  __/ |
+       \__,_|_|\__|_| |_|\__,_|___/\___|_|
+
+  - cmd: "cbonsai"
+    effect: cbonsai
+    hold: 4000
+
+  - cmd: "asciiquarium"
+    effect: asciiquarium
+    duration: 12000
+
+  - cmd: "nyancat"
+    effect: nyancat
+    duration: 10000
+
+  - cmd: "aafire"
+    effect: aafire
+    duration: 10000
+
+  - cmd: "toilet -w 120 -f mono12 \"GNU/Linux\""
+    tight: true
+    output: |2
+
+          ▄▄▄▄   ▄▄▄   ▄▄  ▄▄    ▄▄        ▄▄  ▄▄           ██
+        ██▀▀▀▀█  ███   ██  ██    ██       ██   ██           ▀▀
+       ██        ██▀█  ██  ██    ██      ██    ██         ████     ██▄████▄  ██    ██  ▀██  ██▀
+       ██  ▄▄▄▄  ██ ██ ██  ██    ██     ██     ██           ██     ██▀   ██  ██    ██    ████
+       ██  ▀▀██  ██  █▄██  ██    ██    ▄█▀     ██           ██     ██    ██  ██    ██    ▄██▄
+        ██▄▄▄██  ██   ███  ▀██▄▄██▀   ▄█▀      ██▄▄▄▄▄▄  ▄▄▄██▄▄▄  ██    ██  ██▄▄▄███   ▄█▀▀█▄
+          ▀▀▀▀   ▀▀   ▀▀▀    ▀▀▀▀    ▄█▀       ▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀▀  ▀▀▀
+
+  - cmd: "tux"
+    output: |2
+                  .-"""-.
+                 '       \
+                |,.  ,-.  |
+                |()L( ()| |
+                |,'  `".| |
+                |.___.',| `
+               .j `--"' `  `.
+              / '        '   \
+             / /          `   `.
+            / /            `    .
+           / /              l   |
+          . ,               |   |
+          ,"`.             .|   |
+       _.'   ``.          | `..-'l
+      |       `.`,        |      `.
+      |         `.    __.j         )
+      |__        |--""___|      ,-'
+         `"--...,+""""   `._,.-' mh
+
+  - cmd: "bsd-daemon"
+    output: |2
+                                       ,        ,
+                                      /(        )`
+                                      \ \___   / |
+                                      /- _  `-/  '
+                                     (/\/ \ \   /\
+                                     / /   | `    \
+                                     O O   ) /    |
+                                     `-^--'`<     '
+                         TM         (_.)  _  )   /
+      |  | |\  | ~|~ \ /             `.___/`    /
+      |  | | \ |  |   X                `-----' /
+      `__| |  \| _|_ / \  <----.     __ / __   \
+                          <----|====O)))==) \) /====
+                          <----'    `--' `.__,' \
+                                       |        |
+                                        \       /
+                                   ______( (_  / \______
+                                 ,'  ,-----'   |        \
+                                 `--{__________)        \/
+
+  - cmd: "cowsay -f tux kkthxbye"
     output: |2
        __________
       < kkthxbye >
        ----------
-              \   ^__^
-               \  (oo)\_______
-                  (__)\       )\/\
-                      ||----w |
-                      ||     ||
+         \
+          \
+              .--.
+             |o_o |
+             |:_/ |
+            //   \ \
+           (|     | )
+          /'\_   _/`\
+          \___)=(___/

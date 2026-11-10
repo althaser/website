@@ -20,6 +20,7 @@ This site uses the following third-party software and assets.
 | [Font Awesome Free](https://fontawesome.com/) icons | Fonticons, Inc. | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | [Inter](https://rsms.me/inter/) font | The Inter Project Authors | [SIL OFL 1.1](/fonts/OFL.txt) |
 | [GitLab icon](https://commons.wikimedia.org/wiki/File:GitLab_icon.svg) | 292Jacob, via Wikimedia Commons | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
+| [sl](https://github.com/mtoyoda/sl) ASCII locomotive on the AI page | Copyright 1993,1998,2014 Toyoda Masashi | [sl license](https://github.com/mtoyoda/sl/blob/master/LICENSE) |
 | [Feed icon](https://commons.wikimedia.org/wiki/File:Generic_Feed-icon.svg) | Mozilla Foundation, Jahoe, via Wikimedia Commons | [GPL](https://www.gnu.org/licenses/gpl.html) |
 | [Debian Open Use Logo](https://www.debian.org/logos/) | Copyright (c) 1999 Software in the Public Interest, Inc. | [LGPL-3.0-or-later](https://www.gnu.org/licenses/lgpl-3.0.html) or [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
 | [Mastodon icon](https://uxwing.com/mastodon-icon/) | UXWing | [UXWing license](https://uxwing.com/license/) |

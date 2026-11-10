@@ -393,10 +393,22 @@
     @apply truncate text-sm font-bold;
   }
   .terminal-screen {
-    @apply m-0 h-[24rem] overflow-hidden whitespace-pre p-3 font-mono text-xs leading-relaxed text-gray-800 sm:p-4 sm:text-sm dark:text-gray-200;
+    @apply m-0 h-[28.5rem] overflow-hidden whitespace-pre p-3 font-mono text-xs leading-tight text-gray-800 sm:p-4 sm:text-sm dark:text-gray-200;
+  }
+  .terminal-screen.is-tight {
+    @apply leading-none;
+  }
+  .terminal-screen.is-canvas {
+    @apply p-0;
+  }
+  .terminal-screen canvas {
+    @apply block;
+  }
+  .term-tight {
+    @apply block leading-none;
   }
   .terminal-cursor {
-    @apply inline-block h-[1.1em] w-[0.6em] translate-y-[0.2em] animate-blink bg-gray-800 dark:bg-gray-200;
+    @apply inline-block h-[1.1em] w-[0.6em] align-text-bottom animate-blink bg-gray-800 dark:bg-gray-200;
   }
   .term-green {
     @apply text-green-700 dark:text-green-400;
@@ -418,6 +430,27 @@
   }
   .term-gray {
     @apply text-gray-500 dark:text-gray-400;
+  }
+  .term-rainbow {
+    color: hsl(var(--hue) 85% 38%);
+    @variant dark {
+      color: hsl(var(--hue) 90% 65%);
+    }
+  }
+  .term-fire-1 {
+    @apply text-red-900 dark:text-red-800;
+  }
+  .term-fire-2 {
+    @apply text-red-600 dark:text-red-500;
+  }
+  .term-fire-3 {
+    @apply text-orange-600 dark:text-orange-400;
+  }
+  .term-fire-4 {
+    @apply text-amber-500 dark:text-yellow-300;
+  }
+  .term-fire-5 {
+    @apply text-yellow-600 dark:text-yellow-100;
   }
   .term-matrix-head {
     @apply text-green-950 dark:text-green-100;
