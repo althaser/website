@@ -81,8 +81,8 @@ boot:
   user: "althaser"
   welcome: "Welcome to Ubuntu 26.04.1 LTS (GNU/Linux 7.0.0-43-generic x86_64)"
 sessions:
-  - cmd: "echo \"here goes some easter eggs\""
-    interrupt: true
+  - cmd: "# echo \"here goes some easter eggs\""
+    pause: 2200
 
   - cmd: "hostname"
     output: |

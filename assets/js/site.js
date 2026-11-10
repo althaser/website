@@ -393,7 +393,6 @@ const initializeTerminal = () => {
     printOk: [90, 220],
     print: [25, 110],
     afterType: 350,
-    interrupt: 250,
     prompt: 900,
     effectPause: 2200,
     pause: 7200,
@@ -434,7 +433,7 @@ const initializeTerminal = () => {
     }
   };
 
-  const type = async (cmd, delay, interrupt = false) => {
+  const type = async (cmd, delay) => {
     html += markup(prompt);
     render();
     await sleep(delay);
@@ -446,13 +445,6 @@ const initializeTerminal = () => {
     }
 
     await sleep(timing.afterType);
-
-    if (interrupt) {
-      html += "^C";
-      render();
-      await sleep(timing.interrupt);
-    }
-
     html += "\n";
   };
 
@@ -1238,15 +1230,14 @@ const initializeTerminal = () => {
 
     const { cols } = measureGrid();
     screen.replaceChildren();
-    const typing = (cmd, delay, interrupt) =>
-      delay + cmd.length * mean(timing.key) + timing.afterType + (interrupt ? timing.interrupt : 0);
+    const typing = (cmd, delay) => delay + cmd.length * mean(timing.key) + timing.afterType;
     const printing = (lines = []) =>
       lines.reduce((total, line) => total + mean(line.includes("OK") ? timing.printOk : timing.print), 0);
     const sessionTime = (session, delay) => {
       const effect = effects[session.effect];
       const effectTime = effect ? (effect.estimate?.(session, cols) ?? option(session, "duration")) : 0;
       const outputTime = effect?.inline ? 0 : outputLines(session).length * (session.lineDelay ?? timing.lineDelay);
-      return typing(session.cmd, delay, session.interrupt) + effectTime + outputTime;
+      return typing(session.cmd, delay) + effectTime + outputTime;
     };
     const estimates = [];
 
@@ -1316,12 +1307,12 @@ const initializeTerminal = () => {
   };
 
   const nextDelay = (session) =>
-    session.pause ?? (effects[session.effect] || session.interrupt ? timing.effectPause : timing.pause);
+    session.pause ?? (effects[session.effect] ? timing.effectPause : timing.pause);
   const matrixSession = config.matrix && { cmd: "cmatrix", ...config.matrix, effect: "cmatrix" };
 
   const runSession = async (session, delay) => {
     const effect = effects[session.effect];
-    await type(session.cmd, delay, session.interrupt);
+    await type(session.cmd, delay);
 
     if (effect?.inline) {
       await effect.run(session);
