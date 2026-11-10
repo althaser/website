@@ -1065,7 +1065,49 @@ const initializeTerminal = () => {
     aafire: (session) => aafire(session.duration ?? 10000),
   };
 
+  const boot = async (settings) => {
+    const terminal = screen.closest(".terminal");
+    terminal?.classList.add("is-booting");
+    html = "";
+    render("");
+    await sleep(700);
+
+    for (const line of settings.lines ?? []) {
+      await whenVisible();
+      html += `${markup(line)}\n`;
+      render("");
+      await sleep(line.includes("OK") ? 90 + Math.random() * 220 : 25 + Math.random() * 110);
+    }
+
+    html += `\n${escapeHtml(settings.issue ?? "")}\n\n${escapeHtml(settings.login ?? "login: ")}`;
+    render();
+    await sleep(1200);
+
+    for (const char of settings.user ?? "") {
+      await whenVisible();
+      html += escapeHtml(char);
+      render();
+      await sleep(70 + Math.random() * 110);
+    }
+
+    html += "\nPassword: ";
+    render();
+    await sleep(1500);
+    html += `\n\n${escapeHtml(settings.welcome ?? "")}\n`;
+    render("");
+    await sleep(1800);
+
+    terminal?.classList.remove("is-booting");
+    html = "";
+    render();
+    await sleep(700);
+  };
+
   const run = async () => {
+    if (config.boot) {
+      await boot(config.boot);
+    }
+
     for (;;) {
       let delay = 900;
 

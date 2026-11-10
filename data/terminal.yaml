@@ -2,6 +2,37 @@ title: "althaser@laptop: ~"
 prompt: "{green}althaser@laptop{/}:{blue}~{/} $ "
 matrix:
   duration: 16000
+boot:
+  lines:
+    - "{gray}[    0.000000]{/} Linux version 7.0.0-43-generic (buildd@ubuntu) #43-Ubuntu SMP PREEMPT_DYNAMIC"
+    - "{gray}[    0.000000]{/} Command line: BOOT_IMAGE=/vmlinuz-7.0.0-43-generic ro quiet splash"
+    - "{gray}[    0.000000]{/} BIOS-provided physical RAM map:"
+    - "{gray}[    0.004213]{/} DMI: laptop/laptop, BIOS 1.21.0 09/12/2026"
+    - "{gray}[    0.031742]{/} smpboot: Allowing 16 CPUs, 0 hotplug CPUs"
+    - "{gray}[    0.118904]{/} Memory: 63521840K/64912384K available"
+    - "{gray}[    0.402115]{/} ACPI: Core revision 20250404"
+    - "{gray}[    0.873620]{/} pci 0000:00:02.0: vgaarb: setting as boot VGA device"
+    - "{gray}[    1.204577]{/} nvme nvme0: 16/0/0 default/read/poll queues"
+    - "{gray}[    1.211092]{/}  nvme0n1: p1 p2 p3"
+    - "{gray}[    2.087431]{/} EXT4-fs (dm-0): mounted filesystem with ordered data mode"
+    - "{gray}[    2.512908]{/} systemd[1]: systemd 259 running in system mode"
+    - "{gray}[    2.534710]{/} systemd[1]: Hostname set to <laptop>."
+    - "[  {green}OK{/}  ] Started systemd-journald.service - Journal Service."
+    - "[  {green}OK{/}  ] Finished systemd-udev-trigger.service - Coldplug All udev Devices."
+    - "[  {green}OK{/}  ] Reached target local-fs.target - Local File Systems."
+    - "[  {green}OK{/}  ] Started systemd-resolved.service - Network Name Resolution."
+    - "[  {green}OK{/}  ] Started NetworkManager.service - Network Manager."
+    - "[  {green}OK{/}  ] Reached target network-online.target - Network is Online."
+    - "[  {green}OK{/}  ] Started ssh.service - OpenBSD Secure Shell server."
+    - "[  {green}OK{/}  ] Started docker.service - Docker Application Container Engine."
+    - "[  {green}OK{/}  ] Started tailscaled.service - Tailscale node agent."
+    - "[  {green}OK{/}  ] Reached target multi-user.target - Multi-User System."
+    - "[  {green}OK{/}  ] Started gdm.service - GNOME Display Manager."
+    - "[  {green}OK{/}  ] Reached target graphical.target - Graphical Interface."
+  issue: "Ubuntu 26.04.1 LTS laptop tty1"
+  login: "laptop login: "
+  user: "althaser"
+  welcome: "Welcome to Ubuntu 26.04.1 LTS (GNU/Linux 7.0.0-43-generic x86_64)"
 sessions:
   - cmd: "echo \"here goes some easter eggs\""
     interrupt: true
@@ -24,6 +55,8 @@ sessions:
       {red}     ---(_) {/}  {yellow}Shell{/}: bash 5.3.9
                     {yellow}DE{/}: GNOME 50.1
                     {yellow}Terminal{/}: ghostty
+                    {yellow}CPU{/}: Intel Core Ultra 7 265H (16)
+                    {yellow}Memory{/}: 17.24 GiB / 61.30 GiB (28%)
 
                     {red}███{/}{green}███{/}{yellow}███{/}{blue}███{/}{magenta}███{/}{cyan}███{/}{gray}███{/}
 
