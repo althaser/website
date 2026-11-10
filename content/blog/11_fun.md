@@ -1,8 +1,8 @@
 ---
 title: "Fun"
 date: 2024-03-08
-lastmod: 2026-11-02
-tags: ["fun", "science", "math", "maps", "earth", "travel", "projects", "awesome"]
+lastmod: 2026-11-10
+tags: ["fun", "science", "math", "maps", "earth", "travel", "projects", "awesome", "ascii", "ascii-art"]
 categories: ["science", "universe", "software", "applications", "tools"]
 description: "Fun"
 draft: false
@@ -79,3 +79,21 @@ https://github.com/ClickHouse/adsb.exposed
 **Visited Places** Make a free travel map of the countries you've been to. Mark them in a click, see how many you've visited, animate your trips and share it. No signup.
 
 https://visitedplaces.com
+
+## ASCII
+
+### ASCII Magic
+
+{{< img src="https://www.ascii-magic.com/og.jpg" alt="ascii-magic" width="300" height="158" >}}
+
+**ASCII Magic** A library of animated ASCII art across categories like landscapes, cities, charts, 3D shapes and mascots. Embed them with one tag, play them in a terminal, or export GIFs and wallpapers.
+
+https://www.ascii-magic.com/ascii
+
+### ASCII Art Archive
+
+{{< img src="https://www.asciiart.eu/apple-touch-icon.png" alt="ascii-art-archive" width="100" height="100" >}}
+
+**ASCII Art Archive** Thousands of classic and modern ASCII artworks, plus borders, patterns, animations, text art, banners, dividers and icons.
+
+https://www.asciiart.eu
