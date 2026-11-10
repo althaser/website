@@ -40,6 +40,74 @@
       opacity: 0;
     }
   }
+  --animate-crt-off: crt-off 1.5s ease-in-out forwards;
+
+  @keyframes crt-off {
+    0% {
+      width: 100%;
+      height: var(--crt-height);
+      opacity: 0;
+      border-radius: 0;
+      box-shadow: 0 0 0 0 transparent;
+    }
+    12% {
+      width: 100%;
+      height: var(--crt-height);
+      opacity: 0.85;
+      border-radius: 0;
+      box-shadow: 0 0 0 0 transparent;
+    }
+    45% {
+      width: 100%;
+      height: 2px;
+      opacity: 1;
+      border-radius: 0;
+      box-shadow: 0 0 18px 4px var(--color-crt-glow);
+    }
+    75% {
+      width: 6px;
+      height: 2px;
+      opacity: 1;
+      border-radius: 9999px;
+      box-shadow: 0 0 22px 8px var(--color-crt-glow);
+    }
+    85% {
+      width: 4px;
+      height: 4px;
+      opacity: 1;
+      border-radius: 9999px;
+      box-shadow: 0 0 16px 6px var(--color-crt-glow);
+    }
+    100% {
+      width: 2px;
+      height: 2px;
+      opacity: 0;
+      border-radius: 9999px;
+      box-shadow: 0 0 6px 2px transparent;
+    }
+  }
+}
+
+@theme static {
+  --color-crt-glow: color-mix(in oklab, var(--color-white) 90%, transparent);
+  --color-nyan-sky: #00005f;
+  --color-nyan-text: var(--color-gray-200);
+  --color-nyan-star: var(--color-white);
+  --color-nyan-outline: var(--color-black);
+  --color-nyan-body: #9aa3ad;
+  --color-nyan-light: #c9d1d9;
+  --color-nyan-shade: #5a626b;
+  --color-nyan-eye: #39d5ff;
+  --color-nyan-white: var(--color-white);
+  --color-nyan-red: #ff3b3b;
+  --color-nyan-yellow: #ffd23f;
+  --color-nyan-orange: #ff8a00;
+  --color-nyan-band-1: #ff0000;
+  --color-nyan-band-2: #ffa500;
+  --color-nyan-band-3: #ffff00;
+  --color-nyan-band-4: #80ff00;
+  --color-nyan-band-5: #0080ff;
+  --color-nyan-band-6: #0000b0;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -384,7 +452,7 @@
     @apply text-gray-300;
   }
   .terminal-crt {
-    @apply pointer-events-none absolute left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white;
+    @apply pointer-events-none absolute left-1/2 h-(--crt-height) w-full -translate-x-1/2 -translate-y-1/2 bg-white opacity-0 animate-crt-off;
   }
   .terminal-eta {
     @apply mt-2 text-right font-mono text-xs tabular-nums text-gray-500 dark:text-gray-400;
@@ -447,10 +515,7 @@
     @apply text-gray-500 dark:text-gray-400;
   }
   .term-rainbow {
-    color: hsl(var(--hue) 85% 38%);
-    @variant dark {
-      color: hsl(var(--hue) 90% 65%);
-    }
+    @apply text-[hsl(var(--hue)_85%_38%)] dark:text-[hsl(var(--hue)_90%_65%)];
   }
   .term-fire-1 {
     @apply text-red-900 dark:text-red-800;

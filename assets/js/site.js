@@ -915,15 +915,15 @@ const initializeTerminal = () => {
     ".....kyk.....kyk....",
   ];
   const robotPalette = {
-    k: "#000000",
-    g: "#9aa3ad",
-    l: "#c9d1d9",
-    d: "#5a626b",
-    c: "#39d5ff",
-    w: "#ffffff",
-    r: "#ff3b3b",
-    y: "#ffd23f",
-    o: "#ff8a00",
+    k: "nyan-outline",
+    g: "nyan-body",
+    l: "nyan-light",
+    d: "nyan-shade",
+    c: "nyan-eye",
+    w: "nyan-white",
+    r: "nyan-red",
+    y: "nyan-yellow",
+    o: "nyan-orange",
   };
   const sparkles = [
     ["...", ".w.", "..."],
@@ -945,11 +945,18 @@ const initializeTerminal = () => {
     canvas.style.height = `${height}px`;
     const context = canvas.getContext("2d");
     context.scale(ratio, ratio);
+    const themeStyle = getComputedStyle(document.documentElement);
+    const color = (name) => themeStyle.getPropertyValue(`--color-${name}`).trim();
+    const palette = Object.fromEntries(Object.entries(robotPalette).map(([key, name]) => [key, color(name)]));
+    const fontFamily = getComputedStyle(screen).fontFamily;
+    const sky = color("nyan-sky");
+    const starPalette = { w: color("nyan-star") };
+    const text = color("nyan-text");
 
     const size = Math.max(3, Math.floor(height / 48));
     const cols = Math.ceil(width / size);
     const rows = Math.ceil(height / size);
-    const bands = ["#ff0000", "#ffa500", "#ffff00", "#80ff00", "#0080ff", "#0000b0"];
+    const bands = [1, 2, 3, 4, 5, 6].map((index) => color(`nyan-band-${index}`));
     const band = 2;
     const robotCol = Math.min(Math.floor(cols * 0.52), cols - robotSprite[0].length - 2);
     const stars = Array.from({ length: Math.max(6, Math.floor(cols / 14)) }, () => ({
@@ -957,8 +964,8 @@ const initializeTerminal = () => {
       row: Math.floor(Math.random() * rows),
       phase: Math.floor(Math.random() * sparkles.length),
     }));
-    const pixel = (col, row, color) => {
-      context.fillStyle = color;
+    const pixel = (col, row, fill) => {
+      context.fillStyle = fill;
       context.fillRect(col * size, row * size, size, size);
     };
     const sprite = (lines, col, row, palette) => {
@@ -975,7 +982,7 @@ const initializeTerminal = () => {
 
     while (performance.now() - start < duration) {
       await whenVisible();
-      context.fillStyle = "#00005f";
+      context.fillStyle = sky;
       context.fillRect(0, 0, width, height);
 
       stars.forEach((star) => {
@@ -985,7 +992,7 @@ const initializeTerminal = () => {
           star.row = Math.floor(Math.random() * rows);
         }
         const shape = sparkles[(star.phase + Math.floor(frame / 3)) % sparkles.length];
-        sprite(shape, Math.round(star.col), star.row, { w: "#ffffff" });
+        sprite(shape, Math.round(star.col), star.row, starPalette);
       });
 
       const bob = Math.floor(frame / 4) % 2;
@@ -994,29 +1001,29 @@ const initializeTerminal = () => {
 
       for (let col = 0; col < robotCol + 2; col += 1) {
         const wave = Math.floor((col + frame) / 8) % 2;
-        bands.forEach((color, i) => {
+        bands.forEach((fill, i) => {
           for (let k = 0; k < band; k += 1) {
-            pixel(col, trailTop + i * band + k - wave, color);
+            pixel(col, trailTop + i * band + k - wave, fill);
           }
         });
       }
 
-      sprite(robotSprite, robotCol, robotRow, robotPalette);
+      sprite(robotSprite, robotCol, robotRow, palette);
       [6, 14].forEach((offset) => {
-        pixel(robotCol + offset, robotRow + robotSprite.length, "#ff8a00");
+        pixel(robotCol + offset, robotRow + robotSprite.length, palette.o);
         if (frame % 2 === 0) {
-          pixel(robotCol + offset, robotRow + robotSprite.length + 1, "#ffd23f");
+          pixel(robotCol + offset, robotRow + robotSprite.length + 1, palette.y);
         }
       });
 
       const message = `You have nyaned for ${Math.floor((performance.now() - start) / 1000)} seconds!`;
       let fontSize = Math.max(11, size * 2);
-      context.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+      context.font = `${fontSize}px ${fontFamily}`;
       while (fontSize > 8 && context.measureText(message).width > width - 16) {
         fontSize -= 1;
-        context.font = `${fontSize}px ui-monospace, SFMono-Regular, Menlo, monospace`;
+        context.font = `${fontSize}px ${fontFamily}`;
       }
-      context.fillStyle = "#e5e7eb";
+      context.fillStyle = text;
       context.textAlign = "center";
       context.textBaseline = "bottom";
       context.fillText(message, width / 2, height - size);
@@ -1127,49 +1134,19 @@ const initializeTerminal = () => {
     const height = screen.offsetHeight;
     crt.className = "terminal-crt";
     crt.style.top = `${screen.offsetTop + height / 2}px`;
+    crt.style.setProperty("--crt-height", `${height}px`);
     terminal.append(crt);
     terminal.classList.add("is-booting");
 
-    const width = terminal.clientWidth;
-    const frames = [
-      [0, width, height, 0, 0, 0, 0],
-      [180, width, height, 0.85, 0, 0, 0],
-      [675, width, 2, 1, 18, 4, 0.9],
-      [1125, 6, 2, 1, 22, 8, 0.95],
-      [1275, 4, 4, 1, 16, 6, 0.9],
-      [1500, 2, 2, 0, 6, 2, 0],
-    ];
-    const start = performance.now();
-    let cleared = false;
+    const finished = new Promise((resolve) => {
+      crt.addEventListener("animationend", resolve, { once: true });
+      window.setTimeout(resolve, 2000);
+    });
 
-    for (;;) {
-      const elapsed = performance.now() - start;
-      const index = frames.findIndex(([time]) => time > elapsed);
-
-      if (index === -1) {
-        break;
-      }
-
-      const from = frames[index - 1] ?? frames[0];
-      const to = frames[index];
-      const raw = (elapsed - from[0]) / Math.max(1, to[0] - from[0]);
-      const t = raw * raw * (3 - 2 * raw);
-      const [, w, h, opacity, blur, spread, alpha] = from.map((value, i) => value + (to[i] - value) * t);
-      crt.style.width = `${w}px`;
-      crt.style.height = `${h}px`;
-      crt.style.opacity = opacity;
-      crt.style.borderRadius = Math.min(w, h) < 12 ? "9999px" : "0";
-      crt.style.boxShadow = `0 0 ${blur}px ${spread}px rgb(255 255 255 / ${alpha})`;
-
-      if (!cleared && elapsed > 180) {
-        html = "";
-        render("");
-        cleared = true;
-      }
-
-      await sleep(16);
-    }
-
+    await sleep(180);
+    html = "";
+    render("");
+    await finished;
     crt.remove();
   };
 
