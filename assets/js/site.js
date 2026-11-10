@@ -370,8 +370,8 @@ const initializeTerminal = () => {
       : Promise.resolve();
 
   let html = "";
-  const render = (tail = cursor) => {
-    const following = screen.scrollHeight - screen.scrollTop - screen.clientHeight < 8;
+  const render = (tail = cursor, force = false) => {
+    const following = force || screen.scrollHeight - screen.scrollTop - screen.clientHeight < 8;
     screen.innerHTML = html + tail;
     if (following) {
       screen.scrollTop = screen.scrollHeight;
@@ -391,7 +391,7 @@ const initializeTerminal = () => {
     for (const char of cmd) {
       await whenVisible();
       html += escapeHtml(char);
-      render();
+      render(cursor, true);
       await sleep(45 + Math.random() * 90);
     }
 
