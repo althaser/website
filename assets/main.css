@@ -108,6 +108,11 @@
   --color-nyan-band-4: #80ff00;
   --color-nyan-band-5: #0080ff;
   --color-nyan-band-6: #0000b0;
+  --color-debian: #a81d33;
+  --color-ubuntu: #e95420;
+  --color-arch: #1793d1;
+  --color-freebsd: #ab2b28;
+  --color-openbsd: #f2ca30;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -522,6 +527,28 @@
   }
   .term-gray {
     @apply text-gray-400;
+  }
+  .term-debian {
+    @apply text-debian;
+  }
+  .term-ubuntu {
+    @apply text-ubuntu;
+  }
+  .term-arch {
+    @apply text-arch;
+  }
+  .term-freebsd {
+    @apply text-freebsd;
+  }
+  .term-openbsd {
+    @apply text-openbsd;
+  }
+  .term-debian,
+  .term-ubuntu,
+  .term-arch,
+  .term-freebsd,
+  .term-openbsd {
+    @apply [text-shadow:0.5px_0_currentColor,-0.5px_0_currentColor];
   }
   .term-rainbow {
     @apply text-[hsl(var(--hue)_90%_65%)];

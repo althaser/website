@@ -22,6 +22,7 @@ This site uses the following third-party software and assets.
 | [GitLab icon](https://commons.wikimedia.org/wiki/File:GitLab_icon.svg) | 292Jacob, via Wikimedia Commons | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) |
 | [sl](https://github.com/mtoyoda/sl) ASCII locomotive on the AI page | Copyright 1993,1998,2014 Toyoda Masashi | [sl license](https://github.com/mtoyoda/sl/blob/master/LICENSE) |
 | [Feed icon](https://commons.wikimedia.org/wiki/File:Generic_Feed-icon.svg) | Mozilla Foundation, Jahoe, via Wikimedia Commons | [GPL](https://www.gnu.org/licenses/gpl.html) |
+| [Simple Icons](https://simpleicons.org/) shapes and brand colors for the `unix-family` command on the AI page | Simple Icons Collaborators | [CC0 1.0](https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md) |
 | [Debian Open Use Logo](https://www.debian.org/logos/) | Copyright (c) 1999 Software in the Public Interest, Inc. | [LGPL-3.0-or-later](https://www.gnu.org/licenses/lgpl-3.0.html) or [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
 | [Mastodon icon](https://uxwing.com/mastodon-icon/) | UXWing | [UXWing license](https://uxwing.com/license/) |
 | [OFTC logo](https://commons.wikimedia.org/wiki/File:OFTC_logo.svg) | Open and Free Technology Community | Public domain |
@@ -32,3 +33,4 @@ This site uses the following third-party software and assets.
 - The [GitHub logo](https://github.com/logos) is a trademark of GitHub, Inc., used to link to GitHub.
 - The [Matrix logo](https://matrix.org/branding/) is the trademark of [The Matrix.org Foundation](https://matrix.org/). Use of this logo does not imply endorsement or affiliation.
 - [GitLab](https://handbook.gitlab.com/handbook/marketing/brand-experience/trademark-guidelines/), [Debian](https://www.debian.org/trademark), [Mastodon](https://joinmastodon.org/trademark) and [YouTube](https://brand.youtube/) are trademarks of their respective owners. Their logos are used only to link to the corresponding services.
+- [Debian](https://www.debian.org/trademark), [Ubuntu](https://ubuntu.com/legal/trademarks), [Arch Linux](https://terms.archlinux.org/docs/trademark-policy/), [FreeBSD](https://freebsdfoundation.org/legal/trademark-usage-terms-and-conditions/) and [OpenBSD](https://www.openbsd.org/) are trademarks of their respective owners. Their logos appear in the `unix-family` command on the AI page for illustration only and do not imply endorsement or affiliation.

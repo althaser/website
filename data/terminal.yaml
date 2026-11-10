@@ -195,6 +195,43 @@ sessions:
       {yellow}|__        |--""___|      ,-'{/}                                ,'  ,-----'   |        \
          {yellow}`"--...,+""""   `._,.-'{/} {gray}mh{/}                                `--{__________)        \/
 
+  - cmd: "unix-family"
+    tight: true
+    output: |2
+              {debian}▄▄██▄▄▄▄▄{/}                     {ubuntu}▄▄▄  ▄▄█▄▄{/}                   {arch}▄{/}
+            {debian}▄███▀▀▀▀▀▀██▄{/}               {ubuntu}▄▄█████ ▄█████▄{/}                 {arch}▄█{/}
+           {debian}██▀         ▀██▄{/}           {ubuntu}▄████▀▀   ███████{/}                 {arch}███{/}
+          {debian}█▀            ▀█▀{/}           {ubuntu}███▀       █████ ▄{/}               {arch}█████{/}
+         {debian}██              ██{/}         {ubuntu}▄▄▄            ▀  ▄██{/}             {arch}▄▀████▄{/}
+         {debian}█               ██{/}        {ubuntu}█████▄             ▀██▄{/}           {arch}▄███████▄{/}
+         {debian}█      ▄        █{/}        {ubuntu}███████              ███{/}          {arch}▄█████████{/}
+         {debian}█      █       █▀{/}        {ubuntu}▀█████▀              ███{/}          {arch}███████████{/}
+         {debian}█▄      ▀▄▄▄▄▄▀{/}            {ubuntu}▀▀▀▀              ▄██▀{/}         {arch}█████▀ ▀█████{/}
+         {debian}▀█▄{/}                         {ubuntu}▄▄▄          ▄   ███{/}         {arch}█████    ▀█████{/}
+          {debian}██{/}                         {ubuntu}▀███▄      █████▄ █{/}         {arch}██████     █████{/}
+           {debian}▀█{/}                          {ubuntu}████▄▄▄ ███████{/}          {arch}█████▀▀     ▀▀████▄{/}
+            {debian}▀█▄{/}                         {ubuntu}▀▀████ ▀██████{/}         {arch}▄█▀▀             ▀▀█▄{/}
+               {debian}▀▄{/}                           {ubuntu}▀▀▀ ▀▀█▀▀{/}          {arch}▀                   ▀{/}
+
+               {debian}debian{/}                      {ubuntu}ubuntu{/}                    {arch}arch linux{/}
+
+                     {freebsd}▄▄                 ▄{/}                    {openbsd}▄{/}
+                    {freebsd}█████ ▄▄███████▄▄▄████{/}              {openbsd}▄█▄█▄██▄ ▄{/}
+                     {freebsd}██▀▄█████████ ██████▀{/}            {openbsd}▄▄███████████{/}
+                     {freebsd}▀██████████████████▀{/}            {openbsd}████████████████{/}
+                      {freebsd}█████████████████▀▄{/}           {openbsd}█████████████████{/}
+                     {freebsd}█████████████████▄▄█▄{/}         {openbsd}▄████████████▀ ▀██▄{/}
+                     {freebsd}█████████████████████{/}      {openbsd}████████████████   ███{/}
+                     {freebsd}█████████████████████{/}       {openbsd}▀█████████████████████{/}
+                     {freebsd}████████████████████▀{/}        {openbsd}▀█████████████████████{/}
+                      {freebsd}███████████████████{/}          {openbsd}███████████████████▀{/}
+                      {freebsd}▀█████████████████{/}             {openbsd}████████████████{/}
+                        {freebsd}██████████████▀{/}               {openbsd}▀▀████████████▀{/}
+                         {freebsd}▀▀█████████▀{/}                   {openbsd}▀▀▀█████▀█{/}
+                             {freebsd}▀▀▀▀{/}                             {openbsd}▀{/}
+
+                            {freebsd}freebsd{/}                     {openbsd}openbsd{/}
+
   - cmd: "ls -l | nms"
     effect: nms
     pause: 7200

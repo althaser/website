@@ -337,7 +337,7 @@ const initializeTerminal = () => {
   const escapeHtml = (text) =>
     text.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const markup = (text) =>
-    escapeHtml(text).replace(/\{(green|blue|yellow|red|magenta|cyan|gray)\}(.*?)\{\/\}/g, '<span class="term-$1">$2</span>');
+    escapeHtml(text).replace(/\{(green|blue|yellow|red|magenta|cyan|gray|debian|ubuntu|arch|freebsd|openbsd)\}(.*?)\{\/\}/g, '<span class="term-$1">$2</span>');
   const outputLines = (session) => (session.output ? session.output.replace(/\n+$/, "").split("\n") : []);
   const rainbow = (text, row) =>
     [...text]
