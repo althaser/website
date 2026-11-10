@@ -344,14 +344,24 @@ const initializeTerminal = () => {
         char === " " ? char : `<span class="term-rainbow" style="--hue:${Math.round((405 - col * 1.8 - row * 3) % 360)}">${escapeHtml(char)}</span>`,
       )
       .join("");
+  const outputHtml = (session, line, index) => {
+    const content = session.lolcat ? rainbow(line, index) : markup(line);
+    return session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
+  };
   const cursor = '<span class="terminal-cursor"></span>';
 
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     showWindow();
     screen.innerHTML =
       sessions
-        .flatMap((session) => [markup(prompt) + escapeHtml(session.cmd), ...outputLines(session).map(markup)])
-        .join("\n") + `\n${markup(prompt)}${cursor}`;
+        .map(
+          (session) =>
+            `${markup(prompt)}${escapeHtml(session.cmd)}\n` +
+            outputLines(session)
+              .map((line, index) => outputHtml(session, line, index))
+              .join(""),
+        )
+        .join("") + `${markup(prompt)}${cursor}`;
     return;
   }
 
@@ -1324,8 +1334,7 @@ const initializeTerminal = () => {
     }
 
     for (const [index, line] of outputLines(session).entries()) {
-      const content = session.lolcat ? rainbow(line, index) : markup(line);
-      html += session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
+      html += outputHtml(session, line, index);
       render("");
       await sleep(session.lineDelay ?? timing.lineDelay);
     }
