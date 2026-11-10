@@ -371,8 +371,16 @@ const initializeTerminal = () => {
 
   let html = "";
   const render = (tail = cursor) => {
+    const following = screen.scrollHeight - screen.scrollTop - screen.clientHeight < 8;
     screen.innerHTML = html + tail;
-    screen.scrollTop = screen.scrollHeight;
+    if (following) {
+      screen.scrollTop = screen.scrollHeight;
+    }
+  };
+  const fullscreen = async (effect) => {
+    screen.classList.add("is-locked");
+    await effect();
+    screen.classList.remove("is-locked");
   };
 
   const type = async (cmd, delay, interrupt = false) => {
@@ -1313,8 +1321,10 @@ const initializeTerminal = () => {
   const runSession = async (session, delay) => {
     await type(session.cmd, delay, session.interrupt);
 
-    if (effects[session.effect]) {
-      await effects[session.effect](session);
+    if (session.effect === "nms") {
+      await effects.nms(session);
+    } else if (effects[session.effect]) {
+      await fullscreen(() => effects[session.effect](session));
       render("");
     }
 
@@ -1354,7 +1364,7 @@ const initializeTerminal = () => {
 
       if (config.matrix) {
         await type(config.matrix.cmd ?? "cmatrix", 900);
-        await matrix(config.matrix.duration ?? 8000);
+        await fullscreen(() => matrix(config.matrix.duration ?? 8000));
         html = "";
       }
 

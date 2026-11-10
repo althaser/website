@@ -449,7 +449,7 @@
     @apply bg-black opacity-0;
   }
   .terminal.is-booting .terminal-screen {
-    @apply text-gray-300;
+    @apply overflow-hidden text-gray-300;
   }
   .terminal-crt {
     @apply pointer-events-none absolute left-1/2 h-(--crt-height) w-full -translate-x-1/2 -translate-y-1/2 bg-white opacity-0 animate-crt-off;
@@ -482,7 +482,10 @@
     @apply truncate text-sm font-bold;
   }
   .terminal-screen {
-    @apply m-0 h-[28.5rem] overflow-hidden whitespace-pre p-3 font-mono text-xs leading-tight text-gray-800 sm:p-4 sm:text-sm dark:text-gray-200;
+    @apply m-0 h-[28.5rem] overflow-x-hidden overflow-y-auto overscroll-contain [scrollbar-width:thin] [scrollbar-color:var(--color-gray-400)_transparent] dark:[scrollbar-color:var(--color-gray-600)_transparent] whitespace-pre p-3 font-mono text-xs leading-tight text-gray-800 sm:p-4 sm:text-sm dark:text-gray-200;
+  }
+  .terminal-screen.is-locked {
+    @apply overflow-hidden;
   }
   .terminal-screen.is-tight {
     @apply leading-none;
