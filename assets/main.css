@@ -465,8 +465,20 @@
   .terminal-power .icon {
     @apply w-[1em];
   }
+  .terminal-progress {
+    @apply mt-2 flex items-center gap-3;
+  }
+  .terminal-track {
+    @apply flex min-w-0 flex-1 gap-0.5;
+  }
+  .terminal-step {
+    @apply relative h-4 min-w-0.5 grow-(--weight) basis-0 cursor-pointer bg-gray-300 bg-clip-content py-1.5 hover:bg-gray-400 focus-visible:bg-gray-400 focus-visible:outline-none dark:bg-gray-700 dark:hover:bg-gray-500 dark:focus-visible:bg-gray-500;
+  }
+  .terminal-step-fill {
+    @apply pointer-events-none absolute inset-y-1.5 left-0 w-(--fill) bg-link dark:bg-link-dark;
+  }
   .terminal-eta {
-    @apply mt-2 text-right font-mono text-xs tabular-nums text-gray-500 dark:text-gray-400;
+    @apply shrink-0 font-mono text-xs tabular-nums text-gray-500 dark:text-gray-400;
   }
   .terminal-bar-start {
     @apply flex justify-start;

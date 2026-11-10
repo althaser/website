@@ -351,21 +351,6 @@ const initializeTerminal = () => {
   };
   const cursor = '<span class="terminal-cursor"></span>';
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    setBooting(false);
-    screen.innerHTML =
-      sessions
-        .map(
-          (session) =>
-            `${markup(prompt)}${escapeHtml(session.cmd)}\n` +
-            outputLines(session)
-              .map((line, index) => outputHtml(session, line, index))
-              .join(""),
-        )
-        .join("") + `${markup(prompt)}${cursor}`;
-    return;
-  }
-
   let hiddenAt = document.hidden ? performance.now() : null;
   let hiddenTotal = 0;
   document.addEventListener("visibilitychange", () => {
@@ -389,13 +374,23 @@ const initializeTerminal = () => {
           document.addEventListener("visibilitychange", handler);
         })
       : Promise.resolve();
+  const cancelled = new Error("cancelled");
+  let generation = 0;
   const sleep = async (ms) => {
+    const token = generation;
     const end = visibleNow() + ms;
+    let left = ms;
 
-    for (let left = ms; left > 0; left = end - visibleNow()) {
+    do {
       await whenVisible();
-      await new Promise((resolve) => window.setTimeout(resolve, left));
-    }
+      if (left > 0) {
+        await new Promise((resolve) => window.setTimeout(resolve, left));
+      }
+      if (token !== generation) {
+        throw cancelled;
+      }
+      left = end - visibleNow();
+    } while (left > 0);
   };
 
   const timing = {
@@ -434,6 +429,7 @@ const initializeTerminal = () => {
     render(tail);
   };
   const fullscreen = async (effect) => {
+    const token = generation;
     const top = screen.scrollTop;
     screen.classList.add("is-locked");
     screen.scrollTop = 0;
@@ -441,10 +437,12 @@ const initializeTerminal = () => {
     try {
       await effect();
     } finally {
-      screen.classList.remove("is-tight", "is-canvas");
-      screen.innerHTML = html;
-      screen.scrollTop = following ? screen.scrollHeight : top;
-      screen.classList.remove("is-locked");
+      if (token === generation) {
+        screen.classList.remove("is-tight", "is-canvas");
+        screen.innerHTML = html;
+        screen.scrollTop = following ? screen.scrollHeight : top;
+        screen.classList.remove("is-locked");
+      }
     }
   };
 
@@ -1119,7 +1117,7 @@ const initializeTerminal = () => {
               }
 
               const decrypted = char === " " || elapsed >= revealAt[row][col];
-              return [{ char: decrypted ? char : glyph(), color: decrypted && char !== " " ? "term-blue" : "" }];
+              return [{ char: decrypted ? char : glyph(), color: decrypted && char !== " " ? option(session, "color") : "" }];
             }),
           ),
         )
@@ -1159,6 +1157,7 @@ const initializeTerminal = () => {
     nms: {
       inline: true,
       duration: 3000,
+      color: "term-blue",
       run: (session) => nms(session),
       estimate: (session) => timing.nms.steps * timing.nms.step + timing.nms.hold + option(session, "duration"),
     },
@@ -1211,7 +1210,7 @@ const initializeTerminal = () => {
   };
 
   const powerOff = async () => {
-    await whenVisible();
+    await sleep(0);
     const crt = document.createElement("div");
     const height = screen.offsetHeight;
     crt.className = "terminal-crt";
@@ -1220,105 +1219,31 @@ const initializeTerminal = () => {
     terminal.append(crt);
     setBooting(true);
 
-    const finished = Promise.race([
-      new Promise((resolve) => crt.addEventListener("animationend", resolve, { once: true })),
-      sleep(timing.shutdown.crt + 500),
-    ]);
-
     await sleep(timing.shutdown.wipe);
     clearScreen("");
-    await finished;
+    await sleep(timing.shutdown.crt - timing.shutdown.wipe);
     crt.remove();
-  };
-
-  const countdown = () => {
-    const eta = document.querySelector("[data-terminal-eta]");
-
-    if (!config.shutdown) {
-      return { next: () => {}, done: () => {} };
-    }
-
-    const { cols } = measureGrid();
-    screen.replaceChildren();
-    const typing = (cmd, delay) => delay + cmd.length * mean(timing.key) + timing.afterType;
-    const printing = (lines = []) =>
-      lines.reduce((total, line) => total + mean(line.includes("OK") ? timing.printOk : timing.print), 0);
-    const sessionTime = (session, delay) => {
-      const effect = effects[session.effect];
-      const effectTime = effect ? (effect.estimate?.(session, cols) ?? option(session, "duration")) : 0;
-      const outputTime = effect?.inline ? 0 : outputLines(session).length * (session.lineDelay ?? timing.lineDelay);
-      return typing(session.cmd, delay) + effectTime + outputTime;
-    };
-    const estimates = [];
-
-    if (config.boot) {
-      const settings = config.boot;
-      const { start, login, password, welcome, window: show } = timing.boot;
-      estimates.push(start + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show);
-    }
-
-    let delay = timing.prompt;
-    sessions.forEach((session) => {
-      estimates.push(sessionTime(session, delay));
-      delay = nextDelay(session);
-    });
-    estimates.push(typing("clear", delay + (config.clearDelay ?? 0)));
-
-    if (matrixSession) {
-      estimates.push(sessionTime(matrixSession, timing.prompt));
-    }
-
-    if (config.goodbye) {
-      estimates.push(sessionTime(config.goodbye, timing.prompt));
-    }
-
-    const settings = config.shutdown;
-    const { idle, broadcast, clear, halt, crt } = timing.shutdown;
-    estimates.push(
-      typing(settings.cmd ?? "shutdown -h now", settings.idle ?? idle) +
-        (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + crt,
-    );
-
-    const format = (ms) => {
-      const seconds = Math.ceil(Math.max(0, ms) / 1000);
-      return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")} remaining`;
-    };
-
-    let index = -1;
-    let started = 0;
-    let timer = null;
-    const remaining = () =>
-      estimates.slice(index + 1).reduce((total, value) => total + value, 0) + Math.max(0, estimates[index] - (visibleNow() - started));
-    const show = () => {
-      if (eta) {
-        eta.textContent = format(remaining());
-      }
-    };
-
-    if (eta) {
-      eta.hidden = false;
-    }
-
-    return {
-      next: () => {
-        index += 1;
-        started = visibleNow();
-        show();
-        timer ??= window.setInterval(show, 250);
-      },
-      done: () => {
-        window.clearInterval(timer);
-        index = estimates.length;
-        if (eta) {
-          eta.textContent = "powered off";
-        }
-      },
-    };
   };
 
   const nextDelay = (session) =>
     session.pause ?? (effects[session.effect] ? timing.effectPause : timing.pause);
   const matrixSession = config.matrix && { cmd: "cmatrix", ...config.matrix, effect: "cmatrix" };
+
+  const sessionHtml = (session) => {
+    const lines = outputLines(session);
+    const body = effects[session.effect]?.inline
+      ? lines
+          .map((line) => cellsHtml([...line].map((char) => ({ char, color: char === " " ? "" : option(session, "color") }))) + "\n")
+          .join("")
+      : lines.map((line, index) => outputHtml(session, line, index)).join("");
+    return `${markup(prompt)}${escapeHtml(session.cmd)}\n${body}`;
+  };
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setBooting(false);
+    screen.innerHTML = sessions.map(sessionHtml).join("") + markup(prompt) + cursor;
+    return;
+  }
 
   const runSession = async (session, delay) => {
     const effect = effects[session.effect];
@@ -1326,7 +1251,7 @@ const initializeTerminal = () => {
 
     if (effect?.inline) {
       await effect.run(session);
-      return nextDelay(session);
+      return;
     }
 
     if (effect) {
@@ -1338,70 +1263,212 @@ const initializeTerminal = () => {
       render("");
       await sleep(session.lineDelay ?? timing.lineDelay);
     }
-
-    return nextDelay(session);
   };
 
-  const run = async () => {
-    const clock = countdown();
+  const shutdown = async (settings, wait) => {
+    await type(settings.cmd ?? "shutdown -h now", wait);
 
-    if (config.boot) {
-      clock.next();
-      await boot(config.boot);
+    if (settings.broadcast) {
+      html += `\n${markup(settings.broadcast.replace("{now}", timestamp())).replace(/\n+$/, "")}\n`;
+      render("");
+      await sleep(timing.shutdown.broadcast);
     }
 
-    for (;;) {
-      let delay = timing.prompt;
+    setBooting(true);
+    clearScreen("");
+    await sleep(timing.shutdown.clear);
+    await printLines(settings.lines);
+    await sleep(timing.shutdown.halt);
+    await powerOff();
+  };
 
-      for (const session of sessions) {
-        clock.next();
-        delay = await runSession(session, delay);
-      }
+  const { cols } = measureGrid();
+  screen.replaceChildren();
+  const typing = (cmd, wait) => wait + cmd.length * mean(timing.key) + timing.afterType;
+  const printing = (lines = []) =>
+    lines.reduce((total, line) => total + mean(line.includes("OK") ? timing.printOk : timing.print), 0);
+  const sessionTime = (session, wait) => {
+    const effect = effects[session.effect];
+    const effectTime = effect ? (effect.estimate?.(session, cols) ?? option(session, "duration")) : 0;
+    const outputTime = effect?.inline ? 0 : outputLines(session).length * (session.lineDelay ?? timing.lineDelay);
+    return typing(session.cmd, wait) + effectTime + outputTime;
+  };
+  const sessionStep = (session, wait, chained) => ({
+    label: session.cmd,
+    wait,
+    chained,
+    estimate: sessionTime(session, wait),
+    run: (delay) => runSession(session, delay),
+    after: (previous) => previous + sessionHtml(session),
+  });
 
-      clock.next();
-      await type("clear", delay + (config.clearDelay ?? 0));
+  const steps = [];
+
+  if (config.boot) {
+    const settings = config.boot;
+    const { start, login, password, welcome, window: show } = timing.boot;
+    steps.push({
+      label: "boot",
+      wait: 0,
+      estimate: start + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show,
+      run: () => boot(settings),
+      after: () => "",
+    });
+  }
+
+  let pause = timing.prompt;
+  sessions.forEach((session) => {
+    steps.push(sessionStep(session, pause, true));
+    pause = nextDelay(session);
+  });
+
+  const clearWait = pause + (config.clearDelay ?? 0);
+  steps.push({
+    label: "clear",
+    wait: clearWait,
+    chained: true,
+    estimate: typing("clear", clearWait),
+    run: async (delay) => {
+      await type("clear", delay);
       clearScreen();
+    },
+    after: () => "",
+  });
 
-      if (matrixSession) {
-        clock.next();
-        await runSession(matrixSession, timing.prompt);
+  if (matrixSession) {
+    const step = sessionStep(matrixSession, timing.prompt, false);
+    steps.push({
+      ...step,
+      run: async (delay) => {
+        await step.run(delay);
         clearScreen("");
+      },
+      after: () => "",
+    });
+  }
+
+  if (config.goodbye) {
+    steps.push(sessionStep(config.goodbye, timing.prompt, false));
+  }
+
+  if (config.shutdown) {
+    const settings = config.shutdown;
+    const { idle, broadcast, clear, halt, crt } = timing.shutdown;
+    const wait = settings.idle ?? idle;
+    steps.push({
+      label: settings.cmd ?? "shutdown -h now",
+      wait,
+      estimate:
+        typing(settings.cmd ?? "shutdown -h now", wait) + (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + crt,
+      run: (delay) => shutdown(settings, delay),
+      after: () => "",
+    });
+  }
+
+  const power = document.querySelector("[data-terminal-power]");
+
+  const progress = () => {
+    const container = document.querySelector("[data-terminal-progress]");
+    const track = container?.querySelector("[data-terminal-track]");
+    const eta = container?.querySelector("[data-terminal-eta]");
+    let index = 0;
+    let started = 0;
+    let timer = null;
+
+    if (!container || !track || !config.shutdown) {
+      return { start: () => {}, done: () => {} };
+    }
+
+    const fills = steps.map((step, position) => {
+      const button = document.createElement("button");
+      const fill = document.createElement("span");
+      button.type = "button";
+      button.className = "terminal-step";
+      button.title = step.label;
+      button.setAttribute("aria-label", `Jump to ${step.label}`);
+      button.style.setProperty("--weight", String(Math.round(step.estimate)));
+      button.addEventListener("click", () => seek(position));
+      fill.className = "terminal-step-fill";
+      button.append(fill);
+      track.append(button);
+      return fill;
+    });
+    const format = (ms) => {
+      const seconds = Math.ceil(Math.max(0, ms) / 1000);
+      return `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")} remaining`;
+    };
+    const show = () => {
+      const elapsed = visibleNow() - started;
+      const remaining =
+        steps.slice(index + 1).reduce((total, step) => total + step.estimate, 0) + Math.max(0, (steps[index]?.estimate ?? 0) - elapsed);
+      fills.forEach((fill, position) => {
+        const ratio = position < index ? 1 : position > index ? 0 : Math.min(1, elapsed / steps[position].estimate);
+        fill.style.setProperty("--fill", `${(ratio * 100).toFixed(1)}%`);
+      });
+      if (eta) {
+        eta.textContent = index < steps.length ? format(remaining) : "powered off";
       }
+    };
 
-      if (config.goodbye) {
-        clock.next();
-        await runSession(config.goodbye, timing.prompt);
-      }
+    container.hidden = false;
 
-      if (config.shutdown) {
-        const settings = config.shutdown;
-        clock.next();
-        await type(settings.cmd ?? "shutdown -h now", settings.idle ?? timing.shutdown.idle);
+    return {
+      start: (position, skipped) => {
+        index = position;
+        started = visibleNow() - skipped;
+        show();
+        timer ??= window.setInterval(show, 250);
+      },
+      done: () => {
+        index = steps.length;
+        show();
+      },
+    };
+  };
 
-        if (settings.broadcast) {
-          html += `\n${markup(settings.broadcast.replace("{now}", timestamp())).replace(/\n+$/, "")}\n`;
-          render("");
-          await sleep(timing.shutdown.broadcast);
+  const clock = progress();
+  const firstSession = config.boot ? 1 : 0;
+
+  const play = async (from, seeked) => {
+    try {
+      for (let position = from; ; position = firstSession) {
+        for (let index = position; index < steps.length; index += 1) {
+          const step = steps[index];
+          const delay = seeked && index === from && step.chained ? timing.prompt : step.wait;
+          clock.start(index, step.wait - delay);
+          await step.run(delay);
         }
 
-        setBooting(true);
-        clearScreen("");
-        await sleep(timing.shutdown.clear);
-        await printLines(settings.lines);
-        await sleep(timing.shutdown.halt);
-        await powerOff();
-        clock.done();
-        const power = document.querySelector("[data-terminal-power]");
-        if (power) {
-          power.addEventListener("click", () => window.location.reload());
-          power.hidden = false;
+        if (config.shutdown) {
+          clock.done();
+          if (power) {
+            power.hidden = false;
+          }
+          return;
         }
-        return;
+      }
+    } catch (error) {
+      if (error !== cancelled) {
+        throw error;
       }
     }
   };
 
-  run();
+  const seek = (index) => {
+    generation += 1;
+    if (power) {
+      power.hidden = true;
+    }
+    terminal?.querySelector(".terminal-crt")?.remove();
+    screen.classList.remove("is-locked", "is-tight", "is-canvas");
+    setBooting(false);
+    html = steps.slice(0, index).reduce((previous, step) => step.after(previous), "");
+    render(cursor, true);
+    play(index, true);
+  };
+
+  power?.addEventListener("click", () => seek(0));
+  play(0, false);
 };
 
 const initializeEventBindings = () => {

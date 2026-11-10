@@ -21,7 +21,10 @@
       {{ partial "icon.html" "solid/power-off" }}
     </button>
   </div>
-  <p class="terminal-eta not-prose" data-terminal-eta aria-hidden="true" hidden></p>
+  <div class="terminal-progress not-prose" data-terminal-progress hidden>
+    <div class="terminal-track" data-terminal-track></div>
+    <p class="terminal-eta" data-terminal-eta aria-hidden="true"></p>
+  </div>
   <script type="application/json" data-terminal-script>{{ hugo.Data.terminal | jsonify | safeJS }}</script>
 </div>
 {{ end }}
