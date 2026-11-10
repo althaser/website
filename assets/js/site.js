@@ -1068,7 +1068,66 @@ const initializeTerminal = () => {
       };
     });
 
+  const nms = async (session) => {
+    const lines = outputLines(session).map((line) => [...line]);
+    const base = html;
+    const glyph = () => String.fromCharCode(33 + Math.floor(Math.random() * 94));
+    const reveal = session.duration ?? 3000;
+    const revealAt = lines.map((chars) => chars.map(() => Math.random() * reveal));
+    const total = lines.reduce((sum, chars) => sum + chars.length, 0);
+    const draw = (shown, elapsed) => {
+      let count = 0;
+      const body = lines
+        .map((chars, row) => {
+          let line = "";
+          let run = "";
+          let blue = false;
+          const flush = () => {
+            line += blue ? `<span class="term-blue">${escapeHtml(run)}</span>` : escapeHtml(run);
+            run = "";
+          };
+
+          chars.forEach((char, col) => {
+            count += 1;
+            if (count > shown) {
+              return;
+            }
+            const decrypted = char === " " || elapsed >= revealAt[row][col];
+            const isBlue = decrypted && char !== " ";
+            if (isBlue !== blue) {
+              flush();
+              blue = isBlue;
+            }
+            run += decrypted ? char : glyph();
+          });
+          flush();
+          return line;
+        })
+        .join("\n");
+      html = `${base}${body}\n`;
+      render("");
+    };
+
+    for (let step = 1; step <= 12; step += 1) {
+      await whenVisible();
+      draw(Math.ceil((total * step) / 12), -1);
+      await sleep(50);
+    }
+
+    await sleep(1500);
+    const start = performance.now();
+
+    while (performance.now() - start < reveal) {
+      await whenVisible();
+      draw(total, performance.now() - start);
+      await sleep(60);
+    }
+
+    draw(total, reveal);
+  };
+
   const effects = {
+    nms: (session) => nms(session),
     sl: () => train(),
     pipes: (session) => pipes(session.duration ?? 12000),
     cbonsai: (session) => bonsai(session.hold ?? 4000),
@@ -1164,7 +1223,12 @@ const initializeTerminal = () => {
     const effectTime = {
       sl: () => (cols + locomotive[0].length + coal[0].length) * 44,
       cbonsai: (session) => 2500 + (session.hold ?? 4000),
+      nms: (session) => 600 + 1500 + (session.duration ?? 3000),
     };
+    const sessionTime = (session, delay) =>
+      typing(session.cmd, delay, session.interrupt) +
+      (effects[session.effect] ? (effectTime[session.effect]?.(session) ?? session.duration ?? 10000) : 0) +
+      (session.effect === "nms" ? 0 : outputLines(session).length * (session.lineDelay ?? 35));
     const estimates = [];
 
     if (config.boot) {
@@ -1174,11 +1238,17 @@ const initializeTerminal = () => {
 
     let delay = 900;
     sessions.forEach((session) => {
-      const effect = effects[session.effect] ? (effectTime[session.effect]?.(session) ?? session.duration ?? 10000) : 0;
-      estimates.push(typing(session.cmd, delay, session.interrupt) + effect + outputLines(session).length * (session.lineDelay ?? 35));
-      delay = session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
+      estimates.push(sessionTime(session, delay));
+      delay = nextDelay(session);
     });
-    estimates.push(typing("clear", delay + (config.clearDelay ?? 0)) + (config.matrix ? (config.matrix.duration ?? 8000) : 0));
+    estimates.push(
+      typing("clear", delay + (config.clearDelay ?? 0)) +
+        (config.matrix ? typing(config.matrix.cmd ?? "cmatrix", 900) + (config.matrix.duration ?? 8000) : 0),
+    );
+
+    if (config.nms) {
+      estimates.push(sessionTime({ ...config.nms, effect: "nms" }, 900));
+    }
 
     if (config.shutdown) {
       const settings = config.shutdown;
@@ -1236,6 +1306,29 @@ const initializeTerminal = () => {
     };
   };
 
+  const nextDelay = (session) => session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
+
+  const runSession = async (session, delay) => {
+    await type(session.cmd, delay, session.interrupt);
+
+    if (effects[session.effect]) {
+      await effects[session.effect](session);
+      render("");
+    }
+
+    if (session.effect !== "nms") {
+      for (const [index, line] of outputLines(session).entries()) {
+        await whenVisible();
+        const content = session.lolcat ? rainbow(line, index) : markup(line);
+        html += session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
+        render("");
+        await sleep(session.lineDelay ?? 35);
+      }
+    }
+
+    return nextDelay(session);
+  };
+
   const run = async () => {
     const clock = countdown();
 
@@ -1249,22 +1342,7 @@ const initializeTerminal = () => {
 
       for (const session of sessions) {
         clock.next();
-        await type(session.cmd, delay, session.interrupt);
-
-        if (effects[session.effect]) {
-          await effects[session.effect](session);
-          render("");
-        }
-
-        for (const [index, line] of outputLines(session).entries()) {
-          await whenVisible();
-          const content = session.lolcat ? rainbow(line, index) : markup(line);
-          html += session.tight ? `<span class="term-tight">${content || " "}</span>` : `${content}\n`;
-          render("");
-          await sleep(session.lineDelay ?? 35);
-        }
-
-        delay = session.pause ?? (effects[session.effect] || session.interrupt ? 2200 : 7200);
+        delay = await runSession(session, delay);
       }
 
       clock.next();
@@ -1273,8 +1351,14 @@ const initializeTerminal = () => {
       render();
 
       if (config.matrix) {
+        await type(config.matrix.cmd ?? "cmatrix", 900);
         await matrix(config.matrix.duration ?? 8000);
         html = "";
+      }
+
+      if (config.nms) {
+        clock.next();
+        await runSession({ ...config.nms, effect: "nms" }, 900);
       }
 
       if (config.shutdown) {

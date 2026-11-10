@@ -2,6 +2,21 @@ title: "althaser@laptop: ~"
 prompt: "{green}althaser@laptop{/}:{blue}~{/} $ "
 matrix:
   duration: 16000
+nms:
+  cmd: "ls -l | nms"
+  duration: 3000
+  output: |
+    total 40
+    drwxr-xr-x 2 althaser althaser 4096 Nov  3 09:12 Desktop
+    drwxr-xr-x 5 althaser althaser 4096 Nov  9 22:41 Development
+    drwxr-xr-x 3 althaser althaser 4096 Nov 10 11:05 Documents
+    drwxr-xr-x 4 althaser althaser 4096 Nov  8 18:27 Downloads
+    drwxr-xr-x 2 althaser althaser 4096 Oct 21 14:50 Music
+    drwxr-xr-x 3 althaser althaser 4096 Nov  7 16:33 Pictures
+    drwxr-xr-x 2 althaser althaser 4096 Oct 21 14:50 Public
+    drwx------ 4 althaser althaser 4096 Nov  2 20:14 snap
+    drwxr-xr-x 2 althaser althaser 4096 Oct 21 14:50 Templates
+    drwxr-xr-x 2 althaser althaser 4096 Oct 21 14:50 Videos
 shutdown:
   cmd: "shutdown -h now"
   idle: 10000
