@@ -1382,6 +1382,11 @@ const initializeTerminal = () => {
         await sleep(900);
         await powerOff();
         clock.done();
+        const power = document.querySelector("[data-terminal-power]");
+        if (power) {
+          power.addEventListener("click", () => window.location.reload());
+          power.hidden = false;
+        }
         return;
       }
     }

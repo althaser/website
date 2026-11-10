@@ -3,8 +3,8 @@
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
   {{ .Content }}
   <p class="sr-only">A simulated terminal session that types commands and shows their output.</p>
-  <div class="terminal not-prose{{ if hugo.Data.terminal.boot }} is-booting{{ end }}" aria-hidden="true">
-    <div class="terminal-bar">
+  <div class="terminal not-prose{{ if hugo.Data.terminal.boot }} is-booting{{ end }}">
+    <div class="terminal-bar" aria-hidden="true">
       <span class="terminal-bar-start">
         <span class="terminal-button">{{ partial "icon.html" "solid/plus" }}</span>
       </span>
@@ -16,7 +16,10 @@
         <span class="terminal-control">{{ partial "icon.html" "solid/xmark" }}</span>
       </span>
     </div>
-    <div class="terminal-screen" data-terminal-screen></div>
+    <div class="terminal-screen" data-terminal-screen aria-hidden="true"></div>
+    <button type="button" class="terminal-power" data-terminal-power aria-label="Power on" title="Power on" hidden>
+      {{ partial "icon.html" "solid/power-off" }}
+    </button>
   </div>
   <p class="terminal-eta not-prose" data-terminal-eta aria-hidden="true" hidden></p>
   <script type="application/json" data-terminal-script>{{ hugo.Data.terminal | jsonify | safeJS }}</script>

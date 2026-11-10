@@ -454,6 +454,12 @@
   .terminal-crt {
     @apply pointer-events-none absolute left-1/2 h-(--crt-height) w-full -translate-x-1/2 -translate-y-1/2 bg-white opacity-0 animate-crt-off;
   }
+  .terminal-power {
+    @apply absolute top-1/2 left-1/2 inline-flex size-16 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-2xl text-link ring-1 ring-link transition-colors hover:bg-gray-300 hover:ring-gray-300 focus-visible:bg-gray-300 focus-visible:ring-gray-300 focus-visible:outline-none dark:text-link-dark dark:ring-link-dark dark:hover:bg-title-dark dark:hover:ring-gray-700 dark:focus-visible:bg-title-dark dark:focus-visible:ring-gray-700;
+  }
+  .terminal-power .icon {
+    @apply w-[1em];
+  }
   .terminal-eta {
     @apply mt-2 text-right font-mono text-xs tabular-nums text-gray-500 dark:text-gray-400;
   }
