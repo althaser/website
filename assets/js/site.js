@@ -1295,10 +1295,9 @@ const initializeTerminal = () => {
     const outputTime = effect?.inline ? 0 : outputLines(session).length * (session.lineDelay ?? timing.lineDelay);
     return typing(session.cmd, wait) + effectTime + outputTime;
   };
-  const sessionStep = (session, wait, chained) => ({
+  const sessionStep = (session, wait) => ({
     label: session.label ?? session.cmd,
     wait,
-    chained,
     estimate: sessionTime(session, wait),
     run: (delay) => runSession(session, delay),
     after: (previous) => previous + sessionHtml(session),
@@ -1320,7 +1319,7 @@ const initializeTerminal = () => {
 
   let pause = timing.prompt;
   sessions.forEach((session) => {
-    steps.push(sessionStep(session, pause, true));
+    steps.push(sessionStep(session, pause));
     pause = nextDelay(session);
   });
 
@@ -1328,7 +1327,6 @@ const initializeTerminal = () => {
   steps.push({
     label: "clear",
     wait: clearWait,
-    chained: true,
     estimate: typing("clear", clearWait),
     run: async (delay) => {
       await type("clear", delay);
@@ -1338,7 +1336,7 @@ const initializeTerminal = () => {
   });
 
   if (matrixSession) {
-    const step = sessionStep(matrixSession, timing.prompt, false);
+    const step = sessionStep(matrixSession, timing.prompt);
     steps.push({
       ...step,
       run: async (delay) => {
@@ -1350,7 +1348,7 @@ const initializeTerminal = () => {
   }
 
   if (config.goodbye) {
-    steps.push(sessionStep(config.goodbye, timing.prompt, false));
+    steps.push(sessionStep(config.goodbye, timing.prompt));
   }
 
   if (config.shutdown) {
@@ -1454,7 +1452,7 @@ const initializeTerminal = () => {
       for (let position = from; ; position = firstSession) {
         for (let index = position; index < steps.length; index += 1) {
           const step = steps[index];
-          const delay = seeked && index === from && step.chained ? timing.prompt : step.wait;
+          const delay = seeked && index === from ? Math.min(step.wait, timing.prompt) : step.wait;
           clock.start(index, step.wait - delay);
           await step.run(delay);
         }
