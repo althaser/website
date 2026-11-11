@@ -405,7 +405,7 @@ const initializeTerminal = () => {
     pause: 7200,
     lineDelay: 35,
     crt: 1500,
-    boot: { idle: 2000, press: 600, start: 700, login: 1200, password: 4000, welcome: 1800, window: 700 },
+    boot: { idle: 2000, press: 600, start: 700, getty: 800, tty: 400, login: 1200, password: 4000, welcome: 1800, window: 700 },
     shutdown: { idle: 10000, broadcast: 1800, clear: 700, halt: 900, wipe: 180 },
     nms: { steps: 12, step: 50, hold: 1500, frame: 60 },
   };
@@ -1200,8 +1200,11 @@ const initializeTerminal = () => {
     await sleep(timing.boot.start);
 
     await printLines(settings.lines);
+    await sleep(timing.boot.getty);
+    clearScreen("");
+    await sleep(timing.boot.tty);
 
-    html += `\n${escapeHtml(settings.issue ?? "")}\n\n${escapeHtml(settings.login ?? "login: ")}`;
+    html += `${escapeHtml(settings.issue ?? "")}\n\n${escapeHtml(settings.login ?? "login: ")}`;
     render();
     await sleep(timing.boot.login);
 
@@ -1315,11 +1318,11 @@ const initializeTerminal = () => {
 
   if (config.boot) {
     const settings = config.boot;
-    const { start, login, password, welcome, window: show } = timing.boot;
+    const { start, getty, tty, login, password, welcome, window: show } = timing.boot;
     steps.push({
       label: "boot",
       wait: 0,
-      estimate: timing.crt + start + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show,
+      estimate: timing.crt + start + getty + tty + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show,
       run: () => boot(settings),
       after: () => "",
     });
