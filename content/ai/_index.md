@@ -1,6 +1,8 @@
 ---
 title: "AI"
-date: 2026-11-09
-description: "A simulated terminal session"
+date: 2026-11-11
+description: "Coming soon"
 draft: false
 ---
+
+Soon.

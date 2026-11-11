@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="page-shell prose dark:prose-invert max-w-none">
+  <h1 class="mt-1 mb-4">{{ .Title }}</h1>
+  {{ .Content }}
+  <p class="sr-only">A simulated terminal session that types commands and shows their output.</p>
+  <div class="terminal not-prose{{ if hugo.Data.terminal.boot }} is-booting{{ end }}">
+    <div class="terminal-bar" aria-hidden="true">
+      <span class="terminal-bar-start">
+        <span class="terminal-button">{{ partial "icon.html" "solid/plus" }}</span>
+      </span>
+      <span class="terminal-title">{{ hugo.Data.terminal.title }}</span>
+      <span class="terminal-bar-end">
+        <span class="terminal-button">{{ partial "icon.html" "solid/bars" }}</span>
+        <span class="terminal-control">{{ partial "icon.html" "solid/minus" }}</span>
+        <span class="terminal-control">{{ partial "icon.html" "regular/square" }}</span>
+        <span class="terminal-control">{{ partial "icon.html" "solid/xmark" }}</span>
+      </span>
+    </div>
+    <div class="terminal-screen" data-terminal-screen aria-hidden="true"></div>
+    <button type="button" class="terminal-power" data-terminal-power aria-label="Power on" title="Power on" hidden>
+      {{ partial "icon.html" "solid/power-off" }}
+    </button>
+  </div>
+  <div class="terminal-progress not-prose" data-terminal-progress hidden>
+    <div class="terminal-track" data-terminal-track></div>
+    <p class="terminal-eta" data-terminal-eta aria-hidden="true"></p>
+  </div>
+  <script type="application/json" data-terminal-script>{{ hugo.Data.terminal | jsonify | safeJS }}</script>
+</div>
+{{ end }}
