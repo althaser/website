@@ -4,6 +4,7 @@ matrix:
   duration: 16000
 goodbye:
   cmd: "cowsay -f tux kkthxbye"
+  label: "kkthxbye"
   output: |2
      __________
     < kkthxbye >
@@ -19,6 +20,7 @@ goodbye:
         \___)=(___/
 shutdown:
   cmd: "shutdown -h now"
+  label: "poweroff"
   idle: 10000
   broadcast: |
     Broadcast message from root@laptop on pts/1 ({now}):
@@ -82,6 +84,7 @@ boot:
   welcome: "Welcome to Ubuntu 26.04.1 LTS (GNU/Linux 7.0.0-43-generic x86_64)"
 sessions:
   - cmd: "# echo \"here goes some easter eggs\""
+    label: "echo"
     pause: 2200
 
   - cmd: "hostname"
@@ -89,10 +92,12 @@ sessions:
       laptop
 
   - cmd: "uptime -p"
+    label: "uptime"
     output: |
       up 3 days, 7 hours, 42 minutes
 
   - cmd: "fastfetch --logo-type small"
+    label: "fastfetch"
     output: |
       {red}         _  {/}  {yellow}althaser{/}@{yellow}laptop{/}
       {red}     ---(_) {/}  ---------------
@@ -108,6 +113,7 @@ sessions:
                     {red}███{/}{green}███{/}{yellow}███{/}{blue}███{/}{magenta}███{/}{cyan}███{/}{gray}███{/}
 
   - cmd: "pi \"what is althaser.me about?\""
+    label: "pi"
     lineDelay: 120
     output: |
       {magenta}π{/} {gray}reading https://althaser.me ...{/}
@@ -121,10 +127,12 @@ sessions:
     effect: sl
 
   - cmd: "pipes.sh"
+    label: "pipes"
     effect: pipes
     duration: 12000
 
   - cmd: "apt moo"
+    label: "apt"
     output: |2
                        (__)
                        (oo)
@@ -135,6 +143,7 @@ sessions:
       ..."Have you mooed today?"...
 
   - cmd: "figlet -f \"ANSI Shadow\" ubuntu | lolcat"
+    label: "figlet"
     lolcat: true
     tight: true
     output: |2
@@ -162,6 +171,7 @@ sessions:
     duration: 10000
 
   - cmd: "toilet -w 120 -f mono12 \"GNU/Linux\""
+    label: "toilet"
     tight: true
     output: |2
 
@@ -174,6 +184,7 @@ sessions:
           ▀▀▀▀   ▀▀   ▀▀▀    ▀▀▀▀    ▄█▀       ▀▀▀▀▀▀▀▀  ▀▀▀▀▀▀▀▀  ▀▀    ▀▀   ▀▀▀▀ ▀▀  ▀▀▀  ▀▀▀
 
   - cmd: "tux && bsd-daemon"
+    label: "tux-bsd"
     output: |2
                                                                          {red},        ,{/}
                   {gray}.-"""-.{/}                                               {red}/(        )`{/}
@@ -233,6 +244,7 @@ sessions:
                             {freebsd}FreeBSD{/}                     {openbsd}OpenBSD{/}
 
   - cmd: "ls -l | nms"
+    label: "nms"
     effect: nms
     pause: 7200
     duration: 3000

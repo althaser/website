@@ -1268,7 +1268,7 @@ const initializeTerminal = () => {
   };
 
   const shutdown = async (settings, wait) => {
-    await type(settings.cmd ?? "shutdown -h now", wait);
+    await type(settings.cmd, wait);
 
     if (settings.broadcast) {
       html += `\n${markup(settings.broadcast.replace("{now}", timestamp())).replace(/\n+$/, "")}\n`;
@@ -1296,7 +1296,7 @@ const initializeTerminal = () => {
     return typing(session.cmd, wait) + effectTime + outputTime;
   };
   const sessionStep = (session, wait, chained) => ({
-    label: session.cmd,
+    label: session.label ?? session.cmd,
     wait,
     chained,
     estimate: sessionTime(session, wait),
@@ -1354,14 +1354,14 @@ const initializeTerminal = () => {
   }
 
   if (config.shutdown) {
-    const settings = config.shutdown;
+    const settings = { cmd: "shutdown -h now", ...config.shutdown };
     const { idle, broadcast, clear, halt } = timing.shutdown;
     const wait = settings.idle ?? idle;
     steps.push({
-      label: settings.cmd ?? "shutdown -h now",
+      label: settings.label ?? settings.cmd,
       wait,
       estimate:
-        typing(settings.cmd ?? "shutdown -h now", wait) + (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + timing.crt,
+        typing(settings.cmd, wait) + (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + timing.crt,
       run: (delay) => shutdown(settings, delay),
       after: () => "",
     });
