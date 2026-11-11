@@ -404,8 +404,9 @@ const initializeTerminal = () => {
     effectPause: 2200,
     pause: 7200,
     lineDelay: 35,
-    boot: { start: 700, login: 1200, password: 4000, welcome: 1800, window: 700 },
-    shutdown: { idle: 10000, broadcast: 1800, clear: 700, halt: 900, crt: 1500, wipe: 180 },
+    crt: 1500,
+    boot: { idle: 2000, press: 600, start: 700, login: 1200, password: 4000, welcome: 1800, window: 700 },
+    shutdown: { idle: 10000, broadcast: 1800, clear: 700, halt: 900, wipe: 180 },
     nms: { steps: 12, step: 50, hold: 1500, frame: 60 },
   };
   const jitter = ([min, spread]) => min + Math.random() * spread;
@@ -1180,9 +1181,22 @@ const initializeTerminal = () => {
     return `${day} ${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${zone}`;
   };
 
+  const crtFlash = (mode) => {
+    const crt = document.createElement("div");
+    const height = screen.offsetHeight;
+    crt.className = `terminal-crt is-${mode}`;
+    crt.style.top = `${screen.offsetTop + height / 2}px`;
+    crt.style.setProperty("--crt-height", `${height}px`);
+    terminal.append(crt);
+    return crt;
+  };
+
   const boot = async (settings) => {
     setBooting(true);
     clearScreen("");
+    const crt = crtFlash("on");
+    await sleep(timing.crt);
+    crt.remove();
     await sleep(timing.boot.start);
 
     await printLines(settings.lines);
@@ -1211,17 +1225,12 @@ const initializeTerminal = () => {
 
   const powerOff = async () => {
     await sleep(0);
-    const crt = document.createElement("div");
-    const height = screen.offsetHeight;
-    crt.className = "terminal-crt";
-    crt.style.top = `${screen.offsetTop + height / 2}px`;
-    crt.style.setProperty("--crt-height", `${height}px`);
-    terminal.append(crt);
+    const crt = crtFlash("off");
     setBooting(true);
 
     await sleep(timing.shutdown.wipe);
     clearScreen("");
-    await sleep(timing.shutdown.crt - timing.shutdown.wipe);
+    await sleep(timing.crt - timing.shutdown.wipe);
     crt.remove();
   };
 
@@ -1310,7 +1319,7 @@ const initializeTerminal = () => {
     steps.push({
       label: "boot",
       wait: 0,
-      estimate: start + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show,
+      estimate: timing.crt + start + printing(settings.lines) + login + (settings.user ?? "").length * mean(timing.loginKey) + password + welcome + show,
       run: () => boot(settings),
       after: () => "",
     });
@@ -1353,13 +1362,13 @@ const initializeTerminal = () => {
 
   if (config.shutdown) {
     const settings = config.shutdown;
-    const { idle, broadcast, clear, halt, crt } = timing.shutdown;
+    const { idle, broadcast, clear, halt } = timing.shutdown;
     const wait = settings.idle ?? idle;
     steps.push({
       label: settings.cmd ?? "shutdown -h now",
       wait,
       estimate:
-        typing(settings.cmd ?? "shutdown -h now", wait) + (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + crt,
+        typing(settings.cmd ?? "shutdown -h now", wait) + (settings.broadcast ? broadcast : 0) + clear + printing(settings.lines) + halt + timing.crt,
       run: (delay) => shutdown(settings, delay),
       after: () => "",
     });
@@ -1381,7 +1390,7 @@ const initializeTerminal = () => {
     let timer = null;
 
     if (!container || !track || !config.shutdown) {
-      return { start: () => {}, done: () => {} };
+      return { start: () => {}, done: () => {}, off: () => {} };
     }
 
     const fills = steps.map((step, position) => {
@@ -1411,7 +1420,7 @@ const initializeTerminal = () => {
         fill.style.setProperty("--fill", `${(ratio * 100).toFixed(1)}%`);
       });
       if (eta) {
-        eta.textContent = index < steps.length ? format(remaining) : "powered off";
+        eta.textContent = index >= 0 && index < steps.length ? format(remaining) : "powered off";
       }
     };
 
@@ -1428,6 +1437,10 @@ const initializeTerminal = () => {
         window.clearInterval(timer);
         timer = null;
         index = steps.length;
+        show();
+      },
+      off: () => {
+        index = -1;
         show();
       },
     };
@@ -1462,6 +1475,7 @@ const initializeTerminal = () => {
   const seek = (index) => {
     generation += 1;
     showPower(false);
+    power?.classList.remove("is-pressed");
     terminal?.querySelector(".terminal-crt")?.remove();
     resetScreen();
     setBooting(false);
@@ -1470,8 +1484,30 @@ const initializeTerminal = () => {
     play(index, true);
   };
 
+  const powerUp = async () => {
+    if (!config.boot || !power) {
+      return play(0, false);
+    }
+
+    showPower(true);
+    clock.off();
+    try {
+      await sleep(timing.boot.idle);
+      power.classList.add("is-pressed");
+      await sleep(timing.boot.press);
+    } catch (error) {
+      if (error === cancelled) {
+        return;
+      }
+      throw error;
+    }
+    showPower(false);
+    power.classList.remove("is-pressed");
+    play(0, false);
+  };
+
   power?.addEventListener("click", () => seek(0));
-  play(0, false);
+  powerUp();
 };
 
 const initializeEventBindings = () => {

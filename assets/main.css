@@ -41,6 +41,7 @@
     }
   }
   --animate-crt-off: crt-off 1.5s ease-in-out forwards;
+  --animate-crt-on: crt-off 1.5s ease-in-out reverse forwards;
 
   @keyframes crt-off {
     0% {
@@ -457,10 +458,19 @@
     @apply overflow-hidden text-gray-300;
   }
   .terminal-crt {
-    @apply pointer-events-none absolute left-1/2 h-(--crt-height) w-full -translate-x-1/2 -translate-y-1/2 bg-white opacity-0 animate-crt-off;
+    @apply pointer-events-none absolute left-1/2 h-(--crt-height) w-full -translate-x-1/2 -translate-y-1/2 bg-white opacity-0;
+  }
+  .terminal-crt.is-off {
+    @apply animate-crt-off;
+  }
+  .terminal-crt.is-on {
+    @apply animate-crt-on;
   }
   .terminal-power {
     @apply absolute top-1/2 left-1/2 inline-flex size-16 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-2xl text-link ring-1 ring-link transition-colors hover:bg-gray-300 hover:ring-gray-300 focus-visible:bg-gray-300 focus-visible:ring-gray-300 focus-visible:outline-none dark:text-link-dark dark:ring-link-dark dark:hover:bg-title-dark dark:hover:ring-gray-700 dark:focus-visible:bg-title-dark dark:focus-visible:ring-gray-700;
+  }
+  .terminal-power.is-pressed {
+    @apply bg-gray-300 ring-gray-300 dark:bg-title-dark dark:ring-gray-700;
   }
   .terminal-power .icon {
     @apply w-[1em];
