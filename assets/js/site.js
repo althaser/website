@@ -1181,22 +1181,23 @@ const initializeTerminal = () => {
     return `${day} ${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${zone}`;
   };
 
-  const crtFlash = (mode) => {
+  const crtFlash = async (mode, wipe = 0) => {
     const crt = document.createElement("div");
     const height = screen.offsetHeight;
     crt.className = `terminal-crt is-${mode}`;
     crt.style.top = `${screen.offsetTop + height / 2}px`;
     crt.style.setProperty("--crt-height", `${height}px`);
     terminal.append(crt);
-    return crt;
+    setBooting(true);
+
+    await sleep(wipe);
+    clearScreen("");
+    await sleep(timing.crt - wipe);
+    crt.remove();
   };
 
   const boot = async (settings) => {
-    setBooting(true);
-    clearScreen("");
-    const crt = crtFlash("on");
-    await sleep(timing.crt);
-    crt.remove();
+    await crtFlash("on");
     await sleep(timing.boot.start);
 
     await printLines(settings.lines);
@@ -1224,17 +1225,6 @@ const initializeTerminal = () => {
     setBooting(false);
     clearScreen();
     await sleep(timing.boot.window);
-  };
-
-  const powerOff = async () => {
-    await sleep(0);
-    const crt = crtFlash("off");
-    setBooting(true);
-
-    await sleep(timing.shutdown.wipe);
-    clearScreen("");
-    await sleep(timing.crt - timing.shutdown.wipe);
-    crt.remove();
   };
 
   const nextDelay = (session) =>
@@ -1291,7 +1281,7 @@ const initializeTerminal = () => {
     await sleep(timing.shutdown.clear);
     await printLines(settings.lines);
     await sleep(timing.shutdown.halt);
-    await powerOff();
+    await crtFlash("off", timing.shutdown.wipe);
   };
 
   const { cols } = measureGrid();
@@ -1381,6 +1371,7 @@ const initializeTerminal = () => {
   const showPower = (visible) => {
     if (power) {
       power.hidden = !visible;
+      power.classList.remove("is-pressed");
     }
   };
 
@@ -1393,7 +1384,7 @@ const initializeTerminal = () => {
     let timer = null;
 
     if (!container || !track || !config.shutdown) {
-      return { start: () => {}, done: () => {}, off: () => {} };
+      return { start: () => {}, off: () => {} };
     }
 
     const fills = steps.map((step, position) => {
@@ -1436,14 +1427,10 @@ const initializeTerminal = () => {
         show();
         timer ??= window.setInterval(show, 250);
       },
-      done: () => {
+      off: (finished) => {
         window.clearInterval(timer);
         timer = null;
-        index = steps.length;
-        show();
-      },
-      off: () => {
-        index = -1;
+        index = finished ? steps.length : -1;
         show();
       },
     };
@@ -1452,8 +1439,18 @@ const initializeTerminal = () => {
   const clock = progress();
   const firstSession = config.boot ? 1 : 0;
 
-  const play = async (from, seeked) => {
+  const unlessCancelled = async (task) => {
     try {
+      await task();
+    } catch (error) {
+      if (error !== cancelled) {
+        throw error;
+      }
+    }
+  };
+
+  const play = (from, seeked) =>
+    unlessCancelled(async () => {
       for (let position = from; ; position = firstSession) {
         for (let index = position; index < steps.length; index += 1) {
           const step = steps[index];
@@ -1463,22 +1460,16 @@ const initializeTerminal = () => {
         }
 
         if (config.shutdown) {
-          clock.done();
+          clock.off(true);
           showPower(true);
           return;
         }
       }
-    } catch (error) {
-      if (error !== cancelled) {
-        throw error;
-      }
-    }
-  };
+    });
 
   const seek = (index) => {
     generation += 1;
     showPower(false);
-    power?.classList.remove("is-pressed");
     terminal?.querySelector(".terminal-crt")?.remove();
     resetScreen();
     setBooting(false);
@@ -1487,27 +1478,18 @@ const initializeTerminal = () => {
     play(index, true);
   };
 
-  const powerUp = async () => {
-    if (!config.boot || !power) {
-      return play(0, false);
-    }
-
-    showPower(true);
-    clock.off();
-    try {
-      await sleep(timing.boot.idle);
-      power.classList.add("is-pressed");
-      await sleep(timing.boot.press);
-    } catch (error) {
-      if (error === cancelled) {
-        return;
+  const powerUp = () =>
+    unlessCancelled(async () => {
+      if (config.boot && power) {
+        showPower(true);
+        clock.off(false);
+        await sleep(timing.boot.idle);
+        power.classList.add("is-pressed");
+        await sleep(timing.boot.press);
+        showPower(false);
       }
-      throw error;
-    }
-    showPower(false);
-    power.classList.remove("is-pressed");
-    play(0, false);
-  };
+      play(0, false);
+    });
 
   power?.addEventListener("click", () => seek(0));
   powerUp();
