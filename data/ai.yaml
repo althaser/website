@@ -1,0 +1,21 @@
+- id: blockchain
+  label: Blockchain
+  alt: Animated blockchain processing
+- id: diffusion
+  label: Diffusion
+  alt: Animated diffusion model generating an image
+- id: gpu
+  label: GPU
+  alt: Animated GPU parallel computing
+- id: kubernetes
+  label: Kubernetes
+  alt: Animated Kubernetes cluster
+- id: llm
+  label: LLM
+  alt: Animated transformer language model
+- id: neural
+  label: Neural Network
+  alt: Animated neural network
+- id: quantum
+  label: Quantum
+  alt: Animated quantum circuit
