@@ -74,6 +74,15 @@ w('<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity="
 w('<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".36"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>')
 w('<linearGradient id="band" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7d2fe" stop-opacity="0"/><stop offset=".5" stop-color="#c7d2fe" stop-opacity=".22"/><stop offset="1" stop-color="#c7d2fe" stop-opacity="0"/></linearGradient>')
 w('<linearGradient id="trk" x1="0" x2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>')
+w('<radialGradient id="sg"><stop offset="0" stop-color="#e0e7ff" stop-opacity=".6"/><stop offset="1" stop-color="#e0e7ff" stop-opacity="0"/></radialGradient>')
+w('<radialGradient id="mg"><stop offset=".56" stop-color="#fde68a" stop-opacity="0"/><stop offset=".6" stop-color="#fde68a" stop-opacity=".22"/><stop offset="1" stop-color="#fde68a" stop-opacity="0"/></radialGradient>')
+w('<radialGradient id="atm"><stop offset=".68" stop-color="#38bdf8" stop-opacity=".35"/><stop offset=".78" stop-color="#6366f1" stop-opacity=".15"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>')
+w('<linearGradient id="pg" x1=".18" y1=".1" x2=".82" y2=".95"><stop offset="0" stop-color="#a5f3fc"/><stop offset=".3" stop-color="#38bdf8"/><stop offset=".55" stop-color="#6366f1"/><stop offset=".8" stop-color="#6d28d9"/><stop offset="1" stop-color="#3b0764"/></linearGradient>')
+w('<radialGradient id="sh" cx=".3" cy=".25" r=".9"><stop offset=".55" stop-color="#05070f" stop-opacity="0"/><stop offset="1" stop-color="#05070f" stop-opacity=".55"/></radialGradient>')
+w(f'<linearGradient id="rg" gradientUnits="userSpaceOnUse" x1="{-RA * CELL:.0f}" x2="{RA * CELL:.0f}" y1="0" y2="0"><stop offset="0" stop-color="#fb923c"/><stop offset=".5" stop-color="#fda4af"/><stop offset="1" stop-color="#f472b6"/></linearGradient>')
+w(f'<clipPath id="front"><rect x="{-RA * CELL - 2:.0f}" y="0" width="{2 * RA * CELL + 4:.0f}" height="{RB * CELL + 2:.0f}"/></clipPath>')
+w(f'<clipPath id="pc"><circle cx="{GX + PCX * CELL:.1f}" cy="{GY + PCY * CELL:.1f}" r="{PR * CELL:.0f}"/></clipPath>')
+w(f'<mask id="moon" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><circle cx="{GX + 27.4 * CELL:.0f}" cy="{GY + 4.0 * CELL:.0f}" r="{2.9 * CELL:.0f}" fill="#fff"/><circle cx="{GX + 26.2 * CELL:.0f}" cy="{GY + 3.2 * CELL:.0f}" r="{2.4 * CELL:.0f}" fill="#000"/></mask>')
 w(f'<clipPath id="gc"><rect x="{GX}" y="{GY}" width="{GW}" height="{GH}" rx="10"/></clipPath>')
 w("</defs>")
 
@@ -97,6 +106,7 @@ css.append(f"@keyframes dot{{0%,{den0}%{{transform:translateX(0)}}{den1}%,{hold1
 for s in range(STEPS + 1):
     p = den0 + (den1 - den0) * s / STEPS
     css.append(f"@keyframes t{s}{{0%,{p - .5:.1f}%{{opacity:.25}}{p:.1f}%,{hold1}%{{opacity:1}}{re1 - (re1 - hold1) * s / STEPS:.1f}%,100%{{opacity:.25}}}}")
+css.append(f"@keyframes hd{{0%,{den1 - 8}%{{opacity:0}}{den1 + 4}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
 css.append("@keyframes gl{0%,50%{opacity:0}62%,80%{opacity:1}95%,100%{opacity:0}}")
 css.append("@media (prefers-reduced-motion:reduce){*{animation:none!important}.nz{opacity:0}}")
 w("<style>" + "".join(css) + "</style>")
@@ -132,6 +142,28 @@ for y in range(ROWS):
     for x in range(COLS):
         by_col.setdefault(hexc(img[y][x]), []).append(cell(x, y))
 w(f'<g opacity="0" style="animation:sh {T}s infinite">' + "".join(f'<path d="{"".join(d)}" fill="{c}"/>' for c, d in by_col.items()) + "</g>")
+
+# final high-definition vector layer
+X, Y, R = GX + PCX * CELL, GY + PCY * CELL, PR * CELL
+ra, rb = RA * CELL, RB * CELL
+band = (f"M{-ra:.1f} 0a{ra:.1f} {rb:.1f} 0 1 0 {2 * ra:.1f} 0a{ra:.1f} {rb:.1f} 0 1 0 {-2 * ra:.1f} 0z"
+        f"M{-ra * .707:.1f} 0a{ra * .707:.1f} {rb * .707:.1f} 0 1 0 {2 * ra * .707:.1f} 0a{ra * .707:.1f} {rb * .707:.1f} 0 1 0 {-2 * ra * .707:.1f} 0z")
+ring_t = f'translate({X:.1f} {Y:.1f}) rotate({math.degrees(ROT):.0f})'
+MX, MY, MR = GX + 27.4 * CELL, GY + 4.0 * CELL, 2.9 * CELL
+hd = [f'<rect x="{GX}" y="{GY}" width="{GW}" height="{GH}" fill="{hexc(BG)}"/>']
+for i in range(26):
+    hd.append(f'<circle cx="{GX + random.uniform(8, GW - 8):.0f}" cy="{GY + random.uniform(8, GH - 8):.0f}" r="{random.choice([.6, .8, 1])}" fill="#e0e7ff" opacity="{random.uniform(.2, .6):.2f}"/>')
+for (sx, sy) in sorted(stars):
+    cx, cy = GX + (sx + .5) * CELL, GY + (sy + .5) * CELL
+    hd.append(f'<circle cx="{cx:.0f}" cy="{cy:.0f}" r="9" fill="url(#sg)"/><path d="M{cx:.0f} {cy - 6:.0f}L{cx + 1.4:.1f} {cy - 1.4:.1f}L{cx + 6:.0f} {cy:.0f}L{cx + 1.4:.1f} {cy + 1.4:.1f}L{cx:.0f} {cy + 6:.0f}L{cx - 1.4:.1f} {cy + 1.4:.1f}L{cx - 6:.0f} {cy:.0f}L{cx - 1.4:.1f} {cy - 1.4:.1f}Z" fill="#e0e7ff"/>')
+hd.append(f'<circle cx="{MX:.0f}" cy="{MY:.0f}" r="{MR * 1.7:.0f}" fill="url(#mg)"/><circle cx="{MX:.0f}" cy="{MY:.0f}" r="{MR:.0f}" fill="#fde68a" mask="url(#moon)"/>')
+hd.append(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{R * 1.35:.0f}" fill="url(#atm)"/>')
+hd.append(f'<g transform="{ring_t}"><path d="{band}" fill="url(#rg)" fill-rule="evenodd" opacity=".9"/></g>')
+hd.append(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{R:.0f}" fill="url(#pg)"/>')
+hd.append(f'<g clip-path="url(#pc)" fill="none" stroke="#e0f2fe" stroke-opacity=".08" stroke-width="6"><path d="M{X - R:.0f} {Y - R * .35:.0f}Q{X:.0f} {Y - R * .2:.0f} {X + R:.0f} {Y - R * .45:.0f}M{X - R:.0f} {Y + R * .1:.0f}Q{X:.0f} {Y + R * .25:.0f} {X + R:.0f} {Y:.0f}M{X - R:.0f} {Y + R * .5:.0f}Q{X:.0f} {Y + R * .65:.0f} {X + R:.0f} {Y + R * .4:.0f}"/></g>')
+hd.append(f'<circle cx="{X:.1f}" cy="{Y:.1f}" r="{R:.0f}" fill="url(#sh)"/>')
+hd.append(f'<g transform="{ring_t}"><path d="{band}" fill="url(#rg)" fill-rule="evenodd" clip-path="url(#front)"/></g>')
+w(f'<g style="animation:hd {T}s infinite">' + "".join(hd) + "</g>")
 
 # noise layers, merged by (group, colour)
 groups = [[random.randrange(GROUPS) for _ in range(COLS)] for _ in range(ROWS)]
