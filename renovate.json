@@ -12,6 +12,13 @@
   "timezone": "UTC",
   "packageRules": [
     {
+      "matchDatasources": [
+        "github-actions",
+        "github-releases"
+      ],
+      "minimumReleaseAge": "3 days"
+    },
+    {
       "matchFileNames": [
         "package.json",
         "package-lock.json"
