@@ -363,7 +363,8 @@
   .accordion-item.active .chevron {
     @apply rotate-90;
   }
-  ul.pagination .page-link {
+  ul.pagination .page-link,
+  .pager-arrow {
     @apply hover:text-white hover:no-underline! dark:hover:text-gray-900;
   }
   ul.pagination .page-item.active > .page-link {
@@ -372,11 +373,12 @@
 }
 
 @layer components {
+  .pager-arrow,
+  ul.pagination .page-link {
+    @apply inline-flex h-9 w-10 items-center justify-center sm:w-12 hover:bg-link dark:hover:bg-link-dark;
+  }
   ul.pagination {
     @apply flex flex-row justify-center list-none;
-    .page-link {
-      @apply inline-flex h-9 w-10 items-center justify-center sm:w-12 hover:bg-link dark:hover:bg-link-dark;
-    }
     .disabled {
       @apply pointer-events-none;
       .page-link {
@@ -407,8 +409,12 @@
   .nav {
     @apply text-lg text-link dark:text-gray-300 font-semibold;
   }
-  .nav-menu-item {
+  .nav-menu-item,
+  .icon-link {
     @apply hover:no-underline p-2 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-700;
+  }
+  .icon-link {
+    @apply inline-flex items-center justify-center;
   }
   .nav-links {
     @apply flex items-center gap-5;
@@ -437,7 +443,7 @@
     @apply my-0 p-2 hover:bg-gray-350 rounded-sm dark:hover:bg-gray-800;
   }
   .social-link {
-    @apply text-2xl;
+    @apply text-2xl hover:bg-gray-400 dark:hover:bg-gray-600;
   }
   .link-row {
     @apply flex items-center gap-2;

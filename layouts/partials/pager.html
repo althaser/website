@@ -4,7 +4,7 @@
 <div class="flex flex-row items-center justify-center{{ with .class }} {{ . }}{{ end }}">
   <span class="inline-flex w-10 justify-center text-xl leading-none sm:w-12">
     {{- with .prev }}
-    <a href="{{ .url }}" aria-label="Previous" title="{{ .title }}" data-pager-prev>
+    <a class="pager-arrow" href="{{ .url }}" aria-label="Previous" title="{{ .title }}" data-pager-prev>
       {{ partial "icon.html" "solid/circle-chevron-left" }}
     </a>
     {{- else }}
@@ -58,7 +58,7 @@
   {{- end }}
   <span class="inline-flex w-10 justify-center text-xl leading-none sm:w-12">
     {{- with .next }}
-    <a href="{{ .url }}" aria-label="Next" title="{{ .title }}" data-pager-next>
+    <a class="pager-arrow" href="{{ .url }}" aria-label="Next" title="{{ .title }}" data-pager-next>
       {{ partial "icon.html" "solid/circle-chevron-right" }}
     </a>
     {{- else }}
