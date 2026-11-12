@@ -248,21 +248,21 @@
   }
   .accordion-trigger {
     @apply mt-2 mb-0 flex w-full items-center justify-between rounded-sm px-2 py-2 text-left transition-colors;
-    @apply text-blue-600 hover:bg-gray-200 dark:text-heading-dark dark:hover:bg-title-dark;
+    @apply text-blue-600 hover:bg-gray-350 dark:text-heading-dark dark:hover:bg-title-dark;
   }
   .accordion-item.active > h2 > .accordion-trigger,
   .accordion-item.active > .accordion-trigger {
-    @apply bg-gray-200 dark:bg-title-dark;
+    @apply bg-gray-350 dark:bg-title-dark;
   }
   .blog-list-toggle {
-    @apply mt-0 mb-0 w-auto shrink-0 bg-transparent px-2 py-2 text-link hover:bg-gray-300 dark:text-gray-400 dark:hover:bg-title-dark;
+    @apply mt-0 mb-0 w-auto shrink-0 bg-transparent px-2 py-2 text-link hover:bg-gray-350 dark:text-gray-400 dark:hover:bg-title-dark;
   }
   .blog-list-item {
     @apply mt-0 mb-0 flex flex-row items-center justify-start rounded-sm border border-transparent p-2 transition-colors;
-    @apply hover:border-gray-300 hover:bg-gray-300 dark:hover:border-gray-700 dark:hover:bg-title-dark;
+    @apply hover:border-gray-350 hover:bg-gray-350 dark:hover:border-gray-700 dark:hover:bg-title-dark;
   }
   .accordion-item.active .blog-list-item {
-    @apply border-gray-300 bg-gray-300 dark:border-gray-700 dark:bg-title-dark;
+    @apply border-gray-350 bg-gray-350 dark:border-gray-700 dark:bg-title-dark;
   }
   .blog-list-heading {
     @apply mb-0 text-[1.65rem];
@@ -351,7 +351,7 @@
     @apply flex items-start gap-3 rounded-sm border border-transparent px-2 py-1 transition-colors;
   }
   .pagefind-ui__result:hover {
-    @apply border-gray-300 bg-gray-300 dark:border-gray-700 dark:bg-title-dark;
+    @apply border-gray-350 bg-gray-350 dark:border-gray-700 dark:bg-title-dark;
   }
   .pagefind-ui__result-thumb {
     @apply flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center;
