@@ -121,6 +121,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@utility highlight {
+  @apply bg-link text-white dark:bg-link-dark dark:text-gray-900;
+}
+
 @plugin "@tailwindcss/typography";
 
 @source "../../content/**/*.md";
@@ -363,19 +367,12 @@
   .accordion-item.active .chevron {
     @apply rotate-90;
   }
-  ul.pagination .page-link,
-  .pager-arrow {
-    @apply hover:text-white hover:no-underline! dark:hover:text-gray-900;
-  }
-  ul.pagination .page-item.active > .page-link {
-    @apply text-white dark:text-gray-900;
-  }
 }
 
 @layer components {
   .pager-arrow,
   ul.pagination .page-link {
-    @apply inline-flex h-9 w-10 items-center justify-center rounded-lg sm:w-12 hover:bg-link dark:hover:bg-link-dark;
+    @apply inline-flex h-9 w-10 items-center justify-center rounded-lg sm:w-12 hover:no-underline! hover:highlight!;
   }
   ul.pagination {
     @apply flex flex-row justify-center list-none;
@@ -386,7 +383,10 @@
       }
     }
     .active {
-      @apply bg-link pointer-events-none rounded-lg dark:bg-link-dark;
+      @apply pointer-events-none;
+      .page-link {
+        @apply highlight!;
+      }
     }
   }
   .categories {
@@ -411,7 +411,7 @@
   }
   .nav-menu-item,
   .icon-link {
-    @apply hover:no-underline p-2 rounded-lg hover:bg-link hover:text-white! dark:hover:bg-link-dark dark:hover:text-gray-900!;
+    @apply p-2 rounded-lg hover:no-underline hover:highlight!;
   }
   .icon-link {
     @apply inline-flex items-center justify-center;
@@ -430,7 +430,7 @@
     @apply pointer-events-none absolute top-1/2 -left-2.5 -translate-x-1/2 -translate-y-1/2 font-normal text-gray-400 dark:text-gray-600;
   }
   .nav-menu-item.active {
-    @apply bg-link text-white! no-underline dark:bg-link-dark dark:text-gray-900!;
+    @apply no-underline highlight!;
   }
   .prose ul,
   .prose ol {
@@ -490,10 +490,10 @@
     @apply flex gap-1 border-b border-gray-300 pb-1 dark:border-gray-700;
   }
   .tab {
-    @apply cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold text-link hover:bg-link hover:text-white dark:text-link-dark dark:hover:bg-link-dark dark:hover:text-gray-900;
+    @apply cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold text-link hover:highlight dark:text-link-dark;
   }
   .tab[aria-selected="true"] {
-    @apply bg-link text-white dark:bg-link-dark dark:text-gray-900;
+    @apply highlight;
   }
   .tab-image {
     @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
