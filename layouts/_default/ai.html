@@ -3,11 +3,27 @@
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
   <div class="tabs not-prose" role="tablist" aria-label="AI demos" data-tabs data-tabs-autofocus>
     <button type="button" class="tab" role="tab" id="tab-blockchain" aria-controls="panel-blockchain" aria-selected="true" data-tab="blockchain">Blockchain</button>
+    <button type="button" class="tab" role="tab" id="tab-diffusion" aria-controls="panel-diffusion" aria-selected="false" tabindex="-1" data-tab="diffusion">Diffusion</button>
+    <button type="button" class="tab" role="tab" id="tab-gpu" aria-controls="panel-gpu" aria-selected="false" tabindex="-1" data-tab="gpu">GPU</button>
+    <button type="button" class="tab" role="tab" id="tab-kubernetes" aria-controls="panel-kubernetes" aria-selected="false" tabindex="-1" data-tab="kubernetes">Kubernetes</button>
+    <button type="button" class="tab" role="tab" id="tab-llm" aria-controls="panel-llm" aria-selected="false" tabindex="-1" data-tab="llm">LLM</button>
     <button type="button" class="tab" role="tab" id="tab-neural" aria-controls="panel-neural" aria-selected="false" tabindex="-1" data-tab="neural">Neural Network</button>
     <button type="button" class="tab" role="tab" id="tab-quantum" aria-controls="panel-quantum" aria-selected="false" tabindex="-1" data-tab="quantum">Quantum</button>
   </div>
   <div id="panel-blockchain" class="tab-panel" role="tabpanel" aria-labelledby="tab-blockchain">
     <img src="{{ `images/blockchain.svg` | relURL }}" alt="Animated blockchain processing" width="1200" height="700" class="tab-image not-prose">
+  </div>
+  <div id="panel-diffusion" class="tab-panel" role="tabpanel" aria-labelledby="tab-diffusion" hidden>
+    <img src="{{ `images/diffusion.svg` | relURL }}" alt="Animated diffusion model generating an image" width="1200" height="700" loading="lazy" class="tab-image not-prose">
+  </div>
+  <div id="panel-gpu" class="tab-panel" role="tabpanel" aria-labelledby="tab-gpu" hidden>
+    <img src="{{ `images/gpu.svg` | relURL }}" alt="Animated GPU parallel computing" width="1200" height="700" loading="lazy" class="tab-image not-prose">
+  </div>
+  <div id="panel-kubernetes" class="tab-panel" role="tabpanel" aria-labelledby="tab-kubernetes" hidden>
+    <img src="{{ `images/kubernetes.svg` | relURL }}" alt="Animated Kubernetes cluster" width="1200" height="700" loading="lazy" class="tab-image not-prose">
+  </div>
+  <div id="panel-llm" class="tab-panel" role="tabpanel" aria-labelledby="tab-llm" hidden>
+    <img src="{{ `images/llm.svg` | relURL }}" alt="Animated transformer language model" width="1200" height="700" loading="lazy" class="tab-image not-prose">
   </div>
   <div id="panel-neural" class="tab-panel" role="tabpanel" aria-labelledby="tab-neural" hidden>
     <img src="{{ `images/ai.svg` | relURL }}" alt="Animated neural network" width="1200" height="700" loading="lazy" class="tab-image not-prose">
