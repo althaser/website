@@ -1,79 +1,149 @@
 import math
 import random
 import sys
+
 random.seed(11)
-W,H=1200,700
-L=12
-X0,X1=130,1070
-xs=[X0+(X1-X0)*i/(L-1) for i in range(L)]
-pal=['#22d3ee','#60a5fa','#6366f1','#8b5cf6','#a855f7','#d946ef','#f472b6','#fb923c']
-def hx(c): return tuple(int(c[i:i+2],16) for i in (1,3,5))
+W, H = 1200, 700
+T = 6.0
+L = 12
+X0, X1 = 165, 1015
+XS = [X0 + (X1 - X0) * i / (L - 1) for i in range(L)]
+PAL = ["#22d3ee", "#60a5fa", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef", "#f472b6", "#fb923c"]
+NS = [round(7 + 15 * math.sin(math.pi * i / (L - 1)) ** .8) for i in range(L)]
+NS[-1] = 5
+GAP = 24
+ORANGE, AMBER = "#fb923c", "#fbbf24"
+WIN = 2
+DIGIT = ["#####", "....#", "...#.", "..#..", ".#...", ".#...", ".#..."]
+
+
+def hx(c):
+    return tuple(int(c[i:i + 2], 16) for i in (1, 3, 5))
+
+
 def col(t):
-    t=max(0,min(1,t))*(len(pal)-1); i=min(int(t),len(pal)-2); f=t-i
-    a,b=hx(pal[i]),hx(pal[i+1])
-    return '#%02x%02x%02x'%tuple(round(a[k]+(b[k]-a[k])*f) for k in range(3))
-ns=[round(7+15*math.sin(math.pi*i/(L-1))**0.8) for i in range(L)]; ns[-1]=5
-gap=24
-def ys(n): top=H/2-(n-1)*gap/2; return [top+j*gap for j in range(n)]
-STEP=.32; BIG=12
-def pc(t,P): return f'{100*t/P:.1f}%'
-css=['.n,.q,.s,.d,.b{will-change:opacity,transform}']
-for P in (2,4):
-    css.append(f'@keyframes q{P}{{0%{{transform:translate(0,0);opacity:0}}{pc(.03,P)}{{opacity:1}}{pc(STEP,P)}{{transform:translate(var(--x),var(--y));opacity:1}}{pc(STEP+.05,P)},100%{{transform:translate(var(--x),var(--y));opacity:0}}}}')
-    css.append(f'@keyframes f{P}{{0%{{opacity:1}}{pc(.45,P)}{{opacity:.35}}{pc(1.1,P)},100%{{opacity:.07}}}}')
-css.append('@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}')
-css.append('@keyframes fl{0%{transform:translateX(0);opacity:0}20%,80%{opacity:1}100%{transform:translateX(90px);opacity:0}}')
-css.append(f'@keyframes sw{{0%{{transform:translateX(-260px)}}100%{{transform:translateX({W+60}px)}}}}')
-css.append('@media (prefers-reduced-motion:reduce){*{animation:none!important}.q{opacity:0}}')
-o=[f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animação de uma rede neuronal">','<defs>',
-'<radialGradient id="bg" r="75%"><stop offset="0" stop-color="#151a3a"/><stop offset=".65" stop-color="#0a0e22"/><stop offset="1" stop-color="#05070f"/></radialGradient>',
-'<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".45"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>',
-'<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".4"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>',
-'<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>',
-'<linearGradient id="band" x1="0" x2="1"><stop offset="0" stop-color="#c7d2fe" stop-opacity="0"/><stop offset=".5" stop-color="#c7d2fe" stop-opacity=".06"/><stop offset="1" stop-color="#c7d2fe" stop-opacity="0"/></linearGradient>']
-for i in range(L-1):
-    o.append(f'<linearGradient id="g{i}" gradientUnits="userSpaceOnUse" x1="{xs[i]:.0f}" x2="{xs[i+1]:.0f}" y1="0" y2="0"><stop offset="0" stop-color="{col(i/(L-1))}"/><stop offset="1" stop-color="{col((i+1)/(L-1))}"/></linearGradient>')
-o.append('</defs><style>'+''.join(css)+'</style>')
-o.append('<ellipse cx="430" cy="350" rx="330" ry="260" fill="url(#nb1)"/><ellipse cx="780" cy="350" rx="340" ry="260" fill="url(#nb2)"/>')
-# stars: static mostly, few twinkle
-for k in range(90):
-    x,y=random.uniform(0,W),random.uniform(0,H)
-    anim=f' class="s" style="animation:tw {random.uniform(3,7):.1f}s {-random.uniform(0,7):.1f}s infinite"' if k<25 else f' opacity="{random.uniform(.15,.6):.2f}"'
-    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{random.choice([.7,1,1.3])}" fill="#e0e7ff"{anim}/>')
-# connections: merged per transition & weight bucket
-edges=[]
-for i in range(L-1):
-    A,B=ys(ns[i]),ys(ns[i+1])
-    buckets={0:[],1:[],2:[]}
-    for y1 in A:
-        for b in sorted(range(len(B)),key=lambda b:abs(B[b]-y1)+random.uniform(0,140))[:5]:
-            w=random.random()**2; bk=0 if w<.25 else (1 if w<.6 else 2)
-            buckets[bk].append(f'M{xs[i]:.0f} {y1:.0f}L{xs[i+1]:.0f} {B[b]:.0f}')
-            edges.append((i,y1,B[b],w))
-    for bk,(sw,so) in zip((0,1,2),((.5,.1),(1,.22),(1.7,.38))):
-        if buckets[bk]: o.append(f'<path d="{"".join(buckets[bk])}" stroke="url(#g{i})" stroke-width="{sw}" stroke-opacity="{so}" fill="none"/>')
-o.append(f'<rect class="b" width="240" height="{H}" fill="url(#band)" style="animation:sw {(L-1)*STEP*2:.1f}s linear infinite"/>')
-# pulses: moving dots (transform only)
-cnt=0
-for (i,y1,y2,w) in edges:
-    if random.random()>.15+.55*w: continue
-    cnt+=1; P=random.choice((2,2,4))
-    dx,dy=xs[i+1]-xs[i],y2-y1
-    c=col((i+.5)/(L-1))
-    o.append(f'<circle class="q" cx="{xs[i]:.0f}" cy="{y1:.0f}" r="2.4" fill="#fff" stroke="{c}" stroke-opacity=".5" stroke-width="3" style="--x:{dx:.0f}px;--y:{dy:.0f}px;animation:q{P} {P}s linear {i*STEP-BIG:.2f}s infinite"/>')
-# neurons
+    t = max(0, min(1, t)) * (len(PAL) - 1)
+    i = min(int(t), len(PAL) - 2)
+    f = t - i
+    a, b = hx(PAL[i]), hx(PAL[i + 1])
+    return "#%02x%02x%02x" % tuple(round(a[k] + (b[k] - a[k]) * f) for k in range(3))
+
+
+def ys(n):
+    top = H / 2 - (n - 1) * GAP / 2
+    return [top + j * GAP for j in range(n)]
+
+
+def fwd(i):
+    return 4 + i * 40 / (L - 1)
+
+
+def bwd(i):
+    return 58 + (L - 1 - i) * 34 / (L - 1)
+
+
+css = [
+    "@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}",
+    "@keyframes fl{0%{transform:translateX(0);opacity:0}20%,80%{opacity:1}100%{transform:translateX(40px);opacity:0}}",
+    "@keyframes px{0%,2%{opacity:.35}5%,40%{opacity:1}50%,100%{opacity:.35}}",
+    "@keyframes ls{0%,47%{opacity:0}51%{opacity:1}55%{opacity:.6}58%{opacity:1}64%,100%{opacity:0}}",
+    "@keyframes ok{0%,50%{opacity:0}54%,92%{opacity:1}96%,100%{opacity:0}}",
+    ".bar{transform-box:fill-box;transform-origin:0 50%}",
+    ".f{fill:#fff;stroke-width:3;stroke-opacity:.5}.b{fill:#fbbf24;stroke:#fb923c;stroke-width:3;stroke-opacity:.5}",
+    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}",
+]
 for i in range(L):
-    c=col(i/(L-1))
-    for y in ys(ns[i]):
-        a=random.uniform(.35,1); P=random.choice((2,2,4))
-        x=f'{xs[i]:.0f}'
-        o.append(f'<circle cx="{x}" cy="{y:.0f}" r="5.5" fill="#0b1023" stroke="{c}" stroke-opacity=".6" stroke-width="1.2"/>')
-        o.append(f'<g class="n" opacity="{a:.2f}" style="animation:f{P} {P}s {i*STEP-BIG:.2f}s infinite"><circle cx="{x}" cy="{y:.0f}" r="15" fill="url(#hl)"/><circle cx="{x}" cy="{y:.0f}" r="{3+2.5*a:.1f}" fill="{c}"/></g>')
-# data in/out
-for side,yl,x0,c in (('in',ys(ns[0]),X0-115,'#67e8f9'),('out',ys(ns[-1]),X1+22,'#fdba74')):
-    for y in yl:
-        for k in range(2):
-            o.append(f'<rect class="d" x="{x0}" y="{y-2:.0f}" width="7" height="4" rx="1" fill="{c}" style="animation:fl 2s linear {-k-random.uniform(0,.4):.2f}s infinite"/>')
-o.append('</svg>')
-s='\n'.join(o)
-open(sys.argv[1],'w').write(s)
+    f, b = fwd(i), bwd(i)
+    css.append(f"@keyframes nf{i}{{0%,{f - 1:.1f}%{{opacity:.3}}{f + 1:.1f}%{{opacity:1}}{f + 14:.1f}%,100%{{opacity:.3}}}}")
+    css.append(f"@keyframes nb{i}{{0%,{b - 1:.1f}%{{opacity:0}}{b + 1:.1f}%{{opacity:1}}{b + 8:.1f}%,100%{{opacity:0}}}}")
+for i in range(L - 1):
+    a, b = fwd(i), fwd(i + 1)
+    css.append(f"@keyframes pf{i}{{0%,{a:.1f}%{{transform:translate(0,0);opacity:0}}{a + .5:.1f}%{{opacity:1}}{b - .5:.1f}%{{opacity:1}}{b:.1f}%,100%{{transform:translate(var(--x),var(--y));opacity:0}}}}")
+    a, b = bwd(i + 1), bwd(i)
+    css.append(f"@keyframes pb{i}{{0%,{a:.1f}%{{transform:translate(0,0);opacity:0}}{a + .5:.1f}%{{opacity:1}}{b - .5:.1f}%{{opacity:1}}{b:.1f}%,100%{{transform:translate(var(--x),var(--y));opacity:0}}}}")
+    css.append(f"@keyframes eb{i}{{0%,{a:.1f}%{{opacity:0}}{a + 2:.1f}%{{opacity:1}}{b + 6:.1f}%,100%{{opacity:0}}}}")
+    css.append(f".f{i}{{stroke:{col((i + .5) / (L - 1))};animation:pf{i} {T}s linear infinite}}.b{i}{{animation:pb{i} {T}s linear infinite}}")
+
+o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animated neural network training">', "<defs>",
+     '<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".45"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>',
+     '<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".4"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>',
+     '<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>',
+     '<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>']
+for i in range(L - 1):
+    o.append(f'<linearGradient id="g{i}" gradientUnits="userSpaceOnUse" x1="{XS[i]:.0f}" x2="{XS[i + 1]:.0f}" y1="0" y2="0"><stop offset="0" stop-color="{col(i / (L - 1))}"/><stop offset="1" stop-color="{col((i + 1) / (L - 1))}"/></linearGradient>')
+o.append("</defs>")
+STYLE_AT = len(o)
+
+o.append('<ellipse cx="440" cy="350" rx="330" ry="260" fill="url(#nb1)"/><ellipse cx="770" cy="350" rx="340" ry="260" fill="url(#nb2)"/>')
+for k in range(90):
+    x, y = random.uniform(0, W), random.uniform(0, H)
+    anim = f' style="animation:tw {random.uniform(3, 7):.1f}s {-random.uniform(0, 7):.1f}s infinite"' if k < 25 else f' opacity="{random.uniform(.15, .6):.2f}"'
+    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{random.choice([.7, 1, 1.3])}" fill="#e0e7ff"{anim}/>')
+
+# input image: a hand-written 7
+PS = 10
+gx, gy = 48, H / 2 - len(DIGIT) * PS / 2
+o.append(f'<rect x="{gx - 8}" y="{gy - 8:.0f}" width="{5 * PS + 16}" height="{len(DIGIT) * PS + 16}" rx="8" fill="#0b1023" fill-opacity=".7" stroke="#22d3ee" stroke-opacity=".4"/>')
+on, off = [], []
+for r, line in enumerate(DIGIT):
+    for c, ch in enumerate(line):
+        (on if ch == "#" else off).append(f"M{gx + c * PS + 1} {gy + r * PS + 1:.0f}h{PS - 2}v{PS - 2}h-{PS - 2}z")
+o.append(f'<path d="{"".join(off)}" fill="#22d3ee" fill-opacity=".08"/>')
+o.append(f'<path d="{"".join(on)}" fill="#67e8f9" style="animation:px {T}s infinite"/>')
+for y in ys(NS[0]):
+    for k in range(2):
+        o.append(f'<rect class="mv" x="{gx + 5 * PS + 14}" y="{y - 2:.0f}" width="7" height="4" rx="1" fill="#67e8f9" style="animation:fl 1.6s linear {-k * .8 - random.uniform(0, .4):.2f}s infinite"/>')
+
+# connections (static, merged by weight) and backprop flashes (merged per transition)
+edges = []
+for i in range(L - 1):
+    A, B = ys(NS[i]), ys(NS[i + 1])
+    buckets = {0: [], 1: [], 2: []}
+    for y1 in A:
+        for b in sorted(range(len(B)), key=lambda b: abs(B[b] - y1) + random.uniform(0, 140))[:5]:
+            wgt = random.random() ** 2
+            bk = 0 if wgt < .25 else (1 if wgt < .6 else 2)
+            buckets[bk].append(f"M{XS[i]:.0f} {y1:.0f}L{XS[i + 1]:.0f} {B[b]:.0f}")
+            edges.append((i, y1, B[b], wgt))
+    for bk, (sw, so) in zip((0, 1, 2), ((.5, .1), (1, .22), (1.7, .38))):
+        if buckets[bk]:
+            o.append(f'<path d="{"".join(buckets[bk])}" stroke="url(#g{i})" stroke-width="{sw}" stroke-opacity="{so}" fill="none"/>')
+    grad = [f"M{XS[i]:.0f} {y1:.0f}L{XS[i + 1]:.0f} {y2:.0f}" for (j, y1, y2, wgt) in edges if j == i and wgt > .3]
+    o.append(f'<path d="{"".join(grad)}" stroke="{AMBER}" stroke-width="1.4" stroke-opacity=".55" fill="none" opacity="0" style="animation:eb{i} {T}s infinite"/>')
+
+# forward (white) and backward (orange) pulses
+for (i, y1, y2, wgt) in edges:
+    dx, dy = XS[i + 1] - XS[i], y2 - y1
+    if random.random() < .2 + .5 * wgt:
+        o.append(f'<circle class="mv f f{i}" cx="{XS[i]:.0f}" cy="{y1:.0f}" r="2.4" style="--x:{dx:.0f}px;--y:{dy:.0f}px"/>')
+    if random.random() < .1 + .4 * wgt:
+        o.append(f'<circle class="mv b b{i}" cx="{XS[i + 1]:.0f}" cy="{y2:.0f}" r="2.2" style="--x:{-dx:.0f}px;--y:{-dy:.0f}px"/>')
+
+# neurons: forward glow plus an orange ring when the gradient passes
+for i in range(L):
+    c = col(i / (L - 1))
+    rings, cores, outs = [], [], []
+    for y in ys(NS[i]):
+        a = random.uniform(.35, 1)
+        o.append(f'<circle cx="{XS[i]:.0f}" cy="{y:.0f}" r="5.5" fill="#0b1023" stroke="{c}" stroke-opacity=".6" stroke-width="1.2"/>')
+        cores.append(f'<circle cx="{XS[i]:.0f}" cy="{y:.0f}" r="15" fill="url(#hl)" opacity="{a:.2f}"/><circle cx="{XS[i]:.0f}" cy="{y:.0f}" r="{3 + 2.5 * a:.1f}" fill="{c}"/>')
+        rings.append(f'<circle cx="{XS[i]:.0f}" cy="{y:.0f}" r="8.5" fill="none" stroke="{ORANGE}" stroke-width="1.6"/>')
+    o.append(f'<g opacity=".3" style="animation:nf{i} {T}s infinite">{"".join(cores)}</g>')
+    o.append(f'<g opacity="0" style="animation:nb{i} {T}s infinite">{"".join(rings)}</g>')
+
+# output probabilities with the correct class marked
+bx = X1 + 26
+probs = [.12, .08, 1.0, .18, .06]
+for j, y in enumerate(ys(NS[-1])):
+    p = probs[j]
+    css.append(f"@keyframes pr{j}{{0%,{fwd(L - 1):.1f}%{{transform:scaleX(.04);opacity:.4}}{fwd(L - 1) + 6:.1f}%,92%{{transform:scaleX({p});opacity:1}}97%,100%{{transform:scaleX(.04);opacity:.4}}}}")
+    fill = ORANGE if j == WIN else "#a78bfa"
+    o.append(f'<rect x="{bx}" y="{y - 5:.0f}" width="90" height="10" rx="3" fill="#a78bfa" fill-opacity=".1"/>')
+    o.append(f'<rect class="bar" x="{bx}" y="{y - 5:.0f}" width="90" height="10" rx="3" fill="{fill}" style="animation:pr{j} {T}s ease-out infinite"/>')
+wy = ys(NS[-1])[WIN]
+o.append(f'<path d="M{bx + 100} {wy:.0f}l5 5 9-11" fill="none" stroke="#4ade80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0" style="animation:ok {T}s infinite"/>')
+o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity="0" style="animation:ls {T}s infinite"/>')
+
+o.insert(STYLE_AT, "<style>" + "".join(css) + "</style>")
+o.append("</svg>")
+open(sys.argv[1], "w").write("\n".join(o))
