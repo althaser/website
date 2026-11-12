@@ -164,7 +164,7 @@
 
 @layer utilities {
   html {
-    @apply touch-manipulation scroll-smooth overflow-y-scroll;
+    @apply touch-manipulation scroll-smooth overflow-y-scroll md:text-[112.5%];
     scrollbar-gutter: stable;
   }
   h1 {
@@ -239,7 +239,7 @@
     @apply max-h-none;
   }
   .accordion-trigger {
-    @apply mt-2 mb-0 flex w-full items-center justify-between rounded-sm px-2 py-[8px] text-left transition-colors;
+    @apply mt-2 mb-0 flex w-full items-center justify-between rounded-sm px-2 py-2 text-left transition-colors;
     @apply text-blue-600 hover:bg-gray-200 dark:text-heading-dark dark:hover:bg-title-dark;
   }
   .accordion-item.active > h2 > .accordion-trigger,
@@ -281,7 +281,7 @@
     @apply underline;
   }
   .link-icon {
-    @apply inline-flex size-[35px] items-center justify-center overflow-hidden align-middle;
+    @apply inline-flex size-[2.1875rem] items-center justify-center overflow-hidden align-middle;
   }
   .link-icon img {
     @apply size-full object-contain;
@@ -290,7 +290,7 @@
     @apply text-[1.6rem];
   }
   .link-label {
-    @apply inline-block align-middle pl-1 text-[20px];
+    @apply inline-block align-middle pl-1 text-[1.25rem];
   }
   .skill-meter {
     @apply mt-1 mb-3 h-5 rounded-sm border border-black dark:border-gray-300;
@@ -299,7 +299,7 @@
     @apply h-full w-0 rounded-sm bg-blue-500 transition-all duration-500 dark:bg-yellow-700;
   }
   .content-figure-image {
-    @apply min-h-[250px] min-w-[250px] max-w-[90%] max-h-[95vh] rounded-sm;
+    @apply min-h-[15.625rem] min-w-[15.625rem] max-w-[90%] max-h-[95vh] rounded-sm;
   }
   .content-inline-image {
     @apply my-2 max-w-full rounded-sm;
@@ -414,7 +414,7 @@
     @apply flex items-center gap-5;
   }
   .nav-links > a {
-    @apply py-[3px];
+    @apply py-[0.1875rem];
   }
   .nav-links > a + a {
     @apply relative;
