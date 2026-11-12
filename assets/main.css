@@ -90,6 +90,9 @@
 }
 
 @theme static {
+  --color-ai-glow: #151a3a;
+  --color-ai-deep: #0a0e22;
+  --color-ai-edge: #05070f;
   --color-crt-glow: color-mix(in oklab, var(--color-white) 90%, transparent);
   --color-nyan-sky: #00005f;
   --color-nyan-text: var(--color-gray-200);
@@ -487,7 +490,7 @@
     @apply border-link bg-gray-300 dark:border-link-dark dark:bg-gray-700;
   }
   .tab-image {
-    @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl;
+    @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
   }
   .terminal-progress {
     @apply mt-2 flex items-center gap-3;
