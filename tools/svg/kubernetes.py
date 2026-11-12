@@ -1,6 +1,8 @@
 import random
 import sys
 
+from common import DEFS, base_css, nebula, save, stars, svg_open
+
 random.seed(3)
 T = 13.0
 NW, NH, NGAP = 210, 160, 30
@@ -32,7 +34,6 @@ def slot(n, i):
 o = []
 w = o.append
 css = [
-    "@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}",
     "@keyframes spin{to{transform:rotate(360deg)}}",
     "@keyframes hb{0%{transform:translateY(0);opacity:0}10%{opacity:1}80%{opacity:1}100%{transform:translateY(var(--d));opacity:0}}",
     "@keyframes tr{0%{transform:translate(0,0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translate(var(--x),var(--y));opacity:0}}",
@@ -44,8 +45,7 @@ css = [
     f"@keyframes join{{0%,{JOIN0}%{{opacity:0}}{JOIN0 + 1}%{{opacity:1}}{JOIN1 + 1}%{{opacity:.3}}{JOIN1 + 2}%{{opacity:1}}{READY - 1}%{{opacity:.3}}{READY}%,100%{{opacity:0}}}}",
     f"@keyframes sch{{0%,{SCALE - 1}%{{opacity:.25}}{SCALE + 1}%,{SCALE + 14}%{{opacity:1}}{SCALE + 16}%,{RS - 1}%{{opacity:.25}}{RS + 1}%,{RS + 14}%{{opacity:1}}{RS + 16}%,{BAL}%{{opacity:.25}}{BAL + 1}%,{BAL + 9}%{{opacity:1}}{BAL + 11}%,100%{{opacity:.25}}}}",
     ".pod,.nd{transform-box:fill-box;transform-origin:center}",
-    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}",
-]
+]+ base_css()
 pods = []
 kf = []
 
@@ -95,26 +95,17 @@ for j, (n, i) in enumerate([(0, 4), (1, 3), (1, 4), (3, 3)]):
     pod(n, i, APP[j % 4], st, f"p{k}")
     k += 1
 
-w('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animated Kubernetes cluster">')
+w(svg_open("Animated Kubernetes cluster"))
 w("<defs>")
-w('<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".42"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".36"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="hl"><stop offset="0" stop-color="#a5b4fc" stop-opacity=".5"/><stop offset="1" stop-color="#a5b4fc" stop-opacity="0"/></radialGradient>')
+o.extend(DEFS)
+w('<radialGradient id="cpg"><stop offset="0" stop-color="#a5b4fc" stop-opacity=".5"/><stop offset="1" stop-color="#a5b4fc" stop-opacity="0"/></radialGradient>')
 w('<radialGradient id="rd"><stop offset="0" stop-color="#f43f5e" stop-opacity=".35"/><stop offset="1" stop-color="#f43f5e" stop-opacity="0"/></radialGradient>')
 w('<radialGradient id="jn"><stop offset="0" stop-color="#fbbf24" stop-opacity=".28"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>')
 w("</defs>")
 w("<style>" + "".join(css + kf) + "</style>")
 
-w('<ellipse cx="460" cy="360" rx="380" ry="260" fill="url(#nb1)"/><ellipse cx="770" cy="340" rx="360" ry="260" fill="url(#nb2)"/>')
-for i in range(80):
-    x, y = random.randint(10, 1190), random.randint(10, 690)
-    if NX[0] - 10 < x < NX[3] + NW + 10 and NY - 10 < y < NY + NH + 60:
-        continue
-    r = random.choice([.7, 1, 1, 1.3])
-    if i % 5 == 0:
-        w(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e0e7ff" style="animation:tw {random.uniform(3.5, 7):.1f}s -{random.uniform(0, 7):.1f}s infinite"/>')
-    else:
-        w(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e0e7ff" opacity="{random.uniform(.15, .55):.2f}"/>')
+w(nebula((460, 360), (770, 340), (380, 360), 260))
+o.extend(stars(80, (NX[0] - 10, NY - 10, NX[3] + NW + 10, NY + NH + 60)))
 
 
 def cp_link(n):
@@ -165,7 +156,7 @@ for n in range(4):
         w(hb + tr)
 
 # control plane
-w(f'<ellipse cx="{CPX}" cy="{CPY}" rx="190" ry="70" fill="url(#hl)" opacity=".25" style="animation:sch {T}s infinite"/>')
+w(f'<ellipse cx="{CPX}" cy="{CPY}" rx="190" ry="70" fill="url(#cpg)" opacity=".25" style="animation:sch {T}s infinite"/>')
 w(f'<rect x="{CPX - 150}" y="{CPY - 42}" width="300" height="84" rx="16" fill="#0b1023" fill-opacity=".9" stroke="#a5b4fc" stroke-opacity=".6" stroke-width="1.5"/>')
 w(f'<g style="transform-origin:{CPX}px {CPY}px;animation:spin 8s linear infinite"><circle cx="{CPX}" cy="{CPY}" r="27" fill="none" stroke="#a5b4fc" stroke-opacity=".7" stroke-width="2" stroke-dasharray="10 7"/></g>')
 w(f'<circle cx="{CPX}" cy="{CPY}" r="15" fill="#6366f1" fill-opacity=".85" stroke="#c7d2fe"/>')
@@ -182,4 +173,4 @@ for i in range(5):
     w(f'<circle class="mv" cx="{ING[0] - 220 + i * 6}" cy="{ING[1]}" r="2.4" fill="#67e8f9" style="--x:110px;--y:0px;animation:tr 1.2s linear {-i * .24:.2f}s infinite"/>')
 
 w("</svg>")
-open(sys.argv[1], "w").write("\n".join(o))
+save(sys.argv[1], o)

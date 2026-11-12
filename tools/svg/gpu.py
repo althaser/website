@@ -1,6 +1,8 @@
 import random
 import sys
 
+from common import DEFS, base_css, nebula, save, stars, svg_open
+
 random.seed(5)
 W = 2.4
 PX, PY, PW, PH = 170, 185, 860, 380
@@ -22,11 +24,9 @@ OUT_X, OUT_Y = 600 - OUT_C * OUT_S / 2, 60
 
 o = []
 w = o.append
-w('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animated GPU parallel computing">')
+w(svg_open("Animated GPU parallel computing"))
 w("<defs>")
-w('<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".42"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".36"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".45" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>')
+o.extend(DEFS)
 w('<linearGradient id="l2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity=".25"/><stop offset=".5" stop-color="#a5b4fc" stop-opacity=".6"/><stop offset="1" stop-color="#e879f9" stop-opacity=".25"/></linearGradient>')
 w('<linearGradient id="hf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74" stop-opacity=".95"/><stop offset="1" stop-color="#9a3412" stop-opacity=".95"/></linearGradient>')
 w('<linearGradient id="ht" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="1" stop-color="#fb923c"/></linearGradient>')
@@ -37,7 +37,6 @@ w(f'<clipPath id="dc"><rect x="{DX}" y="{DY}" width="{DW}" height="{DH}" rx="10"
 w("</defs>")
 
 css = [
-    "@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}",
     "@keyframes sm{0%,100%{opacity:.15}12%{opacity:1}45%{opacity:.3}}",
     "@keyframes c0{0%,100%{opacity:.3}50%{opacity:1}}",
     "@keyframes ws{0%,100%{opacity:.2}10%,30%{opacity:1}}",
@@ -47,21 +46,12 @@ css = [
     "@keyframes glow{0%,100%{opacity:.35}50%{opacity:.8}}",
     "@keyframes sh{0%{transform:translateX(-200px)}100%{transform:translateX(" + str(DW + 200) + "px)}}",
     f"@keyframes oc{{0%,4%{{opacity:.08}}10%,78%{{opacity:1}}92%,100%{{opacity:.08}}}}",
-    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}",
-]
+] + base_css()
 kf = []
 STYLE_AT = len(o)
 
-w('<ellipse cx="460" cy="360" rx="400" ry="270" fill="url(#nb1)"/><ellipse cx="770" cy="350" rx="380" ry="270" fill="url(#nb2)"/>')
-for i in range(90):
-    x, y = random.randint(10, 1190), random.randint(10, 690)
-    if PX - 20 < x < PX + PW + 20 and OUT_Y - 20 < y < PY + PH + 90:
-        continue
-    r = random.choice([.7, 1, 1, 1.3])
-    if i % 5 == 0:
-        w(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e0e7ff" style="animation:tw {random.uniform(3.5, 7):.1f}s -{random.uniform(0, 7):.1f}s infinite"/>')
-    else:
-        w(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e0e7ff" opacity="{random.uniform(.15, .55):.2f}"/>')
+w(nebula((460, 360), (770, 350), (400, 380), 270))
+o.extend(stars(90, (PX - 20, OUT_Y - 20, PX + PW + 20, PY + PH + 90)))
 
 # output matrix (C = A x B) filling above the chip
 w(f'<rect x="{OUT_X - 10}" y="{OUT_Y - 10}" width="{OUT_C * OUT_S + 20}" height="{OUT_R * OUT_S + 20}" rx="8" fill="#0b1023" fill-opacity=".6" stroke="#818cf8" stroke-opacity=".35"/>')
@@ -174,4 +164,4 @@ for i in range(8):
 
 o.insert(STYLE_AT, "<style>" + "".join(css + kf) + "</style>")
 w("</svg>")
-open(sys.argv[1], "w").write("\n".join(o))
+save(sys.argv[1], o)

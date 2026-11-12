@@ -2,13 +2,13 @@ import math
 import random
 import sys
 
+from common import DEFS, H, base_css, nebula, palette, save, stars, svg_open
+
 random.seed(11)
-W, H = 1200, 700
 T = 6.0
 L = 12
 X0, X1 = 165, 1015
 XS = [X0 + (X1 - X0) * i / (L - 1) for i in range(L)]
-PAL = ["#22d3ee", "#60a5fa", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef", "#f472b6", "#fb923c"]
 NS = [round(7 + 15 * math.sin(math.pi * i / (L - 1)) ** .8) for i in range(L)]
 NS[-1] = 5
 GAP = 24
@@ -16,17 +16,6 @@ ORANGE, AMBER = "#fb923c", "#fbbf24"
 WIN = 2
 DIGIT = ["#####", "....#", "...#.", "..#..", ".#...", ".#...", ".#..."]
 
-
-def hx(c):
-    return tuple(int(c[i:i + 2], 16) for i in (1, 3, 5))
-
-
-def col(t):
-    t = max(0, min(1, t)) * (len(PAL) - 1)
-    i = min(int(t), len(PAL) - 2)
-    f = t - i
-    a, b = hx(PAL[i]), hx(PAL[i + 1])
-    return "#%02x%02x%02x" % tuple(round(a[k] + (b[k] - a[k]) * f) for k in range(3))
 
 
 def ys(n):
@@ -43,15 +32,13 @@ def bwd(i):
 
 
 css = [
-    "@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}",
     "@keyframes fl{0%{transform:translateX(0);opacity:0}20%,80%{opacity:1}100%{transform:translateX(40px);opacity:0}}",
     "@keyframes px{0%,2%{opacity:.35}5%,40%{opacity:1}50%,100%{opacity:.35}}",
     "@keyframes ls{0%,47%{opacity:0}51%{opacity:1}55%{opacity:.6}58%{opacity:1}64%,100%{opacity:0}}",
     "@keyframes ok{0%,50%{opacity:0}54%,92%{opacity:1}96%,100%{opacity:0}}",
     ".bar{transform-box:fill-box;transform-origin:0 50%}",
     ".f{fill:#fff;stroke-width:3;stroke-opacity:.5}.b{fill:#fbbf24;stroke:#fb923c;stroke-width:3;stroke-opacity:.5}",
-    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}",
-]
+] + base_css()
 for i in range(L):
     f, b = fwd(i), bwd(i)
     css.append(f"@keyframes nf{i}{{0%,{f - 1:.1f}%{{opacity:.3}}{f + 1:.1f}%{{opacity:1}}{f + 14:.1f}%,100%{{opacity:.3}}}}")
@@ -62,23 +49,17 @@ for i in range(L - 1):
     a, b = bwd(i + 1), bwd(i)
     css.append(f"@keyframes pb{i}{{0%,{a:.1f}%{{transform:translate(0,0);opacity:0}}{a + .5:.1f}%{{opacity:1}}{b - .5:.1f}%{{opacity:1}}{b:.1f}%,100%{{transform:translate(var(--x),var(--y));opacity:0}}}}")
     css.append(f"@keyframes eb{i}{{0%,{a:.1f}%{{opacity:0}}{a + 2:.1f}%{{opacity:1}}{b + 6:.1f}%,100%{{opacity:0}}}}")
-    css.append(f".f{i}{{stroke:{col((i + .5) / (L - 1))};animation:pf{i} {T}s linear infinite}}.b{i}{{animation:pb{i} {T}s linear infinite}}")
+    css.append(f".f{i}{{stroke:{palette((i + .5) / (L - 1))};animation:pf{i} {T}s linear infinite}}.b{i}{{animation:pb{i} {T}s linear infinite}}")
 
-o = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animated neural network training">', "<defs>",
-     '<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".45"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>',
-     '<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".4"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>',
-     '<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>',
+o = [svg_open("Animated neural network training"), "<defs>", *DEFS,
      '<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>']
 for i in range(L - 1):
-    o.append(f'<linearGradient id="g{i}" gradientUnits="userSpaceOnUse" x1="{XS[i]:.0f}" x2="{XS[i + 1]:.0f}" y1="0" y2="0"><stop offset="0" stop-color="{col(i / (L - 1))}"/><stop offset="1" stop-color="{col((i + 1) / (L - 1))}"/></linearGradient>')
+    o.append(f'<linearGradient id="g{i}" gradientUnits="userSpaceOnUse" x1="{XS[i]:.0f}" x2="{XS[i + 1]:.0f}" y1="0" y2="0"><stop offset="0" stop-color="{palette(i / (L - 1))}"/><stop offset="1" stop-color="{palette((i + 1) / (L - 1))}"/></linearGradient>')
 o.append("</defs>")
 STYLE_AT = len(o)
 
-o.append('<ellipse cx="440" cy="350" rx="330" ry="260" fill="url(#nb1)"/><ellipse cx="770" cy="350" rx="340" ry="260" fill="url(#nb2)"/>')
-for k in range(90):
-    x, y = random.uniform(0, W), random.uniform(0, H)
-    anim = f' style="animation:tw {random.uniform(3, 7):.1f}s {-random.uniform(0, 7):.1f}s infinite"' if k < 25 else f' opacity="{random.uniform(.15, .6):.2f}"'
-    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{random.choice([.7, 1, 1.3])}" fill="#e0e7ff"{anim}/>')
+o.append(nebula((440, 350), (770, 350), (330, 340), 260))
+o.extend(stars(90))
 
 # input image: a hand-written 7
 PS = 10
@@ -121,7 +102,7 @@ for (i, y1, y2, wgt) in edges:
 
 # neurons: forward glow plus an orange ring when the gradient passes
 for i in range(L):
-    c = col(i / (L - 1))
+    c = palette(i / (L - 1))
     rings, cores, outs = [], [], []
     for y in ys(NS[i]):
         a = random.uniform(.35, 1)
@@ -146,4 +127,4 @@ o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity
 
 o.insert(STYLE_AT, "<style>" + "".join(css) + "</style>")
 o.append("</svg>")
-open(sys.argv[1], "w").write("\n".join(o))
+save(sys.argv[1], o)

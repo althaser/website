@@ -1,6 +1,8 @@
 import random
 import sys
 
+from common import DEFS, base_css, nebula, save, stars, svg_open
+
 random.seed(7)
 STEP = 5.0
 N = 4
@@ -34,11 +36,9 @@ def pct(x):
 
 o = []
 w = o.append
-w('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animated transformer language model">')
+w(svg_open("Animated transformer language model"))
 w("<defs>")
-w('<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".42"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".36"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>')
+o.extend(DEFS)
 w('<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>')
 w('<linearGradient id="res" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#6366f1"/><stop offset="1" stop-color="#d946ef"/></linearGradient>')
 for k, c in enumerate(LCOL):
@@ -53,12 +53,10 @@ w("</defs>")
 
 css = [
     ".fb{transform-box:fill-box;transform-origin:50% 100%}",
-    "@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}",
     "@keyframes up{0%{transform:translateY(0);opacity:0}3%{opacity:1}36%{transform:translateY(-345px);opacity:1}40%,100%{transform:translateY(-345px);opacity:0}}",
     "@keyframes sm{0%,37%{transform:translate(0,0);opacity:0}38%{opacity:1}45%{transform:translate(-336px,-52px);opacity:1}47%,100%{transform:translate(-336px,-52px);opacity:0}}",
     "@keyframes cur{0%{opacity:1}14%,82%{opacity:0}96%,100%{opacity:1}}",
-    "@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}",
-]
+] + base_css()
 for k, y in enumerate(LAYERS):
     p = 3 + (ROW_Y - 10 - y) / 345 * 33
     css.append(f"@keyframes n{k}{{0%,{p - 2:.1f}%{{opacity:.35}}{p:.1f}%{{opacity:1}}{p + 14:.1f}%,100%{{opacity:.35}}}}")
@@ -75,14 +73,8 @@ for k in range(N):
 row.append(f"100%{{transform:translateX({-N * SLOT}px)}}")
 css.append("@keyframes row{" + "".join(row) + "}")
 
-w('<ellipse cx="450" cy="380" rx="360" ry="250" fill="url(#nb1)"/><ellipse cx="780" cy="300" rx="340" ry="250" fill="url(#nb2)"/>')
-for i in range(80):
-    x, y = random.randint(10, 1190), random.randint(10, 690)
-    r = random.choice([0.7, 1, 1, 1.3])
-    if i % 5 == 0:
-        w(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e0e7ff" style="animation:tw {random.uniform(3.5, 7):.1f}s -{random.uniform(0, 7):.1f}s infinite"/>')
-    else:
-        w(f'<circle cx="{x}" cy="{y}" r="{r}" fill="#e0e7ff" opacity="{random.uniform(.15, .55):.2f}"/>')
+w(nebula((450, 380), (780, 300)))
+o.extend(stars(80))
 
 # layer planes with ghost sheets
 for k, y in reversed(list(enumerate(LAYERS))):
@@ -184,4 +176,4 @@ for k, wb in enumerate(WINNERS):
 
 o.insert(o.index("</defs>") + 1, "<style>" + "".join(css) + "</style>")
 w("</svg>")
-open(sys.argv[1], "w").write("\n".join(o))
+save(sys.argv[1], o)
