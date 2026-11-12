@@ -1493,6 +1493,46 @@ const initializeTerminal = () => {
   powerUp();
 };
 
+const initializeTabs = () => {
+  document.querySelectorAll("[data-tabs]").forEach((list) => {
+    const tabs = [...list.querySelectorAll('[role="tab"]')];
+    const select = (tab) => {
+      tabs.forEach((other) => {
+        const selected = other === tab;
+        other.setAttribute("aria-selected", String(selected));
+        other.tabIndex = selected ? 0 : -1;
+        document.getElementById(other.getAttribute("aria-controls")).hidden = !selected;
+      });
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        select(tab);
+        history.replaceState(null, "", `#${tab.dataset.tab}`);
+      });
+      tab.addEventListener("keydown", (event) => {
+        const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+        if (step) {
+          event.preventDefault();
+          const next = tabs[(index + step + tabs.length) % tabs.length];
+          next.click();
+          next.focus();
+        }
+      });
+    });
+
+    const fromHash = () => {
+      const tab = tabs.find((candidate) => `#${candidate.dataset.tab}` === window.location.hash);
+      if (tab) {
+        select(tab);
+      }
+    };
+
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+  });
+};
+
 const initializeEventBindings = () => {
   document.querySelectorAll("[data-accordion-trigger]").forEach((trigger) => {
     trigger.addEventListener("click", () => {
@@ -1527,4 +1567,5 @@ window.addEventListener("DOMContentLoaded", () => {
   initializeSkillBars();
   initializeSearch();
   initializeTerminal();
+  initializeTabs();
 });

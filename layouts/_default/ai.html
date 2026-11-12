@@ -1,6 +1,15 @@
 {{ define "main" }}
 <div class="page-shell prose dark:prose-invert max-w-none">
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
-  <img src="{{ `images/ai.svg` | relURL }}" alt="AI" width="1200" height="700" class="not-prose mx-auto mt-8 mb-4 h-auto w-full max-w-3xl">
+  <div class="tabs not-prose" role="tablist" aria-label="AI demos" data-tabs>
+    <button type="button" class="tab" role="tab" id="tab-neural" aria-controls="panel-neural" aria-selected="true" data-tab="neural">Neural network</button>
+    <button type="button" class="tab" role="tab" id="tab-quantum" aria-controls="panel-quantum" aria-selected="false" tabindex="-1" data-tab="quantum">Quantum</button>
+  </div>
+  <div id="panel-neural" class="tab-panel" role="tabpanel" aria-labelledby="tab-neural">
+    <img src="{{ `images/ai.svg` | relURL }}" alt="Animated neural network" width="1200" height="700" class="tab-image not-prose">
+  </div>
+  <div id="panel-quantum" class="tab-panel" role="tabpanel" aria-labelledby="tab-quantum" hidden>
+    <img src="{{ `images/quantum.svg` | relURL }}" alt="Animated quantum circuit" width="1200" height="700" loading="lazy" class="tab-image not-prose">
+  </div>
 </div>
 {{ end }}

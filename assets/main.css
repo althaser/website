@@ -477,6 +477,18 @@
   .terminal-power .icon {
     @apply w-[1em];
   }
+  .tabs {
+    @apply flex gap-1 border-b border-gray-300 dark:border-gray-700;
+  }
+  .tab {
+    @apply -mb-px cursor-pointer rounded-t-sm border-b-2 border-transparent px-3 py-1.5 text-sm font-semibold text-link hover:bg-gray-300 dark:text-link-dark dark:hover:bg-gray-700;
+  }
+  .tab[aria-selected="true"] {
+    @apply border-link bg-gray-300 dark:border-link-dark dark:bg-gray-700;
+  }
+  .tab-image {
+    @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl;
+  }
   .terminal-progress {
     @apply mt-2 flex items-center gap-3;
   }
