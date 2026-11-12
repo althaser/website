@@ -10,7 +10,9 @@ def col(t):
     a,b=hx(pal[i]),hx(pal[i+1])
     return '#%02x%02x%02x'%tuple(round(a[k]+(b[k]-a[k])*f) for k in range(3))
 NQ=8; WY=[140+60*q for q in range(NQ)]
-X0,X1=190,1010; TRAV=4.0; V=(X1-X0)/TRAV; PER=2.0
+X0,X1=190,900; TRAV=4.0; V=(X1-X0)/TRAV; PER=2.0
+HT=16.0
+P1=[.15,.5,.85,.3,.65,.5,.9,.25]
 def tx(x): return (x-X0)/(X1-X0)
 css=[
 '@keyframes mv{0%{transform:translateX(0);opacity:0}6%,94%{opacity:1}100%{transform:translateX('+str(X1-X0)+'px);opacity:0}}',
@@ -19,11 +21,11 @@ css=[
 '@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}',
 '@keyframes rp{0%{transform:scale(.2);opacity:0}20%{opacity:.5}100%{transform:scale(1.6);opacity:0}}',
 '@keyframes bit{0%,49.9%{opacity:1}50%,100%{opacity:0}}',
-'@keyframes out{0%{transform:translateX(0);opacity:0}20%,80%{opacity:1}100%{transform:translateX(80px);opacity:0}}',
+'@keyframes nd{0%{transform:rotate(-40deg)}10%{transform:rotate(32deg)}24%{transform:rotate(-12deg)}40%,100%{transform:rotate(-40deg)}}',
+'.hb{transform-box:fill-box;transform-origin:0 50%}',
 '.rp{transform-box:fill-box;transform-origin:center}',
 '@media (prefers-reduced-motion:reduce){*{animation:none!important}}']
-o=[f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="33 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animação de um circuito quântico">','<defs>',
-'<radialGradient id="bg" r="75%"><stop offset="0" stop-color="#151a3a"/><stop offset=".65" stop-color="#0a0e22"/><stop offset="1" stop-color="#05070f"/></radialGradient>',
+o=[f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-17 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animação de um circuito quântico">','<defs>',
 '<radialGradient id="nb1"><stop offset="0" stop-color="#4338ca" stop-opacity=".45"/><stop offset="1" stop-color="#4338ca" stop-opacity="0"/></radialGradient>',
 '<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".4"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>',
 '<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>',
@@ -34,7 +36,7 @@ for k in range(61):
     x=k*1.5-45; env=math.exp(-(x/18)**2); y=-9*env*math.sin(x/3.2)
     pts.append(f'{x:.1f} {y:.1f}')
 o.append(f'<path id="pk" d="M{" L".join(pts)}" fill="none" stroke-width="2" stroke-linecap="round"/>')
-o.append('</defs><style>'+''.join(css)+'</style>')
+o.append('</defs>'); STYLE_AT=len(o)
 o.append('<ellipse cx="430" cy="350" rx="340" ry="270" fill="url(#nb1)"/><ellipse cx="790" cy="350" rx="340" ry="270" fill="url(#nb2)"/>')
 for k in range(90):
     x,y=random.uniform(0,W),random.uniform(0,H)
@@ -51,7 +53,7 @@ for q,y in enumerate(WY):
     for k in range(int(TRAV/PER)):
         o.append(f'<use href="#pk" xlink:href="#pk" x="{X0}" y="{y}" stroke="#fff" style="animation:mv {TRAV}s linear {-k*PER-12:.2f}s infinite"/>')
 # gates
-cols=[290,380,470,560,650,740,830,920]
+cols=[270,350,430,510,590,670,750,830]
 ents=[]
 gates=[]
 for gx in cols:
@@ -92,19 +94,32 @@ for q,y in enumerate(WY):
     st=f'transform-origin:{cx}px {y}px;animation:sp {abs(sp):.1f}s linear infinite'+(';animation-direction:reverse' if sp<0 else '')
     o.append(f'<g style="{st}"><line x1="{cx}" y1="{y}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="#fff" stroke-width="1.6"/><circle cx="{ex:.1f}" cy="{ey:.1f}" r="3" fill="{c}"/></g>')
     o.append(f'<circle cx="{cx}" cy="{y}" r="2" fill="#fff"/>')
-# measurement + bits
+    o.append(f'<text x="{cx-34}" y="{y+5}" text-anchor="end" font-family="Consolas,monospace" font-size="14" fill="#67e8f9" fill-opacity=".85">|0</text><path d="M{cx-33} {y-7}l4 7-4 7" fill="none" stroke="#67e8f9" stroke-opacity=".85" stroke-width="1.3" stroke-linejoin="round"/>')
+# measurement: needle swings on collapse, one bit per shot, and a histogram of shots
+hist=[]
 for q,y in enumerate(WY):
-    mx=X1+60; c=pal[-1]
+    mx=X1+50; c=pal[-1]; dl=(mx-X0)/V-12
     o.append(f'<rect x="{mx-18}" y="{y-15}" width="36" height="30" rx="6" fill="#0b1023" stroke="{c}" stroke-width="1.4"/>')
     o.append(f'<path d="M{mx-11} {y+6} A11 11 0 0 1 {mx+11} {y+6}" fill="none" stroke="{c}" stroke-width="1.4"/>')
-    o.append(f'<line x1="{mx}" y1="{y+6}" x2="{mx+7}" y2="{y-6}" stroke="{c}" stroke-width="1.4"/>')
-    o.append(f'<circle cx="{mx-4}" cy="{y}" r="22" fill="url(#hl)" style="animation:fl {PER}s {(mx-X0)/V-12:.2f}s infinite"/>')
-    bx=mx+40
-    for k in range(2):
-        p=random.choice([PER,PER*1.5,PER*2]); d=-random.uniform(0,p)
-        o.append(f'<g style="animation:out 2s linear {-k:.0f}s infinite">'
-                 f'<text x="{bx}" y="{y+5}" font-family="Consolas,monospace" font-size="14" fill="{c}" style="animation:bit {p}s steps(1) {d}s infinite">1</text>'
-                 f'<text x="{bx}" y="{y+5}" font-family="Consolas,monospace" font-size="14" fill="#67e8f9" style="animation:bit {p}s steps(1) {d-p/2}s infinite">0</text></g>')
+    o.append(f'<line x1="{mx}" y1="{y+6}" x2="{mx}" y2="{y-7}" stroke="{c}" stroke-width="1.6" stroke-linecap="round" style="transform-origin:{mx}px {y+6}px;animation:nd {PER}s {dl:.2f}s infinite"/>')
+    o.append(f'<circle cx="{mx}" cy="{y}" r="22" fill="url(#hl)" style="animation:fl {PER}s {dl:.2f}s infinite"/>')
+    bx=mx+34
+    p=random.choice([PER*2,PER*3,PER*4]); d=dl-random.randrange(4)*PER
+    o.append(f'<text x="{bx}" y="{y+5}" text-anchor="middle" font-family="Consolas,monospace" font-size="14" fill="{c}" style="animation:bit {p}s steps(1) {d:.2f}s infinite">1</text>'
+             f'<text x="{bx}" y="{y+5}" text-anchor="middle" font-family="Consolas,monospace" font-size="14" fill="#67e8f9" style="animation:bit {p}s steps(1) {d-p/2:.2f}s infinite">0</text>')
+    hx0=bx+18; hw=110
+    ones=0; frames=['0%{transform:scaleX(.5)}']
+    n=int(HT/PER)
+    for k in range(1,n+1):
+        ones+=random.random()<P1[q]
+        est=(ones+1)/(k+2)*.5+P1[q]*.5*k/n
+        frames.append(f'{k/n*94:.1f}%{{transform:scaleX({est:.3f})}}')
+    frames.append(f'97%{{transform:scaleX({P1[q]})}}100%{{transform:scaleX(.5)}}')
+    css.append(f'@keyframes h{q}{{{"".join(frames)}}}')
+    o.append(f'<rect x="{hx0}" y="{y-6}" width="{hw}" height="12" rx="3" fill="#22d3ee" fill-opacity=".55"/>')
+    o.append(f'<rect class="hb" x="{hx0}" y="{y-6}" width="{hw}" height="12" rx="3" fill="{c}" style="animation:h{q} {HT}s ease-in-out infinite"/>')
+    o.append(f'<line x1="{hx0+hw/2}" y1="{y-9}" x2="{hx0+hw/2}" y2="{y+9}" stroke="#e0e7ff" stroke-opacity=".35" stroke-dasharray="2 2"/>')
+o.insert(STYLE_AT,'<style>'+''.join(css)+'</style>')
 o.append('</svg>')
 s='\n'.join(x for x in o if x)
 open(sys.argv[1],'w').write(s)
