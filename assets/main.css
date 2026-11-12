@@ -125,6 +125,10 @@
   @apply bg-link text-white dark:bg-link-dark dark:text-gray-900;
 }
 
+@utility current {
+  @apply highlight outline-2 outline-offset-2 outline-link dark:outline-link-dark;
+}
+
 @plugin "@tailwindcss/typography";
 
 @source "../../content/**/*.md";
@@ -385,7 +389,7 @@
     .active {
       @apply pointer-events-none;
       .page-link {
-        @apply highlight!;
+        @apply current!;
       }
     }
   }
@@ -430,7 +434,7 @@
     @apply pointer-events-none absolute top-1/2 -left-2.5 -translate-x-1/2 -translate-y-1/2 font-normal text-gray-400 dark:text-gray-600;
   }
   .nav-menu-item.active {
-    @apply no-underline highlight!;
+    @apply no-underline current!;
   }
   .prose ul,
   .prose ol {
@@ -493,7 +497,7 @@
     @apply cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold text-link hover:highlight dark:text-link-dark;
   }
   .tab[aria-selected="true"] {
-    @apply highlight;
+    @apply current;
   }
   .tab-image {
     @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
