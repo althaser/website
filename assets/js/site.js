@@ -228,7 +228,7 @@ const initializePostNavigation = () => {
       (target.isContentEditable ||
         ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
 
-    if (isEditable) {
+    if (isEditable || event.defaultPrevented) {
       return;
     }
 
