@@ -8,6 +8,7 @@ def pc(t): return f'{100*max(0,min(P,t))/P:.2f}%'
 css=[
 '@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}',
 '@keyframes sp{to{transform:rotate(360deg)}}',
+'@keyframes wk{0%,100%{opacity:1}50%{opacity:.3}}',
 '@keyframes gs{0%{transform:translate(0,0);opacity:0}5%{opacity:1}45%{transform:translate(var(--x),var(--y));opacity:1}50%,100%{transform:translate(var(--x),var(--y));opacity:0}}',
 '@media (prefers-reduced-motion:reduce){*{animation:none!important}}']
 o=[]
@@ -20,10 +21,10 @@ for k in range(90):
     o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{random.choice([.7,1,1.3])}" fill="#e0e7ff"{a}/>')
 # ---------- P2P mesh
 nodes=[]
-while len(nodes)<15:
-    x,y=random.uniform(110,1090),random.uniform(60,250)
-    if abs(x-600)<120 and y>200: continue
-    if all(math.hypot(x-a,y-b)>110 for a,b in nodes): nodes.append((x,y))
+while len(nodes)<26:
+    x,y=random.uniform(70,1130),random.uniform(45,265)
+    if abs(x-600)<130 and y>215: continue
+    if all(math.hypot(x-a,y-b)>88 for a,b in nodes): nodes.append((x,y))
 edges=set()
 for i,(x,y) in enumerate(nodes):
     near=sorted(range(len(nodes)),key=lambda j:math.hypot(nodes[j][0]-x,nodes[j][1]-y))[1:4]
@@ -47,7 +48,7 @@ for i,j in edges:
 # gossip packets
 for i,j in edges:
     for (a,b) in ((i,j),(j,i)):
-        if random.random()<.55:
+        if random.random()<.7:
             (x1,y1),(x2,y2)=nodes[a],nodes[b]; per=random.choice([2,3,4])
             o.append(f'<rect x="{x1-3:.0f}" y="{y1-3:.0f}" width="6" height="6" rx="1.5" fill="#67e8f9" style="--x:{x2-x1:.0f}px;--y:{y2-y1:.0f}px;animation:gs {per}s linear {-random.uniform(0,per):.2f}s infinite"/>')
 # tx packets to leaves
@@ -59,7 +60,10 @@ for k,(lx,ly) in enumerate(leaves):
 for (x,y) in nodes:
     c=ncol(x)
     o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="20" fill="url(#hl)" opacity=".5"/>')
-    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="9" fill="#0b1023" stroke="{c}" stroke-width="2"/><circle cx="{x:.0f}" cy="{y:.0f}" r="3.5" fill="{c}"/>')
+    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="9" fill="#0b1023" stroke="{c}" stroke-width="2"/>')
+    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="3.5" fill="{c}" style="animation:wk {random.choice([.4,.5,.6,.7])}s {-random.uniform(0,1):.2f}s infinite"/>')
+    sp=random.uniform(1.2,2.6)
+    o.append(f'<circle cx="{x:.0f}" cy="{y:.0f}" r="14" fill="none" stroke="{c}" stroke-opacity=".75" stroke-width="1.6" stroke-dasharray="9 79" style="transform-origin:{x:.0f}px {y:.0f}px;animation:sp {sp:.1f}s linear {-random.uniform(0,sp):.2f}s infinite{" reverse" if random.random()<.5 else ""}"/>')
     o.append(f'<path d="M{x-5:.0f} {y-14:.0f}l3.5 3.5 6.5-7" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:val {P}s infinite"/>')
 # ---------- mining panel
 o.append(f'<circle cx="{PX}" cy="{PY}" r="122" fill="none" stroke="#a855f7" stroke-opacity=".5" stroke-width="1.5" stroke-dasharray="2 9" style="transform-origin:{PX}px {PY}px;animation:sp 6s linear infinite"/>')
@@ -99,7 +103,7 @@ for k in reversed(i0): o.pop(k)
 o+=grp
 o.append(f'<text x="{PX}" y="{PY-PH/2-14}" text-anchor="middle" font-family="Consolas,monospace" font-size="13" fill="#34d399" style="animation:hf {P}s infinite">0x0000…a7f3 ✓</text>')
 # ---------- chain
-CY=615; S=130; N=9; XEND=1010
+CY=615; S=130; N=9; XEND=1012
 def cube(cx,cy,s=34):
     h=s*0.5
     top=f'M{cx} {cy-s}L{cx+s} {cy-s+h}L{cx} {cy-s+2*h}L{cx-s} {cy-s+h}Z'
@@ -133,7 +137,7 @@ defs=['<defs>',
 '<radialGradient id="nb2"><stop offset="0" stop-color="#a21caf" stop-opacity=".4"/><stop offset="1" stop-color="#a21caf" stop-opacity="0"/></radialGradient>',
 '<radialGradient id="hl"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>',
 '<radialGradient id="hlg"><stop offset="0" stop-color="#34d399" stop-opacity=".35"/><stop offset="1" stop-color="#34d399" stop-opacity="0"/></radialGradient>',
-'<linearGradient id="fadeX" gradientUnits="userSpaceOnUse" x1="0" x2="1200" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".1333" stop-color="#fff"/><stop offset=".8667" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="chainFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect width="1200" height="700" fill="url(#fadeX)"/></mask>',
+'<linearGradient id="fadeX" gradientUnits="userSpaceOnUse" x1="0" x2="1200" y1="0" y2="0"><stop offset=".138" stop-color="#fff" stop-opacity="0"/><stop offset=".228" stop-color="#fff"/><stop offset=".89" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="chainFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect width="1200" height="700" fill="url(#fadeX)"/></mask>',
 '</defs>']
 s='\n'.join([f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Animação do processamento de uma blockchain">']+defs+['<style>'+''.join(css)+'</style>']+o+['</svg>'])
 open(sys.argv[1],'w').write(s)
