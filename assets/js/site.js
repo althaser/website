@@ -1503,6 +1503,10 @@ const initializeTabs = () => {
         other.tabIndex = selected ? 0 : -1;
         document.getElementById(other.getAttribute("aria-controls")).hidden = !selected;
       });
+
+      if (list.contains(document.activeElement)) {
+        tab.focus();
+      }
     };
 
     tabs.forEach((tab, index) => {
@@ -1514,9 +1518,7 @@ const initializeTabs = () => {
         const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
         if (step) {
           event.preventDefault();
-          const next = tabs[(index + step + tabs.length) % tabs.length];
-          next.click();
-          next.focus();
+          tabs[(index + step + tabs.length) % tabs.length].click();
         }
       });
     });
@@ -1530,6 +1532,10 @@ const initializeTabs = () => {
 
     fromHash();
     window.addEventListener("hashchange", fromHash);
+
+    if (list.hasAttribute("data-tabs-autofocus")) {
+      tabs.find((tab) => tab.tabIndex === 0)?.focus({ preventScroll: true });
+    }
   });
 };
 
