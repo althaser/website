@@ -2,6 +2,7 @@
 title: "Credits & Licenses"
 description: "License of this site and third-party assets used"
 draft: false
+layout: simple
 ---
 
 ## License
