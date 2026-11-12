@@ -375,7 +375,7 @@
 @layer components {
   .pager-arrow,
   ul.pagination .page-link {
-    @apply inline-flex h-9 w-10 items-center justify-center sm:w-12 hover:bg-link dark:hover:bg-link-dark;
+    @apply inline-flex h-9 w-10 items-center justify-center rounded-lg sm:w-12 hover:bg-link dark:hover:bg-link-dark;
   }
   ul.pagination {
     @apply flex flex-row justify-center list-none;
@@ -386,7 +386,7 @@
       }
     }
     .active {
-      @apply bg-link pointer-events-none dark:bg-link-dark;
+      @apply bg-link pointer-events-none rounded-lg dark:bg-link-dark;
     }
   }
   .categories {
@@ -411,7 +411,7 @@
   }
   .nav-menu-item,
   .icon-link {
-    @apply hover:no-underline p-2 rounded-sm hover:bg-gray-300 dark:hover:bg-gray-700;
+    @apply hover:no-underline p-2 rounded-lg hover:bg-link hover:text-white! dark:hover:bg-link-dark dark:hover:text-gray-900!;
   }
   .icon-link {
     @apply inline-flex items-center justify-center;
@@ -430,7 +430,7 @@
     @apply pointer-events-none absolute top-1/2 -left-2.5 -translate-x-1/2 -translate-y-1/2 font-normal text-gray-400 dark:text-gray-600;
   }
   .nav-menu-item.active {
-    @apply bg-gray-300 no-underline dark:bg-gray-700;
+    @apply bg-link text-white! no-underline dark:bg-link-dark dark:text-gray-900!;
   }
   .prose ul,
   .prose ol {
@@ -443,7 +443,7 @@
     @apply my-0 p-2 hover:bg-gray-350 rounded-sm dark:hover:bg-gray-800;
   }
   .social-link {
-    @apply text-2xl hover:bg-gray-400 dark:hover:bg-gray-600;
+    @apply text-2xl;
   }
   .link-row {
     @apply flex items-center gap-2;
@@ -487,13 +487,13 @@
     @apply w-[1em];
   }
   .tabs {
-    @apply flex gap-1 border-b border-gray-300 dark:border-gray-700;
+    @apply flex gap-1 border-b border-gray-300 pb-1 dark:border-gray-700;
   }
   .tab {
-    @apply -mb-px cursor-pointer rounded-t-sm border-b-2 border-transparent px-3 py-1.5 text-sm font-semibold text-link hover:bg-gray-300 dark:text-link-dark dark:hover:bg-gray-700;
+    @apply cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold text-link hover:bg-link hover:text-white dark:text-link-dark dark:hover:bg-link-dark dark:hover:text-gray-900;
   }
   .tab[aria-selected="true"] {
-    @apply border-link bg-gray-300 dark:border-link-dark dark:bg-gray-700;
+    @apply bg-link text-white dark:bg-link-dark dark:text-gray-900;
   }
   .tab-image {
     @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
