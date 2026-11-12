@@ -14,6 +14,9 @@
     <a class="nav-menu-item {{ if eq .Section "terminal" }} active {{ end }}" href="{{ `terminal` | relURL }}" aria-label="Terminal" title="Terminal">
       {{ partial "icon.html" "solid/terminal" }}
     </a>
+    <a class="nav-menu-item {{ if eq .Section "visuals" }} active {{ end }}" href="{{ `visuals` | relURL }}" aria-label="Visuals" title="Visuals">
+      {{ partial "icon.html" "solid/chart-simple" }}
+    </a>
     <a class="nav-menu-item {{ if eq .Section "ai" }} active {{ end }}" href="{{ `ai` | relURL }}" aria-label="AI" title="AI">
       {{ partial "icon.html" "solid/robot" }}
     </a>
