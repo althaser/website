@@ -220,15 +220,13 @@ const initializeSearch = () => {
   });
 };
 
+const isEditable = (target) =>
+  target instanceof HTMLElement &&
+  (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+
 const initializePostNavigation = () => {
   document.addEventListener("keydown", (event) => {
-    const target = event.target;
-    const isEditable =
-      target instanceof HTMLElement &&
-      (target.isContentEditable ||
-        ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
-
-    if (isEditable || event.defaultPrevented) {
+    if (isEditable(event.target) || event.defaultPrevented) {
       return;
     }
 
@@ -1509,19 +1507,32 @@ const initializeTabs = () => {
       }
     };
 
-    tabs.forEach((tab, index) => {
+    const pageWide = list.hasAttribute("data-tabs-global");
+
+    tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         select(tab);
         history.replaceState(null, "", `#${tab.dataset.tab}`);
       });
-      tab.addEventListener("keydown", (event) => {
-        const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
-        if (step) {
-          event.preventDefault();
-          tabs[(index + step + tabs.length) % tabs.length].click();
-        }
-      });
     });
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+        const focused = list.contains(document.activeElement);
+        if (!step || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+          return;
+        }
+        if (!focused && (!pageWide || isEditable(event.target))) {
+          return;
+        }
+        event.preventDefault();
+        const current = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
+        tabs[(current + step + tabs.length) % tabs.length].click();
+      },
+      { capture: true },
+    );
 
     const fromHash = () => {
       const tab = tabs.find((candidate) => `#${candidate.dataset.tab}` === window.location.hash);
@@ -1533,7 +1544,7 @@ const initializeTabs = () => {
     fromHash();
     window.addEventListener("hashchange", fromHash);
 
-    if (list.hasAttribute("data-tabs-autofocus")) {
+    if (pageWide) {
       tabs.find((tab) => tab.tabIndex === 0)?.focus({ preventScroll: true });
     }
   });

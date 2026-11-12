@@ -2,7 +2,7 @@
 {{ $demos := sort hugo.Data.visuals "label" }}
 <div class="page-shell prose dark:prose-invert max-w-none">
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
-  <div class="tabs not-prose" role="tablist" aria-label="Visuals" data-tabs data-tabs-autofocus>
+  <div class="tabs not-prose" role="tablist" aria-label="Visuals" data-tabs data-tabs-global>
     {{ range $index, $demo := $demos }}
     <button type="button" class="tab" role="tab" id="tab-{{ .id }}" aria-controls="panel-{{ .id }}" aria-selected="{{ eq $index 0 }}"{{ if $index }} tabindex="-1"{{ end }} data-tab="{{ .id }}">{{ .label }}</button>
     {{ end }}
