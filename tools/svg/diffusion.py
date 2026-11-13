@@ -5,7 +5,7 @@ import sys
 from common import DEFS, STAR, base_css, hexc, mix, nebula, palette, ramp, rgb, save, stars, svg_open
 
 random.seed(11)
-T = 9.0
+T = 11.0
 COLS, ROWS, CELL, GAP = 32, 18, 20, 2
 GW, GH = COLS * CELL, ROWS * CELL
 GX, GY = 600 - GW / 2, 330 - GH / 2
@@ -68,15 +68,15 @@ w(f'<mask id="moon" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="
 w(f'<clipPath id="gc"><rect x="{GX}" y="{GY}" width="{GW}" height="{GH}" rx="10"/></clipPath>')
 w("</defs>")
 
-den0, den1, hold1, re1 = 10, 58, 80, 97
+den0, den1, hold1, re1 = 10, 68, 84, 97
 css = base_css(".nz")
 for g in range(GROUPS):
     r = den0 + 4 + (den1 - den0 - 12) * (g + random.random() * .8) / GROUPS
     n = hold1 + (re1 - hold1 - 4) * random.random()
     css.append(f"@keyframes k{g}{{0%,{r:.1f}%{{opacity:1}}{r + 4:.1f}%,{n:.1f}%{{opacity:0}}{n + 3:.1f}%,100%{{opacity:1}}}}.k{g}{{animation:k{g} {T}s infinite}}")
 css.append(f"@keyframes fk{{0%,49.9%{{opacity:1}}50%,100%{{opacity:0}}}}")
-css.append(f"@keyframes sh{{0%,{den1 - 18}%{{opacity:0}}{den1 + 2}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
-css.append(f"@keyframes co{{0%,{den0 + 6}%{{opacity:0}}{den0 + 22}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
+css.append(f"@keyframes sh{{0%,{den1 - 32}%{{opacity:0}}{den1 - 6}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
+css.append(f"@keyframes co{{0%,{den0 + 6}%{{opacity:0}}{den0 + 28}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
 sweeps = []
 for s in range(STEPS):
     a = den0 + (den1 - den0) * s / STEPS
@@ -88,8 +88,8 @@ css.append(f"@keyframes dot{{0%,{den0}%{{transform:translateX(0)}}{den1}%,{hold1
 for s in range(STEPS + 1):
     p = den0 + (den1 - den0) * s / STEPS
     css.append(f"@keyframes t{s}{{0%,{p - .5:.1f}%{{opacity:.25}}{p:.1f}%,{hold1}%{{opacity:1}}{re1 - (re1 - hold1) * s / STEPS:.1f}%,100%{{opacity:.25}}}}")
-css.append(f"@keyframes hd{{0%,{den1 - 8}%{{opacity:0}}{den1 + 4}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
-css.append("@keyframes gl{0%,50%{opacity:0}62%,80%{opacity:1}95%,100%{opacity:0}}")
+css.append(f"@keyframes hd{{0%,{den1 - 20}%{{opacity:0;animation-timing-function:ease-in-out}}{den1 + 6}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
+css.append(f"@keyframes gl{{0%,{den1 - 8}%{{opacity:0}}{den1 + 6}%,{hold1}%{{opacity:1}}{re1 - 2}%,100%{{opacity:0}}}}")
 w("<style>" + "".join(css) + "</style>")
 
 w(nebula((460, 330), (770, 320)))
