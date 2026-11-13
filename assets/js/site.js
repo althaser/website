@@ -224,35 +224,17 @@ const isEditable = (target) =>
   target instanceof HTMLElement &&
   (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
 
-const initializePostNavigation = () => {
-  document.addEventListener("keydown", (event) => {
-    if (isEditable(event.target) || event.defaultPrevented) {
-      return;
+const scrollsHorizontally = (element) => {
+  for (let node = element; node && node !== document.body; node = node.parentElement) {
+    const overflowX = getComputedStyle(node).overflowX;
+    if ((overflowX === "auto" || overflowX === "scroll") && node.scrollWidth > node.clientWidth) {
+      return true;
     }
-
-    if (event.key === "ArrowLeft") {
-      document.querySelector("[data-pager-prev]")?.click();
-    }
-
-    if (event.key === "ArrowRight") {
-      document.querySelector("[data-pager-next]")?.click();
-    }
-  });
-
-  if (!document.querySelector("[data-pager-prev], [data-pager-next]")) {
-    return;
   }
+  return false;
+};
 
-  const scrollsHorizontally = (element) => {
-    for (let node = element; node && node !== document.body; node = node.parentElement) {
-      const overflowX = getComputedStyle(node).overflowX;
-      if ((overflowX === "auto" || overflowX === "scroll") && node.scrollWidth > node.clientWidth) {
-        return true;
-      }
-    }
-    return false;
-  };
-
+const onSwipe = (handler) => {
   let swipe = null;
 
   document.addEventListener(
@@ -295,7 +277,7 @@ const initializePostNavigation = () => {
         return;
       }
 
-      document.querySelector(dx < 0 ? "[data-pager-next]" : "[data-pager-prev]")?.click();
+      handler(dx < 0 ? 1 : -1);
     },
     { passive: true },
   );
@@ -303,6 +285,26 @@ const initializePostNavigation = () => {
   document.addEventListener("touchcancel", () => {
     swipe = null;
   });
+};
+
+const initializePostNavigation = () => {
+  document.addEventListener("keydown", (event) => {
+    if (isEditable(event.target) || event.defaultPrevented) {
+      return;
+    }
+
+    if (event.key === "ArrowLeft") {
+      document.querySelector("[data-pager-prev]")?.click();
+    }
+
+    if (event.key === "ArrowRight") {
+      document.querySelector("[data-pager-next]")?.click();
+    }
+  });
+
+  if (document.querySelector("[data-pager-prev], [data-pager-next]")) {
+    onSwipe((step) => document.querySelector(step > 0 ? "[data-pager-next]" : "[data-pager-prev]")?.click());
+  }
 };
 
 const initializeTerminal = () => {
@@ -1508,6 +1510,10 @@ const initializeTabs = () => {
     };
 
     const pageWide = list.hasAttribute("data-tabs-global");
+    const move = (step) => {
+      const current = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
+      tabs[(current + step + tabs.length) % tabs.length].click();
+    };
 
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
@@ -1528,11 +1534,14 @@ const initializeTabs = () => {
           return;
         }
         event.preventDefault();
-        const current = tabs.findIndex((tab) => tab.getAttribute("aria-selected") === "true");
-        tabs[(current + step + tabs.length) % tabs.length].click();
+        move(step);
       },
       { capture: true },
     );
+
+    if (pageWide) {
+      onSwipe(move);
+    }
 
     const fromHash = () => {
       const tab = tabs.find((candidate) => `#${candidate.dataset.tab}` === window.location.hash);

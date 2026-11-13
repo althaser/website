@@ -220,7 +220,7 @@
     @apply max-w-none;
 
     a {
-      @apply no-underline! hover:underline!;
+      @apply no-underline! hover:underline! wrap-anywhere;
     }
 
     code::before,
@@ -421,7 +421,10 @@
     @apply inline-flex items-center justify-center;
   }
   .nav-links {
-    @apply flex items-center gap-5;
+    @apply flex items-center gap-3 sm:gap-5;
+  }
+  .nav .nav-menu-item {
+    @apply px-1 sm:px-2;
   }
   .nav-links > a {
     @apply py-[0.1875rem];
@@ -431,7 +434,7 @@
   }
   .nav-links > a + a::before {
     content: "|";
-    @apply pointer-events-none absolute top-1/2 -left-2.5 -translate-x-1/2 -translate-y-1/2 font-normal text-gray-400 dark:text-gray-600;
+    @apply pointer-events-none absolute top-1/2 -left-2.5 -translate-x-1/2 max-sm:hidden -translate-y-1/2 font-normal text-gray-400 dark:text-gray-600;
   }
   .nav-menu-item.active {
     @apply no-underline current!;
