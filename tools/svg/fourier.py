@@ -11,8 +11,8 @@ MONO = 'font-family="Consolas,monospace"'
 P = 14.0
 KMAX = 20
 EX, EY, SCALE = 360, 380, 1.9
-SPX0, SPX1, SPY0, SPY1 = 760, 1130, 330, 140
-THUMBS, TY, TS = (2, 5, 10, 2 * KMAX + 1), 515, .2
+SPX0, SPX1, SPY0, SPY1 = 680, 1160, 345, 110
+THUMBS, TY, TS = (2, 5, 10, 2 * KMAX + 1), 535, .27
 
 # a stylised pi, traced clockwise
 SHAPE = [(-105, -80), (105, -80), (105, -56), (56, -56), (56, 60), (62, 82), (78, 84), (74, 100), (48, 100), (32, 84), (32, -56),
@@ -62,7 +62,7 @@ css = [
     "@keyframes sp{to{transform:rotate(360deg)}}",
     "@keyframes tr{0%{opacity:1}100%{opacity:.1}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
-    "@media (max-width:520px){.ti{font-size:30px}.su{font-size:20px}.ax{font-size:22px}}",
+    "@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.ax{font-size:22px}}",
 ] + base_css()
 defs = ["<defs>", *DEFS, "</defs>"]
 o = [nebula((360, 380), (900, 340), (380, 360), 280)]
@@ -94,11 +94,11 @@ for k in order:
     prev_k, prev_arg = k, arg
 chain += '<circle r="12" fill="url(#hl)"/><circle r="3.5" fill="#fff"/>' + close
 o.append(chain)
-o.append(f'<text x="{EX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">f(t) = Σ c<tspan class="su" font-size="13" dy="5">k</tspan>'
-         f'<tspan dy="-5"> e</tspan><tspan class="su" font-size="13" dy="-8">2πikt</tspan></text>')
+o.append(f'<text x="{EX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">f(t) = Σ c<tspan class="su" font-size="17" dy="6">k</tspan>'
+         f'<tspan dy="-6"> e</tspan><tspan class="su" font-size="17" dy="-10">2πikt</tspan></text>')
 
 # spectrum: |c_k| for every frequency, coloured like its circle
-o.append(f'<text x="{(SPX0 + SPX1) / 2}" y="66" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">|c<tspan class="su" font-size="13" dy="5">k</tspan><tspan dy="-5">|  spectrum</tspan></text>')
+o.append(f'<text x="{(SPX0 + SPX1) / 2}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">|c<tspan class="su" font-size="17" dy="6">k</tspan><tspan dy="-6">|  spectrum</tspan></text>')
 o.append(f'<line x1="{SPX0 - 10}" y1="{SPY0}" x2="{SPX1 + 10}" y2="{SPY0}" stroke="{STAR}" stroke-opacity=".35"/>')
 peak = max(abs(coef[k]) for k in order)
 bw = (SPX1 - SPX0) / (2 * KMAX + 1)
@@ -112,7 +112,7 @@ for k in (-KMAX, -10, 0, 10, KMAX):
     o.append(f'<text x="{num(SPX0 + (k + KMAX + .5) * bw)}" y="{SPY0 + 20}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{STAR}" fill-opacity=".55">{k}</text>')
 
 # reconstructions with only the strongest few terms
-o.append(f'<text x="{(SPX0 + SPX1) / 2}" y="{TY - 70}" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">number of terms</text>')
+o.append(f'<text x="{(SPX0 + SPX1) / 2}" y="{TY - 95}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">number of terms</text>')
 gap = (SPX1 - SPX0) / len(THUMBS)
 for n, terms in enumerate(THUMBS):
     cx = SPX0 + gap * (n + .5)
@@ -122,6 +122,6 @@ for n, terms in enumerate(THUMBS):
     body = "".join(f"{100 * i / 60:.2f}%{{transform:translate({num(shape[i * 4].real)}px,{num(shape[i * 4].imag)}px)}}" for i in range(61))
     css.append(f"@keyframes m{n}{{{body}}}")
     o.append(f'<g class="mv" style="animation:m{n} {P}s linear infinite"><circle r="7" fill="url(#hl)"/><circle r="2.2" fill="#fff"/></g>')
-    o.append(f'<text x="{num(cx)}" y="{TY + 55}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{c}">{terms}</text>')
+    o.append(f'<text x="{num(cx)}" y="{TY + 72}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{c}">{terms}</text>')
 
 save(sys.argv[1], [svg_open("Animated Fourier series drawing with epicycles"), *defs, "<style>" + "".join(css) + "</style>", *o, "</svg>"])
