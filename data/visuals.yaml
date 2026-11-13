@@ -28,3 +28,6 @@
 - id: fourier
   label: Fourier
   alt: Animated Fourier series drawing a shape with epicycles, its spectrum and partial reconstructions
+- id: solarsystem
+  label: SolarSystem
+  alt: Animated solar system moving through space, the planets tracing helices around the Sun's path
