@@ -10,9 +10,9 @@ FONT = 'font-family="Cambria Math,Georgia,Times New Roman,serif"'
 MONO = 'font-family="Consolas,monospace"'
 P = 14.0
 KMAX = 20
-EX, EY, SCALE = 360, 380, 1.9
-SPX0, SPX1, SPY0, SPY1 = 680, 1160, 345, 110
-THUMBS, TY, TS = (2, 5, 10, 2 * KMAX + 1), 535, .27
+EX, EY, SCALE = 296, 395, 1.9
+SPX0, SPX1, SPY0, SPY1 = 616, 1096, 355, 120
+THUMBS, TY, TS = (2, 5, 10, 2 * KMAX + 1), 555, .27
 
 # a stylised pi, traced clockwise
 SHAPE = [(-105, -80), (105, -80), (105, -56), (56, -56), (56, 60), (62, 82), (78, 84), (74, 100), (48, 100), (32, 84), (32, -56),
@@ -65,7 +65,7 @@ css = [
     "@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.ax{font-size:22px}}",
 ] + base_css()
 defs = ["<defs>", *DEFS, "</defs>"]
-o = [nebula((360, 380), (900, 340), (380, 360), 280)]
+o = [nebula((296, 395), (836, 350), (380, 360), 280)]
 o.extend(stars(90))
 
 # target shape, faint

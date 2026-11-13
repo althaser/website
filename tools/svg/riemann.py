@@ -13,10 +13,10 @@ CYAN, ORANGE = PALETTE[0], PALETTE[-1]
 FONT = 'font-family="Cambria Math,Georgia,Times New Roman,serif"'
 MONO = 'font-family="Consolas,monospace"'
 
-SX0, SX1, SY0, SY1 = 120, 320, 620, 90
+SX0, SX1, SY0, SY1 = 92, 292, 620, 90
 LX = (SX0 + SX1) / 2
-ZOX, ZOY, ZS = 535, 365, 94
-PX0, PX1, PY0, PY1, PXMAX, PYMAX = 905, 1145, 513, 228, 40, 42
+ZOX, ZOY, ZS = 507, 365, 94
+PX0, PX1, PY0, PY1, PXMAX, PYMAX = 877, 1117, 513, 228, 40, 42
 BERN = [1 / 6, -1 / 30, 1 / 42, -1 / 30, 5 / 66, -691 / 2730, 7 / 6]
 
 
@@ -102,7 +102,7 @@ defs = ["<defs>", *DEFS,
         f'<clipPath id="pc"><rect x="{PX0}" y="{PY1 - 10}" width="{PX1 - PX0 + 10}" height="{PY0 - PY1 + 10}"/></clipPath>',
         "</defs>"]
 
-o = [nebula((420, 350), (860, 350), (380, 360), 270)]
+o = [nebula((392, 350), (832, 350), (380, 360), 270)]
 o.extend(stars(90))
 
 # critical strip 0 < Re(s) < 1 with the critical line and the first ten zeros on it
