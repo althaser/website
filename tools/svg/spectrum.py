@@ -7,10 +7,10 @@ from common import DEFS, FONT, MONO, STAR, base_css, mobile, nebula, num, palett
 random.seed(17)
 X0, X1 = 70, 1130
 LMAX, LMIN = 4, -13
-WY, AMP = 235, 24
-AXY, FQY = 318, 398
+WY, AMP = 322, 24
+AXY, FQY = 458, 526
 V = 40.0
-ZX0, ZX1, ZY = 300, 900, 500
+ZX0, ZX1, ZY = 300, 900, 184
 
 # name, longest and shortest wavelength (log10 m), drawn wavelength (px), example
 BANDS = [("radio", 4, 0, 120, "radio · TV"), ("microwave", 0, -3, 62, "Wi-Fi · ovens"), ("infrared", -3, -6.15, 32, "heat · remotes"),
@@ -34,7 +34,7 @@ css = [
 ] + base_css()
 defs = ["<defs>", *DEFS,
         '<linearGradient id="rb" x1="0" x2="1">' + "".join(f'<stop offset="{i / (len(RAINBOW) - 1):.2f}" stop-color="{c}"/>' for i, c in enumerate(RAINBOW)) + "</linearGradient>",
-        '<linearGradient id="fade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>']
+        '<linearGradient id="fade" x1="0" x2="0" y1="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>']
 o = [nebula((380, 380), (820, 360), (340, 340), 260)]
 o.extend(stars(80))
 o.append(title(600, 66, "the electromagnetic spectrum"))
@@ -57,8 +57,8 @@ for n, (name, a, b, lam, example) in enumerate(BANDS):
     if name == "visible":
         continue
     mid = (xa + xb) / 2
-    o.append(f'<text x="{num(mid)}" y="{WY - AMP - 44}" text-anchor="middle" class="bn" {FONT} font-size="18" fill="{c}">{name}</text>')
-    o.append(f'<text x="{num(mid)}" y="{WY - AMP - 22}" text-anchor="middle" class="ex" {MONO} font-size="12" fill="{STAR}" fill-opacity=".55">{example}</text>')
+    o.append(f'<text x="{num(mid)}" y="{WY + AMP + 40}" text-anchor="middle" class="bn" {FONT} font-size="18" fill="{c}">{name}</text>')
+    o.append(f'<text x="{num(mid)}" y="{WY + AMP + 60}" text-anchor="middle" class="ex" {MONO} font-size="12" fill="{STAR}" fill-opacity=".55">{example}</text>')
 
 # wavelength and frequency scales
 o.append(f'<line x1="{X0}" y1="{AXY}" x2="{X1}" y2="{AXY}" stroke="{STAR}" stroke-opacity=".35"/>'
@@ -75,23 +75,23 @@ o.append(f'<text x="{X0}" y="{AXY - 12}" class="ax" {MONO} font-size="13" fill="
 
 # the visible slice, magnified
 va, vb = x(BANDS[3][1]), x(BANDS[3][2])
-o.append(f'<path d="M{num(va)} {WY + AMP}L{ZX0} {ZY - 34}M{num(vb)} {WY + AMP}L{ZX1} {ZY - 34}" stroke="{STAR}" stroke-opacity=".25" stroke-dasharray="3 5"/>')
-o.append(f'<path d="M{num(va)} {WY + AMP}L{num(vb)} {WY + AMP}L{ZX1} {ZY - 34}L{ZX0} {ZY - 34}Z" fill="url(#fade)" opacity=".35"/>')
+o.append(f'<path d="M{num(va)} {WY - AMP}L{ZX0} {ZY + 34}M{num(vb)} {WY - AMP}L{ZX1} {ZY + 34}" stroke="{STAR}" stroke-opacity=".25" stroke-dasharray="3 5"/>')
+o.append(f'<path d="M{num(va)} {WY - AMP}L{num(vb)} {WY - AMP}L{ZX1} {ZY + 34}L{ZX0} {ZY + 34}Z" fill="url(#fade)" opacity=".35"/>')
 o.append(f'<rect x="{ZX0}" y="{ZY - 30}" width="{ZX1 - ZX0}" height="60" rx="6" fill="url(#rb)"/>')
 o.append(f'<text x="{(ZX0 + ZX1) / 2}" y="{ZY + 7}" text-anchor="middle" class="bn" {FONT} font-size="20" fill="#0b1023">visible light · {BANDS[3][4]}</text>')
 chirp, phase, px = [], 0.0, ZX0
 while px <= ZX1:
     lam = 70 - 30 * (px - ZX0) / (ZX1 - ZX0)
-    chirp.append((px, ZY + 66 - 14 * math.sin(phase)))
+    chirp.append((px, ZY - 56 - 12 * math.sin(phase)))
     phase += 2 * math.pi * 2 / lam
     px += 2
 o.append(f'<path class="c" d="{poly(chirp)}" stroke="url(#rb)" stroke-width="2"/>')
-o.append(f'<text x="{ZX0}" y="{ZY + 112}" class="ax" {MONO} font-size="13" fill="#ef4444">700 nm</text>'
-         f'<text x="{ZX1}" y="{ZY + 112}" text-anchor="end" class="ax" {MONO} font-size="13" fill="#8b5cf6">400 nm</text>')
+o.append(f'<text x="{ZX0 - 14}" y="{ZY + 5}" text-anchor="end" class="ax" {MONO} font-size="13" fill="#ef4444">700 nm</text>'
+         f'<text x="{ZX1 + 14}" y="{ZY + 5}" class="ax" {MONO} font-size="13" fill="#8b5cf6">400 nm</text>')
 
 # energy direction
-o.append(f'<text x="{X0}" y="{ZY + 160}" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">← longer waves · lower energy</text>'
-         f'<text x="{X1}" y="{ZY + 160}" text-anchor="end" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">shorter waves · higher energy →</text>')
+o.append(f'<text x="{X0}" y="628" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">← longer waves · lower energy</text>'
+         f'<text x="{X1}" y="628" text-anchor="end" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">shorter waves · higher energy →</text>')
 
 defs.append("</defs>")
 write_svg(sys.argv[1], "Animated electromagnetic spectrum from radio waves to gamma rays, with wavelengths, frequencies and the visible colours", defs, css, o)
