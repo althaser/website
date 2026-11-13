@@ -1,0 +1,15 @@
+{{- /* Numbered figure around an image or video: pass "page", "media" (the element's HTML) and an optional "caption". */ -}}
+{{ $count := .page.Scratch.Get "figure_count" | default 1 }}
+{{ .page.Scratch.Set "figure_count" (add $count 1) }}
+
+<figure
+  id="figure-{{- $count -}}"
+  class="mt-4 pt-2 text-center flex flex-col justify-center items-center"
+>
+  {{ .media | safeHTML }}
+  {{ with .caption }}
+  <figcaption class="mt-2 text-sm">
+    Figure {{ $count }}: <em>{{ . }}</em>
+  </figcaption>
+  {{ end }}
+</figure>

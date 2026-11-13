@@ -1,20 +1,3 @@
-{{ $count := .Page.Scratch.Get "figure_count" | default 1 }}
-{{ .Page.Scratch.Set "figure_count" (add $count 1) }}
-
-<figure
-  id="figure-{{- $count -}}"
-  class="mt-4 pt-2 text-center flex flex-col justify-center items-center"
->
-  <img
-    class="content-figure-image"
-    src="{{ (.Get `src`) }}"
-    alt="{{ .Get `alt` | default (.Get `caption`) | default `Figure image` }}"
-    loading="lazy"
-    decoding="async"
-  />
-  {{ if .Get "caption" }}
-  <figcaption class="mt-2 text-sm">
-    Figure {{ $count }}: <em>{{ .Get `caption` }}</em>
-  </figcaption>
-  {{ end }}
-</figure>
+{{ $media := printf `<img class="content-figure-image" src="%s" alt="%s" loading="lazy" decoding="async" />`
+  (.Get "src") (.Get "alt" | default (.Get "caption") | default "Figure image" | htmlEscape) }}
+{{ partial "figure-frame.html" (dict "page" .Page "media" $media "caption" (.Get "caption")) }}
