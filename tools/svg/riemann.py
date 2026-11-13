@@ -91,7 +91,7 @@ css = [
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     f".t{{stroke-width:3;stroke-linecap:butt;animation:tr {T}s linear infinite}}",
     f".f{{animation:fl {T}s infinite}}",
-    "@media (max-width:520px){.ti{font-size:30px}.ax{font-size:22px}.ct{font-size:24px}.zv{display:none}}",
+    "@media (max-width:520px){.ti{font-size:34px}.ax{font-size:22px}.ct{font-size:24px}.zv{display:none}}",
 ] + base_css()
 
 ys = [sy(0), sy(TMAX)]
@@ -114,14 +114,14 @@ o.append(f'<line x1="{SX0 - 20}" y1="{SY0}" x2="{SX1 + 20}" y2="{SY0}" stroke="{
 for x, label in ((SX0, "0"), (LX, "½"), (SX1, "1")):
     o.append(f'<text x="{x}" y="{SY0 + 22}" text-anchor="middle" class="ax" {MONO} font-size="14" fill="{STAR}" fill-opacity=".7">{label}</text>')
 o.append(f'<line x1="{LX}" y1="{SY0}" x2="{LX}" y2="{SY1 - 10}" stroke="url(#cl)" stroke-width="2"/>')
-o.append(f'<text x="{LX}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">Re(s) = ½</text>')
+o.append(f'<text x="{LX}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">Re(s) = ½</text>')
 o.append(f'<g class="mv" style="animation:sc {T}s linear infinite"><line x1="{SX0 - 4}" y1="{SY0}" x2="{SX1 + 4}" y2="{SY0}" stroke="#fff" stroke-opacity=".55"/>'
          f'<circle cx="{LX}" cy="{SY0}" r="16" fill="url(#hl)"/><circle cx="{LX}" cy="{SY0}" r="3.5" fill="#fff"/></g>')
 
 # the curve t -> zeta(1/2 + it): a faint full trace, a comet trail and the moving point
 o.append(f'<line x1="{ZOX - 1.75 * ZS:.0f}" y1="{ZOY}" x2="{ZOX + 3.8 * ZS:.0f}" y2="{ZOY}" stroke="{STAR}" stroke-opacity=".3"/>'
          f'<line x1="{ZOX}" y1="{ZOY - 2.6 * ZS:.0f}" x2="{ZOX}" y2="{ZOY + 2.6 * ZS:.0f}" stroke="{STAR}" stroke-opacity=".3"/>')
-o.append(f'<text x="{ZOX + ZS:.0f}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">ζ(½ + it)</text>')
+o.append(f'<text x="{ZOX + ZS:.0f}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">ζ(½ + it)</text>')
 o.append(f'<text x="{ZOX + ZS + 2}" y="{ZOY + 18}" class="ax" {MONO} font-size="12" fill="{STAR}" fill-opacity=".5">1</text>'
          f'<line x1="{ZOX + ZS}" y1="{ZOY - 4}" x2="{ZOX + ZS}" y2="{ZOY + 4}" stroke="{STAR}" stroke-opacity=".4"/>')
 STEP, SUB = .05, 5
@@ -162,7 +162,7 @@ o.append(f'<circle cx="{ZOX}" cy="{ZOY}" r="3" fill="#fff"/>')
 # primes: Chebyshev psi(x) and the explicit formula sharpening as each zero is found
 o.append(f'<line x1="{PX0}" y1="{PY0}" x2="{PX1 + 10}" y2="{PY0}" stroke="{STAR}" stroke-opacity=".35"/>'
          f'<line x1="{PX0}" y1="{PY0}" x2="{PX0}" y2="{PY1 - 10}" stroke="{STAR}" stroke-opacity=".35"/>')
-o.append(f'<text x="{(PX0 + PX1) / 2}" y="{PY1 - 34}" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">ψ(x) from the zeros</text>')
+o.append(f'<text x="{(PX0 + PX1) / 2}" y="{PY1 - 44}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">ψ(x) from the zeros</text>')
 for x in range(10, PXMAX + 1, 10):
     o.append(f'<text x="{px(x):.1f}" y="{PY0 + 22}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{STAR}" fill-opacity=".5">{x}</text>')
 for p in (n for n in range(2, PXMAX) if all(n % d for d in range(2, n))):
