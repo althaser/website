@@ -19,3 +19,6 @@
 - id: quantum
   label: Quantum
   alt: Animated quantum circuit
+- id: riemann
+  label: Riemann
+  alt: Animated Riemann zeta function zeros on the critical line
