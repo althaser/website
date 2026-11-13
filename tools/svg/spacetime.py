@@ -74,7 +74,7 @@ defs = ["<defs>", *DEFS,
         f'<mask id="cm" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect x="0" y="110" width="440" height="{HY + 250 - 110}" fill="url(#vf)"/></mask>',
         "</defs>"]
 
-o = [nebula((330, 360), (820, 340), (360, 420), 290)]
+o = [nebula((350, 360), (820, 340), (340, 370), 290)]
 o.extend(stars(90))
 
 # the curved spacetime sheet

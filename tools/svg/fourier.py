@@ -65,7 +65,7 @@ css = [
     "@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.ax{font-size:22px}}",
 ] + base_css()
 defs = ["<defs>", *DEFS, "</defs>"]
-o = [nebula((296, 395), (836, 350), (380, 360), 280)]
+o = [nebula((330, 390), (836, 350), (320, 360), 280)]
 o.extend(stars(90))
 
 # target shape, faint
