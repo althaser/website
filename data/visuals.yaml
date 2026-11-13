@@ -63,3 +63,8 @@
   alt: Animated electromagnetic spectrum from radio waves to gamma rays, with wavelengths, frequencies and the visible colours
   group: science
   caption: "From radio to gamma rays, every kind of light travels at the same speed; shorter waves mean higher frequency and more energy, and our eyes see only a thin slice."
+- id: milkyway
+  label: MilkyWay
+  alt: Animated Milky Way seen from above, with its spiral arms, central bar and the Sun's position
+  group: science
+  caption: "Our galaxy is a barred spiral about 100 000 light-years across; the Sun sits on a small spur between two arms, 26 000 light-years from the centre, and takes 230 million years to go round once."
