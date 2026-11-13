@@ -4,9 +4,11 @@
     <h1 class="mt-1 mb-0 {{ if eq .Kind `term` }}italic{{ end }}">
         {{ if eq .Kind "term" }}#{{ .Data.Term }}{{ else }}{{- .Title -}}{{ end }}
     </h1>
+    {{ if .OutputFormats.Get "rss" }}
     <a class="icon-link not-prose" href="{{ `index.xml` | absURL }}" aria-label="RSS feed" title="RSS feed">
         <img src="{{ `images/links/rss.svg` | relURL }}" alt="blog-rss" class="size-[1.875rem]">
     </a>
+    {{ end }}
   </div>
   {{ $paginator := .Paginator 10 }}
   {{ range $key, $val := $paginator.Pages }}
