@@ -85,11 +85,15 @@ DEFS = [
 ]
 
 
-def base_css(hidden=".mv"):
-    """Twinkle keyframes plus the reduced-motion rule; `hidden` lists elements to hide when motion is reduced."""
+def base_css(hidden=".mv", shown=None):
+    """Twinkle keyframes plus the reduced-motion rule: `hidden` elements disappear and `shown` ones (a still stand-in) appear."""
     extra = f"{hidden}{{opacity:0}}" if hidden else ""
+    still = [f"{shown}{{display:none}}"] if shown else []
+    if shown:
+        extra += f"{shown}{{display:inline}}"
     return [
         "@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}",
+        *still,
         f"@media (prefers-reduced-motion:reduce){{*{{animation:none!important}}{extra}}}",
     ]
 

@@ -28,8 +28,7 @@ css = [
     "@keyframes rg{0%{transform:scale(.02);opacity:.9}100%{transform:scale(1);opacity:0}}",
     ".w{fill:none;stroke-width:1.6;transform-box:view-box}",
     mobile(".ax{font-size:24px}"),
-    ".st{display:none}@media (prefers-reduced-motion:reduce){.st{display:inline}}",
-] + base_css()
+] + base_css(shown=".st")
 defs = ["<defs>", *DEFS,
         '<radialGradient id="ea" cx=".38" cy=".35"><stop offset="0" stop-color="#7dd3fc"/><stop offset=".55" stop-color="#2563eb"/><stop offset="1" stop-color="#1e1b4b"/></radialGradient>',
         '<radialGradient id="mo" cx=".38" cy=".35"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#64748b"/></radialGradient>',
