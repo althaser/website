@@ -58,3 +58,8 @@
   alt: Animated light crossing from the Earth to the Moon, interfering through a double slit and ejecting electrons from a metal
   group: science
   caption: "Light covers the 384 400 km to the Moon in 1.28 s, interferes with itself like a wave through two slits, and arrives in packets of energy E = hf that knock electrons out of a metal."
+- id: spectrum
+  label: Spectrum
+  alt: Animated electromagnetic spectrum from radio waves to gamma rays, with wavelengths, frequencies and the visible colours
+  group: science
+  caption: "From radio to gamma rays, every kind of light travels at the same speed; shorter waves mean higher frequency and more energy, and our eyes see only a thin slice."
