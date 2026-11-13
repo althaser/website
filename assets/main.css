@@ -494,16 +494,28 @@
     @apply w-[1em];
   }
   .tabs {
-    @apply flex flex-wrap gap-1 border-b border-gray-300 pb-1 dark:border-gray-700;
+    @apply -mx-4 flex gap-5 overflow-x-auto border-b border-gray-300 px-4 pt-1 pb-2 [scrollbar-width:none] mask-x-from-[calc(100%-1rem)] lg:mx-0 lg:flex-col lg:gap-1 lg:overflow-visible lg:px-0 lg:pt-0 lg:pb-1 lg:mask-none dark:border-gray-700;
+  }
+  .tab-group {
+    @apply flex shrink-0 items-center gap-1 lg:flex-wrap;
+  }
+  .tab-group:last-child {
+    @apply pr-4 lg:pr-0;
+  }
+  .tab-group-label {
+    @apply mr-1 text-xs font-semibold tracking-wider whitespace-nowrap text-gray-500 uppercase lg:w-32 lg:shrink-0 dark:text-gray-400;
   }
   .tab {
-    @apply cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold text-link hover:highlight dark:text-link-dark;
+    @apply shrink-0 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-link hover:highlight dark:text-link-dark;
   }
   .tab[aria-selected="true"] {
     @apply current;
   }
   .tab-image {
-    @apply mx-auto mt-6 mb-2 h-auto w-full max-w-3xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
+    @apply mx-auto mt-6 mb-2 h-auto w-full max-w-5xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
+  }
+  .tab-caption {
+    @apply mx-auto mt-2 mb-0 max-w-3xl text-center text-sm text-gray-600 dark:text-gray-400;
   }
   .terminal-progress {
     @apply mt-2 flex items-center gap-3;

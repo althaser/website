@@ -1,15 +1,27 @@
 {{ define "main" }}
-{{ $demos := sort hugo.Data.visuals "label" }}
+{{ $groups := slice (dict "id" "computing" "label" "Computing") (dict "id" "science" "label" "Math & Physics") }}
+{{ $demos := slice }}
+{{ range $groups }}
+{{ $demos = $demos | append (sort (where hugo.Data.visuals "group" .id) "label") }}
+{{ end }}
 <div class="page-shell prose dark:prose-invert max-w-none">
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
   <div class="tabs not-prose" role="tablist" aria-label="Visuals" data-tabs data-tabs-global>
-    {{ range $index, $demo := $demos }}
-    <button type="button" class="tab" role="tab" id="tab-{{ .id }}" aria-controls="panel-{{ .id }}" aria-selected="{{ eq $index 0 }}"{{ if $index }} tabindex="-1"{{ end }} data-tab="{{ .id }}">{{ .label }}</button>
+    {{ $index := 0 }}
+    {{ range $groups }}
+    <div class="tab-group" role="presentation">
+      <span class="tab-group-label" aria-hidden="true">{{ .label }}</span>
+      {{ range sort (where hugo.Data.visuals "group" .id) "label" }}
+      <button type="button" class="tab" role="tab" id="tab-{{ .id }}" aria-controls="panel-{{ .id }}" aria-selected="{{ eq $index 0 }}"{{ if $index }} tabindex="-1"{{ end }} data-tab="{{ .id }}">{{ .label }}</button>
+      {{ $index = add $index 1 }}
+      {{ end }}
+    </div>
     {{ end }}
   </div>
   {{ range $index, $demo := $demos }}
   <div id="panel-{{ .id }}" class="tab-panel" role="tabpanel" aria-labelledby="tab-{{ .id }}"{{ if $index }} hidden{{ end }}>
     <img src="{{ printf `images/%s.svg` .id | relURL }}" alt="{{ .alt }}" width="1200" height="700"{{ if $index }} loading="lazy"{{ end }} class="tab-image not-prose">
+    <p class="tab-caption">{{ .caption }}</p>
   </div>
   {{ end }}
   <script>

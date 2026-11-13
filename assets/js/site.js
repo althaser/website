@@ -1505,7 +1505,16 @@ const initializeTabs = () => {
       });
 
       if (list.contains(document.activeElement)) {
-        tab.focus();
+        tab.focus({ preventScroll: true });
+      }
+      reveal(tab);
+    };
+    let smooth = false;
+    const reveal = (tab) => {
+      if (list.scrollWidth > list.clientWidth) {
+        const box = list.getBoundingClientRect();
+        const own = tab.getBoundingClientRect();
+        list.scrollBy({ left: own.left - box.left - (box.width - own.width) / 2, behavior: smooth ? "smooth" : "auto" });
       }
     };
 
@@ -1551,6 +1560,8 @@ const initializeTabs = () => {
     };
 
     fromHash();
+    document.fonts?.ready.then(() => reveal(tabs.find((tab) => tab.tabIndex === 0)));
+    smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.addEventListener("hashchange", fromHash);
 
     if (pageWide) {

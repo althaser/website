@@ -1,33 +1,55 @@
 - id: blockchain
   label: Blockchain
   alt: Animated blockchain processing
+  group: computing
+  caption: "Peers gossip transactions into a Merkle tree, miners try nonces until the hash fits, and the new block joins the chain."
 - id: diffusion
   label: Diffusion
   alt: Animated diffusion model generating an image
+  group: computing
+  caption: "Starting from pure noise, every denoising step reveals a little more, from coarse blocks to a sharp image."
 - id: gpu
   label: GPU
   alt: Animated GPU parallel computing
+  group: computing
+  caption: "Data streams over PCIe and from HBM into thousands of cores working in parallel to fill the output matrix C = A × B."
 - id: kubernetes
   label: Kubernetes
   alt: Animated Kubernetes cluster
+  group: computing
+  caption: "The control plane schedules pods onto nodes, heartbeats keep it informed and the ingress routes traffic to them."
 - id: llm
   label: LLM
   alt: Animated transformer language model
+  group: computing
+  caption: "Each token flows through attention and feed-forward layers, the softmax picks the next one and it joins the sequence."
 - id: neural
   label: NeuralNetwork
   alt: Animated neural network
+  group: computing
+  caption: "A forward pass makes a prediction, backpropagation sends the error back, and the right answer grows more confident every epoch."
 - id: quantum
   label: Quantum
   alt: Animated quantum circuit
+  group: computing
+  caption: "Qubits pass through gates and become entangled, then each measurement collapses them into bits that build up a histogram."
 - id: riemann
   label: Riemann
   alt: Animated Riemann zeta function zeros on the critical line
+  group: science
+  caption: "Every zero of ζ on the critical line Re(s) = ½ adds a wave that sharpens the count of the prime numbers."
 - id: spacetime
   label: SpaceTime
   alt: Animated curved spacetime with an orbiting planet, bent light and its worldline
+  group: science
+  caption: "Mass curves spacetime: a planet orbits inside the well, light bends past the star and every object follows its worldline."
 - id: fourier
   label: Fourier
   alt: Animated Fourier series drawing a shape with epicycles, its spectrum and partial reconstructions
+  group: science
+  caption: "Spinning circles, one per frequency, add up to draw any closed shape, and a handful of the strongest already gets close."
 - id: solarsystem
   label: SolarSystem
   alt: Animated solar system moving through space, the planets tracing helices around the Sun's path
+  group: science
+  caption: "As the Sun travels through the galaxy, each planet traces a helix around its path."
