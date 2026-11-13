@@ -37,6 +37,7 @@
 <circle cx="564" cy="38" r="1" fill="#e0e7ff" opacity="0.21"/>
 <circle cx="379" cy="656" r="0.7" fill="#e0e7ff" opacity="0.54"/>
 <circle cx="120" cy="146" r="0.7" fill="#e0e7ff" opacity="0.28"/>
+<g transform="translate(600 350) scale(1.1) translate(-600 -327.5)">
 <rect x="446.0" y="50" width="308" height="68" rx="8" fill="#0b1023" fill-opacity=".6" stroke="#818cf8" stroke-opacity=".35"/>
 <path d="M458 62h12v12h-12z" fill="#22d3ee" style="animation:oc 4.8s -4.8s infinite"/>
 <path d="M458 78h12v12h-12zM458 94h12v12h-12z" fill="#22d3ee" style="animation:oc 4.8s -4.7s infinite"/>
@@ -295,4 +296,5 @@
 <g class="sl"><rect x="564.0" y="367.0" width="72" height="16" rx="4" fill="#0d1330"/><text x="600.0" y="379.0" text-anchor="middle" font-family="Consolas,monospace" font-size="11" fill="#e0e7ff">L2 cache</text></g>
 <text x="384" y="203" class="sl" font-family="Consolas,monospace" font-size="12" fill="#c7d2fe" fill-opacity=".7">streaming multiprocessors</text>
 <text x="824" y="590" class="lb" font-family="Consolas,monospace" font-size="12" fill="#c7d2fe" fill-opacity=".7">PCIe</text>
+</g>
 </svg>

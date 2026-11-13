@@ -12,7 +12,7 @@
   label: GPU
   alt: Animated GPU parallel computing
   group: computing
-  caption: "Data streams over PCIe and from HBM into thousands of cores working in parallel to fill the output matrix C = A × B."
+  caption: "Data streams over PCIe and from VRAM into thousands of cores working in parallel to fill the output matrix C = A × B."
 - id: kubernetes
   label: Kubernetes
   alt: Animated Kubernetes cluster

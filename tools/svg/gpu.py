@@ -49,6 +49,7 @@ w = o.append
 
 w(nebula((460, 360), (770, 350), (400, 380), 270))
 o.extend(stars(90, (PX - 20, OUT_Y - 20, PX + PW + 20, PY + PH + 90)))
+BODY = len(o)
 
 # output matrix (C = A x B) filling above the chip
 w(f'<rect x="{OUT_X - 10}" y="{OUT_Y - 10}" width="{OUT_C * OUT_S + 20}" height="{OUT_R * OUT_S + 20}" rx="8" fill="#0b1023" fill-opacity=".6" stroke="#818cf8" stroke-opacity=".35"/>')
@@ -164,5 +165,9 @@ o.append(f'<g class="sl"><rect x="{DX + DW / 2 - 36}" y="{L2Y + 2:.1f}" width="7
          f'<text x="{DX + DW / 2}" y="{L2Y + L2H / 2 + 4:.1f}" text-anchor="middle" {MONO} font-size="11" fill="#e0e7ff">L2 cache</text></g>')
 o.append(f'<text x="{DX + 4}" y="{DY - 12}" class="sl" {LB}>streaming multiprocessors</text>')
 o.append(f'<text x="{ex1 + 14}" y="{PY + PH + 25}" class="lb" {LB}>PCIe</text>')
+
+# the drawing is laid out at 1:1 and then enlarged to fill the canvas, centred on it
+ZOOM, CY0 = 1.1, (OUT_Y - 10 + PY + PH + 40) / 2
+o[BODY:] = [f'<g transform="translate(600 350) scale({ZOOM}) translate(-600 {-CY0:.1f})">', *o[BODY:], "</g>"]
 
 write_svg(sys.argv[1], "Animated GPU parallel computing", defs, css + kf, o)
