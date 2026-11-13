@@ -57,7 +57,7 @@ css = [
     f"@keyframes hs{{to{{transform:translateY({PITCH}px)}}}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     ".gl{transform-box:fill-box;transform-origin:center}",
-    "@media (max-width:520px){.ti{font-size:30px}.sb{font-size:20px}.ax{font-size:26px}}",
+    "@media (max-width:520px){.ti{font-size:34px}.sb{font-size:23px}.ax{font-size:26px}}",
 ] + base_css()
 
 defs = ["<defs>", *DEFS,
@@ -134,14 +134,14 @@ for i in range(121):
 body = "".join(f"{100 * i / 120:.2f}%{{transform:translate({num(px)}px,{num(py)}px) scale({k:.3f})}}" for i, (px, py, k) in enumerate(pts))
 css.append(f"@keyframes pl{{{body}}}")
 o.append(f'<g transform="translate({num(pts[0][0])} {num(pts[0][1])}) scale({pts[0][2]:.3f})" style="animation:pl {P}s linear infinite"><circle r="22" fill="url(#hl)"/><circle r="9" fill="url(#pg)"/></g>')
-o.append(f'<text x="{CX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">G<tspan class="sb" font-size="13" dy="5">μν</tspan><tspan dy="-5"> = 8πG T</tspan><tspan class="sb" font-size="13" dy="5">μν</tspan></text>')
+o.append(f'<text x="{CX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">G<tspan class="sb" font-size="17" dy="6">μν</tspan><tspan dy="-6"> = 8πG T</tspan><tspan class="sb" font-size="17" dy="6">μν</tspan></text>')
 
 # worldline: the same orbit drawn in (x, y, t) is a helix inside the light cone
 def hp(phase, t):
     return HX + HR * math.cos(phase), HY - t + HR * SQ * -math.sin(phase)
 
 
-o.append(f'<text x="{HX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">worldline</text>')
+o.append(f'<text x="{HX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">worldline</text>')
 turns = range(-6, 6)
 back = "".join(poly(hp(math.pi * (2 * n + i / 30), PITCH * (2 * n + i / 30) / 2) for i in range(31)) for n in turns)
 front = "".join(poly(hp(math.pi * (2 * n + 1 + i / 30), PITCH * (2 * n + 1 + i / 30) / 2) for i in range(31)) for n in turns)
