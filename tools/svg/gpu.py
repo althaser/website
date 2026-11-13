@@ -1,7 +1,7 @@
 import random
 import sys
 
-from common import DEFS, base_css, nebula, stars, write_svg
+from common import DEFS, MONO, base_css, mobile, nebula, stars, write_svg
 
 random.seed(5)
 W = 2.4
@@ -16,7 +16,7 @@ L2Y = DY + GAP + 2 * (SMH + GAP)
 CORES = 4
 COLS = ["#22d3ee", "#38bdf8", "#6366f1", "#8b5cf6", "#a855f7", "#e879f9"]
 ORANGE = "#fb923c"
-HBW, HBH = 112, 62
+HBW, HBH = 112, 80
 HBX = [PX + 30, PX + PW - 30 - HBW]
 HBY = [DY + 16, DY + DH - 16 - HBH - 10]
 OUT_C, OUT_R, OUT_S = 18, 3, 16
@@ -25,8 +25,6 @@ OUT_X, OUT_Y = 600 - OUT_C * OUT_S / 2, 60
 defs = ["<defs>"]
 defs.extend(DEFS)
 defs.append('<linearGradient id="l2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity=".25"/><stop offset=".5" stop-color="#a5b4fc" stop-opacity=".6"/><stop offset="1" stop-color="#e879f9" stop-opacity=".25"/></linearGradient>')
-defs.append('<linearGradient id="hf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74" stop-opacity=".95"/><stop offset="1" stop-color="#9a3412" stop-opacity=".95"/></linearGradient>')
-defs.append('<linearGradient id="ht" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="1" stop-color="#fb923c"/></linearGradient>')
 defs.append('<linearGradient id="shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#e0e7ff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>')
 defs.append('<linearGradient id="sub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111a3f"/><stop offset="1" stop-color="#0a0f26"/></linearGradient>')
 defs.append(f'<clipPath id="l2c"><rect x="{DX + GAP + 4}" y="{L2Y:.1f}" width="{DW - 2 * GAP - 8}" height="{L2H}"/></clipPath>')
@@ -43,6 +41,7 @@ css = [
     "@keyframes glow{0%,100%{opacity:.35}50%{opacity:.8}}",
     "@keyframes sh{0%{transform:translateX(-200px)}100%{transform:translateX(" + str(DW + 200) + "px)}}",
     f"@keyframes oc{{0%,4%{{opacity:.08}}10%,78%{{opacity:1}}92%,100%{{opacity:.08}}}}",
+    mobile(".lb{font-size:22px}.sl{display:none}"),
 ] + base_css()
 kf = []
 o = []
@@ -76,7 +75,7 @@ w(f'<rect x="{PX + 14}" y="{PY + 14}" width="{PW - 28}" height="{PH - 28}" rx="1
 ex0, ex1 = 600 - 210, 600 + 210
 fingers = "".join(f"M{ex0 + 8 + i * 14:.0f} {PY + PH + 6}v26" for i in range(30))
 w(f'<rect x="{ex0}" y="{PY + PH}" width="{ex1 - ex0}" height="40" rx="6" fill="#0b1023" stroke="#818cf8" stroke-opacity=".4"/>')
-w(f'<path d="{fingers}" stroke="#fbbf24" stroke-opacity=".55" stroke-width="7"/>')
+w(f'<path d="{fingers}" stroke="#fbbf24" stroke-opacity=".45" stroke-width="4"/>')
 
 # PCIe lanes into the die
 lanes = []
@@ -92,23 +91,20 @@ w(f'<ellipse cx="{DX + DW / 2}" cy="{DY + DH / 2}" rx="{DW * .66}" ry="{DH * .66
 w(f'<rect x="{DX - 6}" y="{DY - 6}" width="{DW + 12}" height="{DH + 12}" rx="14" fill="none" stroke="#a5b4fc" stroke-opacity=".18"/>')
 w(f'<rect x="{DX}" y="{DY}" width="{DW}" height="{DH}" rx="10" fill="#0d1330" stroke="#a5b4fc" stroke-opacity=".6"/>')
 
-# HBM stacks (3D) with buses to the L2
+# VRAM (HBM) stacks, drawn like the other panels: a dark rounded box with an orange outline, a name and its stacked layers
 for side, hx in enumerate(HBX):
     for hy in HBY:
         layers = 4
-        lh = HBH / layers
-        sk = 10
-        top = f"M{hx} {hy}l{sk} -{sk}h{HBW}l-{sk} {sk}z"
-        right = f"M{hx + HBW} {hy}l{sk} -{sk}v{HBH}l-{sk} {sk}z"
-        w(f'<path d="{right}" fill="#7c2d12" fill-opacity=".9" stroke="#fdba74" stroke-opacity=".5"/>')
-        w(f'<path d="{top}" fill="url(#ht)" fill-opacity=".9" stroke="#fed7aa" stroke-opacity=".7"/>')
-        w(f'<rect x="{hx}" y="{hy}" width="{HBW}" height="{HBH}" fill="url(#hf)" stroke="#fdba74" stroke-opacity=".7"/>')
-        w(f'<path d="{"".join(f"M{hx} {hy + k * lh:.1f}h{HBW}" for k in range(1, layers))}" stroke="#431407" stroke-opacity=".8" stroke-width="1.5"/>')
+        top = hy + 22
+        lh = (HBH - 26) / layers
+        w(f'<rect x="{hx}" y="{hy}" width="{HBW}" height="{HBH}" rx="10" fill="#0b1023" fill-opacity=".9" stroke="{ORANGE}" stroke-opacity=".75" stroke-width="1.4"/>')
+        w(f'<text x="{hx + 12}" y="{hy + 15}" class="lb" {MONO} font-size="11" fill="#fed7aa" fill-opacity=".8">VRAM</text>')
+        w(f'<path d="{"".join(f"M{hx + 8} {top + k * lh:.1f}h{HBW - 16}" for k in range(layers + 1))}" stroke="{ORANGE}" stroke-opacity=".25"/>')
         for k in range(layers):
             for j in range(5):
-                w(f'<rect x="{hx + 10 + j * 20}" y="{hy + k * lh + lh / 2 - 2:.1f}" width="10" height="4" rx="1" fill="#fff7ed" style="animation:led {random.choice([.5, .7, .9])}s {-random.uniform(0, 1):.2f}s infinite"/>')
+                w(f'<rect x="{hx + 14 + j * 18}" y="{top + k * lh + lh / 2 - 2:.1f}" width="9" height="4" rx="1.5" fill="{ORANGE}" style="animation:led {random.choice([.5, .7, .9])}s {-random.uniform(0, 1):.2f}s infinite"/>')
         # bus from stack to die edge then to L2 entry
-        sx = hx + HBW + sk if side == 0 else hx
+        sx = hx + HBW if side == 0 else hx
         dx_edge = DX if side == 0 else DX + DW
         sy = hy + HBH / 2
         path = f"M{sx:.0f} {sy:.0f}H{(sx + dx_edge) / 2:.0f}V{L2Y + L2H / 2:.0f}H{dx_edge:.0f}"
@@ -159,5 +155,14 @@ for i in range(8):
     col = COLS[min(5, i * 6 // 8)]
     w(f'<path d="M{x:.0f} {DY - 6}L{tx:.0f} {OUT_Y + OUT_R * OUT_S + 10}" fill="none" stroke="{col}" stroke-opacity=".22" stroke-width="1.4"/>')
     w(f'<circle class="mv" cx="{x:.0f}" cy="{DY - 6}" r="2.8" fill="{col}" style="--x:{tx - x:.0f}px;--y:{OUT_Y + OUT_R * OUT_S + 10 - (DY - 6):.0f}px;animation:mv .9s ease-in {-random.uniform(0, .9):.2f}s infinite"/>')
+
+# labels
+LB = f'{MONO} font-size="12" fill="#c7d2fe" fill-opacity=".7"'
+o.append(f'<text x="{OUT_X - 18}" y="{OUT_Y + OUT_R * OUT_S / 2 + 4}" text-anchor="end" class="lb" {LB}>output</text>')
+o.append(f'<text x="{PX + 24}" y="{PY + PH - 22}" class="sl" {LB}>GPU package</text>')
+o.append(f'<g class="sl"><rect x="{DX + DW / 2 - 36}" y="{L2Y + 2:.1f}" width="72" height="{L2H - 4}" rx="4" fill="#0d1330"/>'
+         f'<text x="{DX + DW / 2}" y="{L2Y + L2H / 2 + 4:.1f}" text-anchor="middle" {MONO} font-size="11" fill="#e0e7ff">L2 cache</text></g>')
+o.append(f'<text x="{DX + 4}" y="{DY - 12}" class="sl" {LB}>streaming multiprocessors</text>')
+o.append(f'<text x="{ex1 + 14}" y="{PY + PH + 25}" class="lb" {LB}>PCIe</text>')
 
 write_svg(sys.argv[1], "Animated GPU parallel computing", defs, css + kf, o)
