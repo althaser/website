@@ -8,7 +8,7 @@ random.seed(17)
 X0, X1 = 70, 1130
 LMAX, LMIN = 4, -13
 WY, AMP = 322, 24
-AXY, FQY = 458, 526
+AXY, FQY = 526, 458
 V = 40.0
 ZX0, ZX1, ZY = 300, 900, 184
 
@@ -16,6 +16,9 @@ ZX0, ZX1, ZY = 300, 900, 184
 BANDS = [("radio", 4, 0, 120, "radio · TV"), ("microwave", 0, -3, 62, "Wi-Fi · ovens"), ("infrared", -3, -6.15, 32, "heat · remotes"),
          ("visible", -6.15, -6.4, 0, "our eyes"), ("ultraviolet", -6.4, -8, 16, "sunburn"), ("X-ray", -8, -11, 9, "medical scans"),
          ("gamma", -11, -13, 5, "nuclear decay")]
+# frequency range of each band, matching its wavelength limits above
+FREQ = {"radio": "30 kHz–300 MHz", "microwave": "300 MHz–300 GHz", "infrared": "300 GHz–430 THz", "visible": "430–750 THz",
+        "ultraviolet": "750 THz–30 PHz", "X-ray": "30 PHz–30 EHz", "gamma": "> 30 EHz"}
 RAINBOW = ["#ef4444", "#f97316", "#facc15", "#4ade80", "#22d3ee", "#3b82f6", "#8b5cf6"]
 
 
@@ -59,6 +62,7 @@ for n, (name, a, b, lam, example) in enumerate(BANDS):
     mid = (xa + xb) / 2
     o.append(f'<text x="{num(mid)}" y="{WY + AMP + 40}" text-anchor="middle" class="bn" {FONT} font-size="18" fill="{c}">{name}</text>')
     o.append(f'<text x="{num(mid)}" y="{WY + AMP + 60}" text-anchor="middle" class="ex" {MONO} font-size="12" fill="{STAR}" fill-opacity=".55">{example}</text>')
+    o.append(f'<text x="{num(mid)}" y="{WY + AMP + 78}" text-anchor="middle" class="ex" {MONO} font-size="12" fill="{c}" fill-opacity=".85">{FREQ[name]}</text>')
 
 # wavelength and frequency scales
 o.append(f'<line x1="{X0}" y1="{AXY}" x2="{X1}" y2="{AXY}" stroke="{STAR}" stroke-opacity=".35"/>'
@@ -70,6 +74,9 @@ for lg, wl, fq in TICKS:
              f'<line x1="{tx}" y1="{FQY - 5}" x2="{tx}" y2="{FQY + 5}" stroke="{STAR}" stroke-opacity=".5"/>'
              f'<text x="{tx}" y="{AXY + 22}" text-anchor="middle" class="ax" {MONO} font-size="13" fill="#fde68a" fill-opacity=".85">{wl}</text>'
              f'<text x="{tx}" y="{FQY + 22}" text-anchor="middle" class="ax" {MONO} font-size="13" fill="#a5f3fc" fill-opacity=".85">{fq}</text>')
+# the visible slice marked on both scales, just right of 1 µm
+for y in (AXY, FQY):
+    o.append(f'<rect x="{num(x(BANDS[3][1]))}" y="{y - 4}" width="{num(x(BANDS[3][2]) - x(BANDS[3][1]))}" height="8" rx="1" fill="url(#rb)"/>')
 o.append(f'<text x="{X0}" y="{AXY - 12}" class="ax" {MONO} font-size="13" fill="#fde68a" fill-opacity=".6">wavelength</text>'
          f'<text x="{X0}" y="{FQY - 12}" class="ax" {MONO} font-size="13" fill="#a5f3fc" fill-opacity=".6">frequency</text>')
 
@@ -86,8 +93,10 @@ while px <= ZX1:
     phase += 2 * math.pi * 2 / lam
     px += 2
 o.append(f'<path class="c" d="{poly(chirp)}" stroke="url(#rb)" stroke-width="2"/>')
-o.append(f'<text x="{ZX0 - 14}" y="{ZY + 5}" text-anchor="end" class="ax" {MONO} font-size="13" fill="#ef4444">700 nm</text>'
-         f'<text x="{ZX1 + 14}" y="{ZY + 5}" class="ax" {MONO} font-size="13" fill="#8b5cf6">400 nm</text>')
+o.append(f'<text x="{(ZX0 + ZX1) / 2}" y="{ZY + 52}" text-anchor="middle" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".75">{FREQ["visible"]}</text>')
+# the zoom's own scale sits inside the bar, so it is not read against the axes below
+o.append(f'<text x="{ZX0 + 12}" y="{ZY + 5}" class="ax" {MONO} font-size="13" font-weight="600" fill="#0b1023">700 nm</text>'
+         f'<text x="{ZX1 - 12}" y="{ZY + 5}" text-anchor="end" class="ax" {MONO} font-size="13" font-weight="600" fill="#0b1023">400 nm</text>')
 
 # energy direction
 o.append(f'<text x="{X0}" y="628" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">← longer waves · lower energy</text>'
