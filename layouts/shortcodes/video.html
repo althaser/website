@@ -1,0 +1,24 @@
+{{ $count := .Page.Scratch.Get "figure_count" | default 1 }}
+{{ .Page.Scratch.Set "figure_count" (add $count 1) }}
+
+<figure
+  id="figure-{{- $count -}}"
+  class="mt-4 pt-2 text-center flex flex-col justify-center items-center"
+>
+  <video
+    class="content-figure-image"
+    src="{{ .Get `src` }}"
+    {{ with .Get "poster" }}poster="{{ . }}"{{ end }}
+    aria-label="{{ .Get `alt` | default (.Get `caption`) | default `Video` }}"
+    controls
+    muted
+    loop
+    playsinline
+    preload="none"
+  ></video>
+  {{ if .Get "caption" }}
+  <figcaption class="mt-2 text-sm">
+    Figure {{ $count }}: <em>{{ .Get `caption` }}</em>
+  </figcaption>
+  {{ end }}
+</figure>
