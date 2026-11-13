@@ -16,7 +16,7 @@ MONO = 'font-family="Consolas,monospace"'
 SX0, SX1, SY0, SY1 = 120, 320, 620, 90
 LX = (SX0 + SX1) / 2
 ZOX, ZOY, ZS = 535, 365, 94
-PX0, PX1, PY0, PY1, PXMAX, PYMAX = 945, 1115, 470, 270, 40, 42
+PX0, PX1, PY0, PY1, PXMAX, PYMAX = 905, 1145, 513, 228, 40, 42
 BERN = [1 / 6, -1 / 30, 1 / 42, -1 / 30, 5 / 66, -691 / 2730, 7 / 6]
 
 
@@ -119,7 +119,7 @@ o.append(f'<g class="mv" style="animation:sc {T}s linear infinite"><line x1="{SX
          f'<circle cx="{LX}" cy="{SY0}" r="16" fill="url(#hl)"/><circle cx="{LX}" cy="{SY0}" r="3.5" fill="#fff"/></g>')
 
 # the curve t -> zeta(1/2 + it): a faint full trace, a comet trail and the moving point
-o.append(f'<line x1="{ZOX - 1.75 * ZS:.0f}" y1="{ZOY}" x2="{ZOX + 4 * ZS:.0f}" y2="{ZOY}" stroke="{STAR}" stroke-opacity=".3"/>'
+o.append(f'<line x1="{ZOX - 1.75 * ZS:.0f}" y1="{ZOY}" x2="{ZOX + 3.8 * ZS:.0f}" y2="{ZOY}" stroke="{STAR}" stroke-opacity=".3"/>'
          f'<line x1="{ZOX}" y1="{ZOY - 2.6 * ZS:.0f}" x2="{ZOX}" y2="{ZOY + 2.6 * ZS:.0f}" stroke="{STAR}" stroke-opacity=".3"/>')
 o.append(f'<text x="{ZOX + ZS:.0f}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="19" fill="#ede9fe">ζ(½ + it)</text>')
 o.append(f'<text x="{ZOX + ZS + 2}" y="{ZOY + 18}" class="ax" {MONO} font-size="12" fill="{STAR}" fill-opacity=".5">1</text>'
