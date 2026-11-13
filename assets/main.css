@@ -121,12 +121,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@utility highlight {
+@utility link-fill {
   @apply bg-link text-white dark:bg-link-dark dark:text-gray-900;
 }
 
 @utility current {
-  @apply highlight outline-2 outline-offset-2 outline-link dark:outline-link-dark;
+  @apply link-fill outline-2 outline-offset-2 outline-link dark:outline-link-dark;
 }
 
 @plugin "@tailwindcss/typography";
@@ -376,7 +376,7 @@
 @layer components {
   .pager-arrow,
   ul.pagination .page-link {
-    @apply inline-flex h-9 w-10 items-center justify-center rounded-lg sm:w-12 hover:no-underline! hover:highlight!;
+    @apply inline-flex h-9 w-10 items-center justify-center rounded-lg sm:w-12 hover:no-underline! hover:link-fill!;
   }
   ul.pagination {
     @apply flex flex-row justify-center list-none;
@@ -415,7 +415,7 @@
   }
   .nav-menu-item,
   .icon-link {
-    @apply p-2 rounded-lg hover:no-underline hover:highlight!;
+    @apply p-2 rounded-lg hover:no-underline hover:link-fill!;
   }
   .icon-link {
     @apply inline-flex items-center justify-center;
@@ -506,7 +506,7 @@
     @apply mr-1 text-xs font-semibold tracking-wider whitespace-nowrap text-gray-500 uppercase lg:w-32 lg:shrink-0 dark:text-gray-400;
   }
   .tab {
-    @apply shrink-0 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-link hover:highlight dark:text-link-dark;
+    @apply shrink-0 cursor-pointer rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-link hover:link-fill dark:text-link-dark;
   }
   .tab[aria-selected="true"] {
     @apply current;
