@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, STAR, base_css, nebula, palette, stars, write_svg
+from common import DEFS, MONO, PALETTE, STAR, base_css, nebula, palette, stars, write_svg
 
 random.seed(4)
 NQ = 8
@@ -103,7 +103,7 @@ for y in WY:
     o.append(f'<line x1="{cx}" y1="{y - 20}" x2="{cx}" y2="{y + 20}" stroke="{CYAN}" stroke-opacity=".2"/>')
     o.append(f'<g style="transform-origin:{cx}px {y}px;animation:sp {abs(sp):.1f}s linear infinite{direction}"><line x1="{cx}" y1="{y}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="#fff" stroke-width="1.6"/><circle cx="{ex:.1f}" cy="{ey:.1f}" r="3" fill="{CYAN}"/></g>')
     o.append(f'<circle cx="{cx}" cy="{y}" r="2" fill="#fff"/>')
-    o.append(f'<text x="{cx - 34}" y="{y + 5}" text-anchor="end" font-family="Consolas,monospace" font-size="14" fill="#67e8f9" fill-opacity=".85">|0</text><path d="M{cx - 33} {y - 7}l4 7-4 7" fill="none" stroke="#67e8f9" stroke-opacity=".85" stroke-width="1.3" stroke-linejoin="round"/>')
+    o.append(f'<text x="{cx - 34}" y="{y + 5}" text-anchor="end" {MONO} font-size="14" fill="#67e8f9" fill-opacity=".85">|0</text><path d="M{cx - 33} {y - 7}l4 7-4 7" fill="none" stroke="#67e8f9" stroke-opacity=".85" stroke-width="1.3" stroke-linejoin="round"/>')
 
 # measurement: the needle swings on collapse, one bit per shot, and a histogram of shots
 mx = X1 + 50
@@ -116,8 +116,8 @@ for q, y in enumerate(WY):
     bx = mx + 34
     p = random.choice([PER * 2, PER * 3, PER * 4])
     d = dl - random.randrange(4) * PER
-    o.append(f'<text x="{bx}" y="{y + 5}" text-anchor="middle" font-family="Consolas,monospace" font-size="14" fill="{ORANGE}" style="animation:bit {p}s steps(1) {d:.2f}s infinite">1</text>'
-             f'<text x="{bx}" y="{y + 5}" text-anchor="middle" font-family="Consolas,monospace" font-size="14" fill="#67e8f9" style="animation:bit {p}s steps(1) {d - p / 2:.2f}s infinite">0</text>')
+    o.append(f'<text x="{bx}" y="{y + 5}" text-anchor="middle" {MONO} font-size="14" fill="{ORANGE}" style="animation:bit {p}s steps(1) {d:.2f}s infinite">1</text>'
+             f'<text x="{bx}" y="{y + 5}" text-anchor="middle" {MONO} font-size="14" fill="#67e8f9" style="animation:bit {p}s steps(1) {d - p / 2:.2f}s infinite">0</text>')
     hx0, hw = bx + 18, 110
     shots = int(HT / PER)
     ones = 0

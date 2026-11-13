@@ -47,6 +47,14 @@ def poly(points, close=False):
     return "M" + " ".join(pt(x, y) for x, y in xy) + ("Z" if close else "")
 
 
+def motion(name, points):
+    """Keyframes that carry an element through (x, y) pairs or complex numbers at an even pace."""
+    xy = [(p.real, p.imag) if isinstance(p, complex) else p for p in points]
+    n = len(xy) - 1
+    body = "".join(f"{100 * i / n:.2f}%{{transform:translate({num(x)}px,{num(y)}px)}}" for i, (x, y) in enumerate(xy))
+    return f"@keyframes {name}{{{body}}}"
+
+
 def title(x, y, body):
     """Panel title; `body` may hold sub() spans."""
     return f'<text x="{x}" y="{y}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">{body}</text>'

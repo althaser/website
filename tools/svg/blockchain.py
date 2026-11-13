@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, base_css, nebula, stars, write_svg
+from common import DEFS, MONO, PALETTE, base_css, nebula, stars, write_svg
 
 random.seed(9)
 P = 4.0
@@ -131,9 +131,9 @@ dur = 0.6
 css.append(f"@keyframes hs{{0%{{opacity:1}}{100 / len(hashes):.2f}%,100%{{opacity:0}}}}")
 kf("hm", f"0%,{pc(TR)}{{opacity:1}}{pc(TR + .01)},{pc(TOFF + .3)}{{opacity:0}}{pc(TOFF + .31)},100%{{opacity:1}}")
 kf("hf", f"0%,{pc(TR)}{{opacity:0}}{pc(TR + .01)},{pc(TOFF + .3)}{{opacity:1}}{pc(TOFF + .31)},100%{{opacity:0}}")
-attempts = "".join(f'<text x="{PX}" y="{PY - PH / 2 - 14}" text-anchor="middle" font-family="Consolas,monospace" font-size="13" fill="#a78bfa" style="animation:hs {dur}s steps(1) {-k * dur / len(hashes) - 0.03:.3f}s infinite">{h}</text>' for k, h in enumerate(hashes))
+attempts = "".join(f'<text x="{PX}" y="{PY - PH / 2 - 14}" text-anchor="middle" {MONO} font-size="13" fill="#a78bfa" style="animation:hs {dur}s steps(1) {-k * dur / len(hashes) - 0.03:.3f}s infinite">{h}</text>' for k, h in enumerate(hashes))
 o.append(f'<g style="animation:hm {P}s infinite">{attempts}</g>')
-o.append(f'<text x="{PX}" y="{PY - PH / 2 - 14}" text-anchor="middle" font-family="Consolas,monospace" font-size="13" fill="{GREEN}" style="animation:hf {P}s infinite">0x0000…a7f3 ✓</text>')
+o.append(f'<text x="{PX}" y="{PY - PH / 2 - 14}" text-anchor="middle" {MONO} font-size="13" fill="{GREEN}" style="animation:hf {P}s infinite">0x0000…a7f3 ✓</text>')
 
 
 def cube(cx, cy, s=34):

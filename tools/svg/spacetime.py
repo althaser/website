@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, PALETTE, STAR, back, base_css, mobile, nebula, num, poly, stars, sub, title, write_svg
+from common import DEFS, FONT, PALETTE, STAR, back, base_css, mobile, motion, nebula, num, poly, stars, sub, title, write_svg
 
 random.seed(7)
 CYAN, ORANGE = PALETTE[0], PALETTE[-1]
@@ -34,12 +34,6 @@ def proj(x, y, z=None):
     fwd = y * math.cos(ELEV) - z * math.sin(ELEV)
     k = F / (D + fwd)
     return CX + x * k, CY - up * k, k
-
-
-def frames(points, period, name, extra=""):
-    n = len(points) - 1
-    body = "".join(f"{100 * i / n:.2f}%{{transform:translate({num(x)}px,{num(y)}px)}}" for i, (x, y) in enumerate(points))
-    return f"@keyframes {name}{{{body}}}" + extra
 
 
 css = [
@@ -161,7 +155,7 @@ cone = (f'<path class="c" d="M{-H} {-H}L0 0L{H} {-H}M{-H} {H}L0 0L{H} {H}" strok
         f'<ellipse cy="{-H}" rx="{H}" ry="{H * SQ:.1f}" fill="#fde68a" fill-opacity=".05" stroke="#fde68a" stroke-opacity=".4"/>'
         f'<ellipse cy="{H}" rx="{H}" ry="{H * SQ:.1f}" fill="none" stroke="#fde68a" stroke-opacity=".25" stroke-dasharray="3 5"/>')
 now = [hp(2 * math.pi * i / 120, 0) for i in range(121)]
-css.append(frames(now, P, "wn"))
+css.append(motion("wn", now))
 labels = (f'<text x="{H + 10}" y="{-H + 5}" class="ax" {FONT} font-style="italic" font-size="15" fill="#fde68a" fill-opacity=".8">future</text>'
           f'<text x="{H + 10}" y="{H + 5}" class="ax" {FONT} font-style="italic" font-size="15" fill="#fde68a" fill-opacity=".6">past</text>')
 o.append(f'<g transform="translate({num(now[0][0])} {num(now[0][1])})" style="animation:wn {P}s linear infinite">{cone}{labels}<circle r="16" fill="url(#hl)"/><circle r="5" fill="#a5f3fc"/></g>')

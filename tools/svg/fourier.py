@@ -3,7 +3,7 @@ import math
 import random
 import sys
 
-from common import DEFS, MONO, STAR, back, base_css, mobile, nebula, num, palette, poly, stars, sub, title, write_svg
+from common import DEFS, MONO, STAR, back, base_css, mobile, motion, nebula, num, palette, poly, stars, sub, title, write_svg
 
 random.seed(5)
 P = 14.0
@@ -108,8 +108,7 @@ for n, terms in enumerate(THUMBS):
     shape = [series(i / 240, terms) * TS + complex(cx, TY) for i in range(241)]
     c = palette(n / (len(THUMBS) - 1))
     o.append(f'<path class="c" d="{poly(shape)}" stroke="{c}" stroke-width="1.6"/>')
-    body = "".join(f"{100 * i / 60:.2f}%{{transform:translate({num(shape[i * 4].real)}px,{num(shape[i * 4].imag)}px)}}" for i in range(61))
-    css.append(f"@keyframes m{n}{{{body}}}")
+    css.append(motion(f"m{n}", shape[::4]))
     o.append(f'<g class="mv" style="animation:m{n} {P}s linear infinite"><circle r="7" fill="url(#hl)"/><circle r="2.2" fill="#fff"/></g>')
     o.append(f'<text x="{num(cx)}" y="{TY + 72}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{c}">{terms}</text>')
 
