@@ -90,3 +90,23 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # main and tags only, never forced and never deleted, so GitLab keeps history even if GitHub's is rewritten
+  backup:
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Push main and tags to GitLab
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: |
+          remote="https://oauth2:${GITLAB_TOKEN}@gitlab.com/althaser/website.git"
+          git push "${remote}" refs/remotes/origin/main:refs/heads/main
+          git push "${remote}" --tags
