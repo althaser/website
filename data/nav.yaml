@@ -15,6 +15,9 @@
 - title: AI
   section: ai
   icon: solid/robot
+- title: Security
+  section: security
+  icon: solid/shield
 - title: Search
   section: search
   icon: solid/magnifying-glass
