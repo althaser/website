@@ -53,3 +53,8 @@
   alt: Animated solar system moving through space, the planets tracing helices around the Sun's path
   group: science
   caption: "As the Sun travels through the galaxy, each planet traces a helix around its path."
+- id: light
+  label: Light
+  alt: Animated light crossing from the Earth to the Moon, interfering through a double slit and ejecting electrons from a metal
+  group: science
+  caption: "Light covers the 384 400 km to the Moon in 1.28 s, interferes with itself like a wave through two slits, and arrives in packets of energy E = hf that knock electrons out of a metal."
