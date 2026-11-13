@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, STAR, base_css, nebula, palette, save, stars, svg_open
+from common import DEFS, FONT, MONO, PALETTE, STAR, base_css, mobile, nebula, num, palette, poly, stars, title, write_svg
 
 random.seed(11)
 T = 26.0
@@ -10,8 +10,6 @@ SCAN = .92
 TMAX = 52.0
 ZEROS = [14.134725, 21.022040, 25.010858, 30.424876, 32.935062, 37.586178, 40.918719, 43.327073, 48.005151, 49.773832]
 CYAN, ORANGE = PALETTE[0], PALETTE[-1]
-FONT = 'font-family="Cambria Math,Georgia,Times New Roman,serif"'
-MONO = 'font-family="Consolas,monospace"'
 
 SX0, SX1, SY0, SY1 = 92, 292, 620, 90
 LX = (SX0 + SX1) / 2
@@ -56,14 +54,6 @@ def py(v):
     return PY0 - (PY0 - PY1) * v / PYMAX
 
 
-def num(v):
-    return f"{v:.1f}".removesuffix(".0")
-
-
-def poly(points):
-    return "M" + " ".join(f"{num(x)} {num(y)}" for x, y in points)
-
-
 def psi_approx(x, k):
     """Explicit formula for Chebyshev's psi(x) using the first k pairs of zeros."""
     v = x - math.log(2 * math.pi) - .5 * math.log(1 - x ** -2)
@@ -91,7 +81,7 @@ css = [
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     f".t{{stroke-width:3;stroke-linecap:butt;animation:tr {T}s linear infinite}}",
     f".f{{animation:fl {T}s infinite}}",
-    "@media (max-width:520px){.ti{font-size:34px}.ax{font-size:22px}.ct{font-size:24px}.zv{display:none}.ri{font-size:30px}}",
+    mobile(".ax{font-size:22px}.ct{font-size:24px}.zv{display:none}.ri{font-size:30px}"),
 ] + base_css()
 
 ys = [sy(0), sy(TMAX)]
@@ -114,14 +104,14 @@ o.append(f'<line x1="{SX0 - 20}" y1="{SY0}" x2="{SX1 + 20}" y2="{SY0}" stroke="{
 for x, label in ((SX0, "0"), (LX, "½"), (SX1, "1")):
     o.append(f'<text x="{x}" y="{SY0 + 22}" text-anchor="middle" class="ax" {MONO} font-size="14" fill="{STAR}" fill-opacity=".7">{label}</text>')
 o.append(f'<line x1="{LX}" y1="{SY0}" x2="{LX}" y2="{SY1 - 10}" stroke="url(#cl)" stroke-width="2"/>')
-o.append(f'<text x="{LX}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">Re(s) = ½</text>')
+o.append(title(LX, SY1 - 24, "Re(s) = ½"))
 o.append(f'<g class="mv" style="animation:sc {T}s linear infinite"><line x1="{SX0 - 4}" y1="{SY0}" x2="{SX1 + 4}" y2="{SY0}" stroke="#fff" stroke-opacity=".55"/>'
          f'<circle cx="{LX}" cy="{SY0}" r="16" fill="url(#hl)"/><circle cx="{LX}" cy="{SY0}" r="3.5" fill="#fff"/></g>')
 
 # the curve t -> zeta(1/2 + it): a faint full trace, a comet trail and the moving point
 o.append(f'<line x1="{ZOX - 1.75 * ZS:.0f}" y1="{ZOY}" x2="{ZOX + 3.8 * ZS:.0f}" y2="{ZOY}" stroke="{STAR}" stroke-opacity=".3"/>'
          f'<line x1="{ZOX}" y1="{ZOY - 2.6 * ZS:.0f}" x2="{ZOX}" y2="{ZOY + 2.6 * ZS:.0f}" stroke="{STAR}" stroke-opacity=".3"/>')
-o.append(f'<text x="{ZOX + ZS:.0f}" y="{SY1 - 24}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">ζ(s) = ζ(½ + ti)</text>')
+o.append(title(f"{ZOX + ZS:.0f}", SY1 - 24, "ζ(s) = ζ(½ + ti)"))
 o.append(f'<text x="{ZOX + 3.8 * ZS - 4:.0f}" y="{ZOY - 9}" text-anchor="end" class="ri" {FONT} font-style="italic" font-size="17" fill="{STAR}" fill-opacity=".75">Re</text>'
          f'<text x="{ZOX + 9}" y="{ZOY - 2.6 * ZS + 14:.0f}" class="ri" {FONT} font-style="italic" font-size="17" fill="{STAR}" fill-opacity=".75">Im</text>')
 o.append(f'<text x="{ZOX + ZS}" y="{ZOY + 21}" text-anchor="middle" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">1</text>'
@@ -166,7 +156,7 @@ o.append(f'<line x1="{PX0}" y1="{PY0}" x2="{PX1 + 10}" y2="{PY0}" stroke="{STAR}
          f'<line x1="{PX0}" y1="{PY0}" x2="{PX0}" y2="{PY1 - 10}" stroke="{STAR}" stroke-opacity=".35"/>')
 o.append(f'<text x="{PX1 + 16}" y="{PY0 + 5}" class="ri" {FONT} font-style="italic" font-size="17" fill="{STAR}" fill-opacity=".75">x</text>'
          f'<text x="{PX0 - 8}" y="{PY1 + 2}" text-anchor="end" class="ri" {FONT} font-style="italic" font-size="17" fill="{STAR}" fill-opacity=".75">ψ</text>')
-o.append(f'<text x="{(PX0 + PX1) / 2}" y="{PY1 - 44}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">ψ(x) from the zeros</text>')
+o.append(title((PX0 + PX1) / 2, PY1 - 44, "ψ(x) from the zeros"))
 for x in range(10, PXMAX + 1, 10):
     o.append(f'<text x="{px(x):.1f}" y="{PY0 + 22}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{STAR}" fill-opacity=".5">{x}</text>')
 for p in (n for n in range(2, PXMAX) if all(n % d for d in range(2, n))):
@@ -195,4 +185,4 @@ for k in range(len(ZEROS) + 1):
     o.append(f'<g class="mv" style="animation:a{k} {T}s linear infinite"><path class="c" d="{d}" stroke="{c}" stroke-width="2" clip-path="url(#pc)"/>'
              f'<text x="{PX0 + 8}" y="{PY1 + 6}" class="ct" {MONO} font-size="13" fill="{c}">{k} zero{"" if k == 1 else "s"}</text></g>')
 
-save(sys.argv[1], [svg_open("Animated Riemann zeta zeros"), *defs, "<style>" + "".join(css) + "</style>", *o, "</svg>"])
+write_svg(sys.argv[1], "Animated Riemann zeta zeros", defs, css, o)

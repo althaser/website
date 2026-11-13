@@ -2,11 +2,9 @@ import math
 import random
 import sys
 
-from common import DEFS, STAR, base_css, nebula, save, stars, svg_open
+from common import DEFS, MONO, base_css, mobile, nebula, num, pt, stars, title, write_svg
 
 random.seed(9)
-FONT = 'font-family="Cambria Math,Georgia,Times New Roman,serif"'
-MONO = 'font-family="Consolas,monospace"'
 SX, SY = 800, 365
 V = 26.0
 TAIL = 760
@@ -22,24 +20,16 @@ PLANETS = [("Mercury", .39, .24, "#c9c1b6", 2.8), ("Venus", .72, .62, "#f2cf86",
 DX, DY = D
 
 
-def num(v):
-    return f"{v:.1f}".removesuffix(".0")
-
-
 def orbit(r, a):
     """Screen offset of a planet at angle a on its orbit, and whether it is on the near side of the Sun."""
     c, s = math.cos(a), math.sin(a)
     return r * (c * U[0] + s * W[0]), r * (c * U[1] + s * W[1]), s
 
 
-def pt(x, y):
-    return f"{num(x)} {num(y)}"
-
-
 css = [
     "@keyframes fl{to{transform:translate(var(--x),var(--y))}}",
     ".h{fill:none;stroke-linecap:round;stroke-linejoin:round}",
-    "@media (max-width:520px){.ti{font-size:34px}.ax{font-size:22px}}",
+    mobile(".ax{font-size:22px}"),
 ] + base_css()
 defs = ["<defs>", *DEFS,
         '<radialGradient id="sun"><stop offset="0" stop-color="#fff7d6"/><stop offset=".35" stop-color="#ffd166"/><stop offset=".7" stop-color="#fb923c" stop-opacity=".35"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>',
@@ -107,7 +97,7 @@ o.append(f'<circle cx="{SX}" cy="{SY}" r="70" fill="url(#sun)"/><circle cx="{SX}
 o.append(f'<g mask="url(#tm)">{"".join(front)}</g>')
 o.extend(planets)
 
-o.append(f'<text x="600" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">the Sun’s path through the galaxy</text>')
+o.append(title(600, 66, "the Sun’s path through the galaxy"))
 o.append(f'<text x="{num(SX + DX * 300)}" y="{num(SY + DY * 300 - 12)}" text-anchor="end" class="ax" {MONO} font-size="13" fill="#ffd166" fill-opacity=".8">≈ 230 km/s</text>')
 gap = 1040 / len(PLANETS)
 for n, (name, *_, col, size) in enumerate(PLANETS):
@@ -115,5 +105,4 @@ for n, (name, *_, col, size) in enumerate(PLANETS):
     o.append(f'<circle cx="{num(cx - 34)}" cy="642" r="4" fill="{col}"/>'
              f'<text x="{num(cx - 24)}" y="646" class="ax" {MONO} font-size="13" fill="{col}">{name}</text>')
 
-save(sys.argv[1], [svg_open("Animated solar system moving through space, the planets tracing helices around the Sun's path"), *defs,
-                   "<style>" + "".join(css) + "</style>", *o, "</svg>"])
+write_svg(sys.argv[1], "Animated solar system moving through space, the planets tracing helices around the Sun's path", defs, css, o)

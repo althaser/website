@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, STAR, base_css, nebula, palette, save, stars, svg_open
+from common import DEFS, PALETTE, STAR, base_css, nebula, palette, stars, write_svg
 
 random.seed(4)
 NQ = 8
@@ -132,4 +132,4 @@ for q, y in enumerate(WY):
     o.append(f'<rect class="hb" x="{hx0}" y="{y - 6}" width="{hw}" height="12" rx="3" fill="{ORANGE}" style="animation:h{q} {HT}s ease-in-out infinite"/>')
     o.append(f'<line x1="{hx0 + hw / 2}" y1="{y - 9}" x2="{hx0 + hw / 2}" y2="{y + 9}" stroke="{STAR}" stroke-opacity=".35" stroke-dasharray="2 2"/>')
 
-save(sys.argv[1], [svg_open("Animated quantum circuit", x=-17), *defs, "<style>" + "".join(css) + "</style>", *o, "</svg>"])
+write_svg(sys.argv[1], "Animated quantum circuit", defs, css, o, x=-17)

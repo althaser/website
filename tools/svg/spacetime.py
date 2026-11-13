@@ -2,10 +2,9 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, STAR, base_css, nebula, palette, save, stars, svg_open
+from common import DEFS, FONT, PALETTE, STAR, back, base_css, mobile, nebula, num, poly, stars, sub, title, write_svg
 
 random.seed(7)
-FONT = 'font-family="Cambria Math,Georgia,Times New Roman,serif"'
 CYAN, ORANGE = PALETTE[0], PALETTE[-1]
 
 # curved sheet: z = -A / sqrt(1 + (r/C)^2), seen from a camera raised by ELEV
@@ -22,14 +21,6 @@ PHOTON, PH_GAP = 4.5, 2.5
 HX, HY = 225, 390
 HR, SQ = 46, .34
 PITCH = 320
-
-
-def num(v):
-    return f"{v:.1f}".removesuffix(".0")
-
-
-def poly(points):
-    return "M" + " ".join(f"{num(x)} {num(y)}" for x, y in points)
 
 
 def well(r):
@@ -57,7 +48,7 @@ css = [
     f"@keyframes hs{{to{{transform:translateY({PITCH}px)}}}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     ".gl{transform-box:fill-box;transform-origin:center}",
-    "@media (max-width:520px){.ti{font-size:34px}.sb{font-size:23px}.ax{font-size:26px}}",
+    mobile(".ax{font-size:26px}"),
 ] + base_css()
 
 defs = ["<defs>", *DEFS,
@@ -134,14 +125,14 @@ for i in range(121):
 body = "".join(f"{100 * i / 120:.2f}%{{transform:translate({num(px)}px,{num(py)}px) scale({k:.3f})}}" for i, (px, py, k) in enumerate(pts))
 css.append(f"@keyframes pl{{{body}}}")
 o.append(f'<g transform="translate({num(pts[0][0])} {num(pts[0][1])}) scale({pts[0][2]:.3f})" style="animation:pl {P}s linear infinite"><circle r="22" fill="url(#hl)"/><circle r="9" fill="url(#pg)"/></g>')
-o.append(f'<text x="{CX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">G<tspan class="sb" font-size="17" dy="6">μν</tspan><tspan dy="-6"> = 8πG T</tspan><tspan class="sb" font-size="17" dy="6">μν</tspan></text>')
+o.append(title(CX, 66, f'G{sub("μν")}{back(" = 8πG T")}{sub("μν")}'))
 
 # worldline: the same orbit drawn in (x, y, t) is a helix inside the light cone
 def hp(phase, t):
     return HX + HR * math.cos(phase), HY - t + HR * SQ * -math.sin(phase)
 
 
-o.append(f'<text x="{HX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">worldline</text>')
+o.append(title(HX, 66, "worldline"))
 turns = range(-6, 6)
 back = "".join(poly(hp(math.pi * (2 * n + i / 30), PITCH * (2 * n + i / 30) / 2) for i in range(31)) for n in turns)
 front = "".join(poly(hp(math.pi * (2 * n + 1 + i / 30), PITCH * (2 * n + 1 + i / 30) / 2) for i in range(31)) for n in turns)
@@ -175,4 +166,4 @@ labels = (f'<text x="{H + 10}" y="{-H + 5}" class="ax" {FONT} font-style="italic
           f'<text x="{H + 10}" y="{H + 5}" class="ax" {FONT} font-style="italic" font-size="15" fill="#fde68a" fill-opacity=".6">past</text>')
 o.append(f'<g transform="translate({num(now[0][0])} {num(now[0][1])})" style="animation:wn {P}s linear infinite">{cone}{labels}<circle r="16" fill="url(#hl)"/><circle r="5" fill="#a5f3fc"/></g>')
 
-save(sys.argv[1], [svg_open("Animated curved spacetime"), *defs, "<style>" + "".join(css) + "</style>", *o, "</svg>"])
+write_svg(sys.argv[1], "Animated curved spacetime", defs, css, o)

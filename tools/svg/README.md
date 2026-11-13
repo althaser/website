@@ -1,6 +1,6 @@
 # SVG generators
 
-Generators for the animated SVGs in the Visuals section. `common.py` holds the shared pieces (SVG header, background gradients, nebula, star field, colour helpers and the reduced-motion rule); each other script draws one image.
+Generators for the animated SVGs in the Visuals section. `common.py` holds the shared pieces (SVG header and writer, background gradients, nebula, star field, colour helpers, fonts, path helpers, panel titles with their phone sizes and the reduced-motion rule); each other script draws one image and needs a matching tab in `data/visuals.yaml`, which `build.py` checks.
 
 Regenerate every image, or check that the committed ones match their generators:
 

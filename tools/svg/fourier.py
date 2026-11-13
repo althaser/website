@@ -3,11 +3,9 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, STAR, base_css, nebula, palette, save, stars, svg_open
+from common import DEFS, MONO, STAR, back, base_css, mobile, nebula, num, palette, poly, stars, sub, title, write_svg
 
 random.seed(5)
-FONT = 'font-family="Cambria Math,Georgia,Times New Roman,serif"'
-MONO = 'font-family="Consolas,monospace"'
 P = 14.0
 KMAX = 20
 EX, EY, SCALE = 296, 395, 1.9
@@ -17,14 +15,6 @@ THUMBS, TY, TS = (2, 5, 10, 2 * KMAX + 1), 555, .27
 # a stylised pi, traced clockwise
 SHAPE = [(-105, -80), (105, -80), (105, -56), (56, -56), (56, 60), (62, 82), (78, 84), (74, 100), (48, 100), (32, 84), (32, -56),
          (-34, -56), (-40, 30), (-52, 80), (-66, 100), (-88, 96), (-74, 74), (-62, 30), (-58, -56), (-105, -56)]
-
-
-def num(v):
-    return f"{v:.1f}".removesuffix(".0")
-
-
-def poly(points, close=False):
-    return "M" + " ".join(f"{num(p.real)} {num(p.imag)}" for p in points) + ("Z" if close else "")
 
 
 def sample(shape, m):
@@ -62,7 +52,7 @@ css = [
     "@keyframes sp{to{transform:rotate(360deg)}}",
     "@keyframes tr{0%{opacity:1}100%{opacity:.1}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
-    "@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.ax{font-size:22px}}",
+    mobile(".ax{font-size:22px}"),
 ] + base_css()
 defs = ["<defs>", *DEFS, "</defs>"]
 o = [nebula((330, 390), (836, 350), (320, 360), 280)]
@@ -94,11 +84,10 @@ for k in order:
     prev_k, prev_arg = k, arg
 chain += '<circle r="12" fill="url(#hl)"/><circle r="3.5" fill="#fff"/>' + close
 o.append(chain)
-o.append(f'<text x="{EX}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">f(t) = Σ c<tspan class="su" font-size="17" dy="6">k</tspan>'
-         f'<tspan dy="-6"> e</tspan><tspan class="su" font-size="17" dy="-10">2πikt</tspan></text>')
+o.append(title(EX, 66, f'f(t) = Σ c{sub("k")}{back(" e")}{sub("2πikt", up=True)}'))
 
 # spectrum: |c_k| for every frequency, coloured like its circle
-o.append(f'<text x="{(SPX0 + SPX1) / 2}" y="66" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">|c<tspan class="su" font-size="17" dy="6">k</tspan><tspan dy="-6">|  spectrum</tspan></text>')
+o.append(title((SPX0 + SPX1) / 2, 66, f'|c{sub("k")}{back("|  spectrum")}'))
 o.append(f'<line x1="{SPX0 - 10}" y1="{SPY0}" x2="{SPX1 + 10}" y2="{SPY0}" stroke="{STAR}" stroke-opacity=".35"/>')
 peak = max(abs(coef[k]) for k in order)
 bw = (SPX1 - SPX0) / (2 * KMAX + 1)
@@ -112,7 +101,7 @@ for k in (-KMAX, -10, 0, 10, KMAX):
     o.append(f'<text x="{num(SPX0 + (k + KMAX + .5) * bw)}" y="{SPY0 + 20}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{STAR}" fill-opacity=".55">{k}</text>')
 
 # reconstructions with only the strongest few terms
-o.append(f'<text x="{(SPX0 + SPX1) / 2}" y="{TY - 95}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">number of terms</text>')
+o.append(title((SPX0 + SPX1) / 2, TY - 95, "number of terms"))
 gap = (SPX1 - SPX0) / len(THUMBS)
 for n, terms in enumerate(THUMBS):
     cx = SPX0 + gap * (n + .5)
@@ -124,4 +113,4 @@ for n, terms in enumerate(THUMBS):
     o.append(f'<g class="mv" style="animation:m{n} {P}s linear infinite"><circle r="7" fill="url(#hl)"/><circle r="2.2" fill="#fff"/></g>')
     o.append(f'<text x="{num(cx)}" y="{TY + 72}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{c}">{terms}</text>')
 
-save(sys.argv[1], [svg_open("Animated Fourier series drawing with epicycles"), *defs, "<style>" + "".join(css) + "</style>", *o, "</svg>"])
+write_svg(sys.argv[1], "Animated Fourier series drawing with epicycles", defs, css, o)

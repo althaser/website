@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, PALETTE, base_css, nebula, save, stars, svg_open
+from common import DEFS, PALETTE, base_css, nebula, stars, write_svg
 
 random.seed(9)
 P = 4.0
@@ -35,7 +35,7 @@ def kf(name, frames):
     css.append(f"@keyframes {name}{{{frames}}}")
 
 
-o = [nebula((420, 260), (800, 470), (380, 380), 235)]
+o = [nebula((420, 260), (800, 465), (380, 380), 235)]
 o.extend(stars(90))
 
 # P2P mesh
@@ -168,4 +168,4 @@ defs = ["<defs>", *DEFS,
         '<linearGradient id="fadeX" gradientUnits="userSpaceOnUse" x1="0" x2="1200" y1="0" y2="0"><stop offset=".138" stop-color="#fff" stop-opacity="0"/><stop offset=".228" stop-color="#fff"/><stop offset=".89" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>',
         '<mask id="chainFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect width="1200" height="700" fill="url(#fadeX)"/></mask>',
         "</defs>"]
-save(sys.argv[1], [svg_open("Animated blockchain processing"), *defs, "<style>" + "".join(css) + "</style>", *o, "</svg>"])
+write_svg(sys.argv[1], "Animated blockchain processing", defs, css, o)
