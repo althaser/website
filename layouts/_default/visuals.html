@@ -12,5 +12,19 @@
     <img src="{{ printf `images/%s.svg` .id | relURL }}" alt="{{ .alt }}" width="1200" height="700"{{ if $index }} loading="lazy"{{ end }} class="tab-image not-prose">
   </div>
   {{ end }}
+  <script>
+    (() => {
+      const id = location.hash.slice(1);
+      if (!id || !document.getElementById("panel-" + id)) return;
+      document.querySelectorAll("[data-tabs-global] [role=tab]").forEach((tab) => {
+        const on = tab.dataset.tab === id;
+        const panel = document.getElementById("panel-" + tab.dataset.tab);
+        tab.setAttribute("aria-selected", on);
+        tab.tabIndex = on ? 0 : -1;
+        panel.hidden = !on;
+        if (on) panel.querySelector("img").loading = "eager";
+      });
+    })();
+  </script>
 </div>
 {{ end }}
