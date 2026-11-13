@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, H, MONO, base_css, mobile, nebula, palette, save, stars, svg_open
+from common import DEFS, FONT, H, MONO, base_css, mobile, nebula, palette, stars, write_svg
 
 random.seed(11)
 T = 6.0
@@ -51,12 +51,12 @@ for i in range(L - 1):
     css.append(f"@keyframes eb{i}{{0%,{a:.1f}%{{opacity:0}}{a + 2:.1f}%{{opacity:1}}{b + 6:.1f}%,100%{{opacity:0}}}}")
     css.append(f".f{i}{{stroke:{palette((i + .5) / (L - 1))};animation:pf{i} {T}s linear infinite}}.b{i}{{animation:pb{i} {T}s linear infinite}}")
 
-o = [svg_open("Animated neural network training"), "<defs>", *DEFS,
-     '<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>']
+defs = ["<defs>", *DEFS,
+        '<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>']
 for i in range(L - 1):
-    o.append(f'<linearGradient id="g{i}" gradientUnits="userSpaceOnUse" x1="{XS[i]:.0f}" x2="{XS[i + 1]:.0f}" y1="0" y2="0"><stop offset="0" stop-color="{palette(i / (L - 1))}"/><stop offset="1" stop-color="{palette((i + 1) / (L - 1))}"/></linearGradient>')
-o.append("</defs>")
-STYLE_AT = len(o)
+    defs.append(f'<linearGradient id="g{i}" gradientUnits="userSpaceOnUse" x1="{XS[i]:.0f}" x2="{XS[i + 1]:.0f}" y1="0" y2="0"><stop offset="0" stop-color="{palette(i / (L - 1))}"/><stop offset="1" stop-color="{palette((i + 1) / (L - 1))}"/></linearGradient>')
+defs.append("</defs>")
+o = []
 
 o.append(nebula((440, 350), (770, 350), (330, 340), 260))
 o.extend(stars(90))
@@ -149,6 +149,4 @@ wy = ys(NS[-1])[WIN]
 o.append(f'<path d="M{bx + 100} {wy:.0f}l5 5 9-11" fill="none" stroke="#4ade80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0" style="animation:ok {T}s infinite"/>')
 o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity="0" style="animation:ls {T}s infinite"/>')
 
-o.insert(STYLE_AT, "<style>" + "".join(css) + "</style>")
-o.append("</svg>")
-save(sys.argv[1], o)
+write_svg(sys.argv[1], "Animated neural network training", defs, css, o)

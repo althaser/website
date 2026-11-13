@@ -1,7 +1,7 @@
 import random
 import sys
 
-from common import DEFS, base_css, nebula, save, stars, svg_open
+from common import DEFS, base_css, nebula, stars, write_svg
 
 random.seed(5)
 W = 2.4
@@ -22,19 +22,16 @@ HBY = [DY + 16, DY + DH - 16 - HBH - 10]
 OUT_C, OUT_R, OUT_S = 18, 3, 16
 OUT_X, OUT_Y = 600 - OUT_C * OUT_S / 2, 60
 
-o = []
-w = o.append
-w(svg_open("Animated GPU parallel computing"))
-w("<defs>")
-o.extend(DEFS)
-w('<linearGradient id="l2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity=".25"/><stop offset=".5" stop-color="#a5b4fc" stop-opacity=".6"/><stop offset="1" stop-color="#e879f9" stop-opacity=".25"/></linearGradient>')
-w('<linearGradient id="hf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74" stop-opacity=".95"/><stop offset="1" stop-color="#9a3412" stop-opacity=".95"/></linearGradient>')
-w('<linearGradient id="ht" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="1" stop-color="#fb923c"/></linearGradient>')
-w('<linearGradient id="shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#e0e7ff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>')
-w('<linearGradient id="sub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111a3f"/><stop offset="1" stop-color="#0a0f26"/></linearGradient>')
-w(f'<clipPath id="l2c"><rect x="{DX + GAP + 4}" y="{L2Y:.1f}" width="{DW - 2 * GAP - 8}" height="{L2H}"/></clipPath>')
-w(f'<clipPath id="dc"><rect x="{DX}" y="{DY}" width="{DW}" height="{DH}" rx="10"/></clipPath>')
-w("</defs>")
+defs = ["<defs>"]
+defs.extend(DEFS)
+defs.append('<linearGradient id="l2" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity=".25"/><stop offset=".5" stop-color="#a5b4fc" stop-opacity=".6"/><stop offset="1" stop-color="#e879f9" stop-opacity=".25"/></linearGradient>')
+defs.append('<linearGradient id="hf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdba74" stop-opacity=".95"/><stop offset="1" stop-color="#9a3412" stop-opacity=".95"/></linearGradient>')
+defs.append('<linearGradient id="ht" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="1" stop-color="#fb923c"/></linearGradient>')
+defs.append('<linearGradient id="shine" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#e0e7ff" stop-opacity=".09"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>')
+defs.append('<linearGradient id="sub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#111a3f"/><stop offset="1" stop-color="#0a0f26"/></linearGradient>')
+defs.append(f'<clipPath id="l2c"><rect x="{DX + GAP + 4}" y="{L2Y:.1f}" width="{DW - 2 * GAP - 8}" height="{L2H}"/></clipPath>')
+defs.append(f'<clipPath id="dc"><rect x="{DX}" y="{DY}" width="{DW}" height="{DH}" rx="10"/></clipPath>')
+defs.append("</defs>")
 
 css = [
     "@keyframes sm{0%,100%{opacity:.15}12%{opacity:1}45%{opacity:.3}}",
@@ -48,7 +45,8 @@ css = [
     f"@keyframes oc{{0%,4%{{opacity:.08}}10%,78%{{opacity:1}}92%,100%{{opacity:.08}}}}",
 ] + base_css()
 kf = []
-STYLE_AT = len(o)
+o = []
+w = o.append
 
 w(nebula((460, 360), (770, 350), (400, 380), 270))
 o.extend(stars(90, (PX - 20, OUT_Y - 20, PX + PW + 20, PY + PH + 90)))
@@ -162,6 +160,4 @@ for i in range(8):
     w(f'<path d="M{x:.0f} {DY - 6}L{tx:.0f} {OUT_Y + OUT_R * OUT_S + 10}" fill="none" stroke="{col}" stroke-opacity=".22" stroke-width="1.4"/>')
     w(f'<circle class="mv" cx="{x:.0f}" cy="{DY - 6}" r="2.8" fill="{col}" style="--x:{tx - x:.0f}px;--y:{OUT_Y + OUT_R * OUT_S + 10 - (DY - 6):.0f}px;animation:mv .9s ease-in {-random.uniform(0, .9):.2f}s infinite"/>')
 
-o.insert(STYLE_AT, "<style>" + "".join(css + kf) + "</style>")
-w("</svg>")
-save(sys.argv[1], o)
+write_svg(sys.argv[1], "Animated GPU parallel computing", defs, css + kf, o)

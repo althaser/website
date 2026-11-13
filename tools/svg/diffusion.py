@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, STAR, base_css, hexc, mix, nebula, palette, ramp, rgb, save, stars, svg_open
+from common import DEFS, STAR, base_css, hexc, mix, nebula, palette, ramp, rgb, stars, write_svg
 
 random.seed(11)
 T = 11.0
@@ -51,22 +51,21 @@ def cell(x, y):
 
 o = []
 w = o.append
-w(svg_open("Animated diffusion model generating an image"))
-w("<defs>")
-o.extend(DEFS)
-w('<linearGradient id="band" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7d2fe" stop-opacity="0"/><stop offset=".5" stop-color="#c7d2fe" stop-opacity=".22"/><stop offset="1" stop-color="#c7d2fe" stop-opacity="0"/></linearGradient>')
-w('<linearGradient id="trk" x1="0" x2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>')
-w('<radialGradient id="sg"><stop offset="0" stop-color="#e0e7ff" stop-opacity=".6"/><stop offset="1" stop-color="#e0e7ff" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="mg"><stop offset=".56" stop-color="#fde68a" stop-opacity="0"/><stop offset=".6" stop-color="#fde68a" stop-opacity=".22"/><stop offset="1" stop-color="#fde68a" stop-opacity="0"/></radialGradient>')
-w('<radialGradient id="atm"><stop offset=".68" stop-color="#38bdf8" stop-opacity=".35"/><stop offset=".78" stop-color="#6366f1" stop-opacity=".15"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>')
-w('<linearGradient id="pg" x1=".18" y1=".1" x2=".82" y2=".95"><stop offset="0" stop-color="#a5f3fc"/><stop offset=".3" stop-color="#38bdf8"/><stop offset=".55" stop-color="#6366f1"/><stop offset=".8" stop-color="#6d28d9"/><stop offset="1" stop-color="#3b0764"/></linearGradient>')
-w('<radialGradient id="sh" cx=".3" cy=".25" r=".9"><stop offset=".55" stop-color="#05070f" stop-opacity="0"/><stop offset="1" stop-color="#05070f" stop-opacity=".55"/></radialGradient>')
-w(f'<linearGradient id="rg" gradientUnits="userSpaceOnUse" x1="{-RA * CELL:.0f}" x2="{RA * CELL:.0f}" y1="0" y2="0"><stop offset="0" stop-color="#fb923c"/><stop offset=".5" stop-color="#fda4af"/><stop offset="1" stop-color="#f472b6"/></linearGradient>')
-w(f'<clipPath id="front"><rect x="{-RA * CELL - 2:.0f}" y="0" width="{2 * RA * CELL + 4:.0f}" height="{RB * CELL + 2:.0f}"/></clipPath>')
-w(f'<clipPath id="pc"><circle cx="{GX + PCX * CELL:.1f}" cy="{GY + PCY * CELL:.1f}" r="{PR * CELL:.0f}"/></clipPath>')
-w(f'<mask id="moon" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><circle cx="{GX + 27.4 * CELL:.0f}" cy="{GY + 4.0 * CELL:.0f}" r="{2.9 * CELL:.0f}" fill="#fff"/><circle cx="{GX + 26.2 * CELL:.0f}" cy="{GY + 3.2 * CELL:.0f}" r="{2.4 * CELL:.0f}" fill="#000"/></mask>')
-w(f'<clipPath id="gc"><rect x="{GX}" y="{GY}" width="{GW}" height="{GH}" rx="10"/></clipPath>')
-w("</defs>")
+defs = ["<defs>"]
+defs.extend(DEFS)
+defs.append('<linearGradient id="band" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7d2fe" stop-opacity="0"/><stop offset=".5" stop-color="#c7d2fe" stop-opacity=".22"/><stop offset="1" stop-color="#c7d2fe" stop-opacity="0"/></linearGradient>')
+defs.append('<linearGradient id="trk" x1="0" x2="1"><stop offset="0" stop-color="#e879f9"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>')
+defs.append('<radialGradient id="sg"><stop offset="0" stop-color="#e0e7ff" stop-opacity=".6"/><stop offset="1" stop-color="#e0e7ff" stop-opacity="0"/></radialGradient>')
+defs.append('<radialGradient id="mg"><stop offset=".56" stop-color="#fde68a" stop-opacity="0"/><stop offset=".6" stop-color="#fde68a" stop-opacity=".22"/><stop offset="1" stop-color="#fde68a" stop-opacity="0"/></radialGradient>')
+defs.append('<radialGradient id="atm"><stop offset=".68" stop-color="#38bdf8" stop-opacity=".35"/><stop offset=".78" stop-color="#6366f1" stop-opacity=".15"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>')
+defs.append('<linearGradient id="pg" x1=".18" y1=".1" x2=".82" y2=".95"><stop offset="0" stop-color="#a5f3fc"/><stop offset=".3" stop-color="#38bdf8"/><stop offset=".55" stop-color="#6366f1"/><stop offset=".8" stop-color="#6d28d9"/><stop offset="1" stop-color="#3b0764"/></linearGradient>')
+defs.append('<radialGradient id="sh" cx=".3" cy=".25" r=".9"><stop offset=".55" stop-color="#05070f" stop-opacity="0"/><stop offset="1" stop-color="#05070f" stop-opacity=".55"/></radialGradient>')
+defs.append(f'<linearGradient id="rg" gradientUnits="userSpaceOnUse" x1="{-RA * CELL:.0f}" x2="{RA * CELL:.0f}" y1="0" y2="0"><stop offset="0" stop-color="#fb923c"/><stop offset=".5" stop-color="#fda4af"/><stop offset="1" stop-color="#f472b6"/></linearGradient>')
+defs.append(f'<clipPath id="front"><rect x="{-RA * CELL - 2:.0f}" y="0" width="{2 * RA * CELL + 4:.0f}" height="{RB * CELL + 2:.0f}"/></clipPath>')
+defs.append(f'<clipPath id="pc"><circle cx="{GX + PCX * CELL:.1f}" cy="{GY + PCY * CELL:.1f}" r="{PR * CELL:.0f}"/></clipPath>')
+defs.append(f'<mask id="moon" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><circle cx="{GX + 27.4 * CELL:.0f}" cy="{GY + 4.0 * CELL:.0f}" r="{2.9 * CELL:.0f}" fill="#fff"/><circle cx="{GX + 26.2 * CELL:.0f}" cy="{GY + 3.2 * CELL:.0f}" r="{2.4 * CELL:.0f}" fill="#000"/></mask>')
+defs.append(f'<clipPath id="gc"><rect x="{GX}" y="{GY}" width="{GW}" height="{GH}" rx="10"/></clipPath>')
+defs.append("</defs>")
 
 den0, den1, hold1, re1 = 10, 68, 84, 97
 css = base_css(".nz")
@@ -90,7 +89,6 @@ for s in range(STEPS + 1):
     css.append(f"@keyframes t{s}{{0%,{p - .5:.1f}%{{opacity:.25}}{p:.1f}%,{hold1}%{{opacity:1}}{re1 - (re1 - hold1) * s / STEPS:.1f}%,100%{{opacity:.25}}}}")
 css.append(f"@keyframes hd{{0%,{den1 - 20}%{{opacity:0;animation-timing-function:ease-in-out}}{den1 + 6}%,{re1}%{{opacity:1}}{re1 + .5}%,100%{{opacity:0}}}}")
 css.append(f"@keyframes gl{{0%,{den1 - 8}%{{opacity:0}}{den1 + 6}%,{hold1}%{{opacity:1}}{re1 - 2}%,100%{{opacity:0}}}}")
-w("<style>" + "".join(css) + "</style>")
 
 w(nebula((460, 330), (770, 320)))
 o.extend(stars(70, (GX - 10, GY - 10, GX + GW + 10, GY + GH + 10)))
@@ -161,5 +159,4 @@ for s in range(STEPS + 1):
     w(f'<circle cx="{x:.0f}" cy="{ty}" r="5" fill="#0b1023" stroke="{palette(s / STEPS, ["#e879f9", "#a855f7", "#6366f1", "#22d3ee"])}" stroke-width="1.5" style="animation:t{s} {T}s infinite"/>')
 w(f'<g style="animation:dot {T}s cubic-bezier(.45,0,.35,1) infinite"><circle cx="{GX}" cy="{ty}" r="14" fill="#fff" fill-opacity=".12"/><circle cx="{GX}" cy="{ty}" r="5" fill="#fff"/></g>')
 
-w("</svg>")
-save(sys.argv[1], o)
+write_svg(sys.argv[1], "Animated diffusion model generating an image", defs, css, o)

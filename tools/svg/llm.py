@@ -1,7 +1,7 @@
 import random
 import sys
 
-from common import DEFS, base_css, nebula, save, stars, svg_open
+from common import DEFS, base_css, nebula, stars, write_svg
 
 random.seed(7)
 STEP = 5.0
@@ -36,20 +36,19 @@ def pct(x):
 
 o = []
 w = o.append
-w(svg_open("Animated transformer language model"))
-w("<defs>")
-o.extend(DEFS)
-w('<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>')
-w('<linearGradient id="res" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#6366f1"/><stop offset="1" stop-color="#d946ef"/></linearGradient>')
+defs = ["<defs>"]
+defs.extend(DEFS)
+defs.append('<radialGradient id="ho"><stop offset="0" stop-color="#fb923c" stop-opacity=".55"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>')
+defs.append('<linearGradient id="res" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset=".5" stop-color="#6366f1"/><stop offset="1" stop-color="#d946ef"/></linearGradient>')
 for k, c in enumerate(LCOL):
-    w(f'<linearGradient id="pl{k}" x1="0" x2="1"><stop offset="0" stop-color="{c}" stop-opacity="0"/><stop offset=".15" stop-color="{c}" stop-opacity=".10"/><stop offset=".85" stop-color="{c}" stop-opacity=".10"/><stop offset="1" stop-color="{c}" stop-opacity="0"/></linearGradient>')
-w('<linearGradient id="fx" gradientUnits="userSpaceOnUse" x1="150" x2="1100" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".1" stop-color="#fff"/><stop offset=".92" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>')
-w('<mask id="rowFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect width="1200" height="700" fill="url(#fx)"/></mask>')
+    defs.append(f'<linearGradient id="pl{k}" x1="0" x2="1"><stop offset="0" stop-color="{c}" stop-opacity="0"/><stop offset=".15" stop-color="{c}" stop-opacity=".10"/><stop offset=".85" stop-color="{c}" stop-opacity=".10"/><stop offset="1" stop-color="{c}" stop-opacity="0"/></linearGradient>')
+defs.append('<linearGradient id="fx" gradientUnits="userSpaceOnUse" x1="150" x2="1100" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".1" stop-color="#fff"/><stop offset=".92" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>')
+defs.append('<mask id="rowFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect width="1200" height="700" fill="url(#fx)"/></mask>')
 for t, (dot, l1, l2) in enumerate(TYPES):
     glyph = f'<path d="M-14 -4h{l1}M-14 5h{l2}" stroke-width="2.5" stroke-linecap="round"/><circle cx="-24" cy="0" r="3.5" fill="{dot}"/>'
-    w(f'<g id="t{t}"><rect x="-34" y="-15" width="68" height="30" rx="7" fill="#0b1023" stroke="#22d3ee" stroke-width="1.5"/><g stroke="#67e8f9" stroke-opacity=".75">{glyph}</g></g>')
-    w(f'<g id="o{t}"><rect x="-34" y="-15" width="68" height="30" rx="7" fill="#1c1020" stroke="{ORANGE}" stroke-width="1.8"/><g stroke="#fdba74">{glyph}</g></g>')
-w("</defs>")
+    defs.append(f'<g id="t{t}"><rect x="-34" y="-15" width="68" height="30" rx="7" fill="#0b1023" stroke="#22d3ee" stroke-width="1.5"/><g stroke="#67e8f9" stroke-opacity=".75">{glyph}</g></g>')
+    defs.append(f'<g id="o{t}"><rect x="-34" y="-15" width="68" height="30" rx="7" fill="#1c1020" stroke="{ORANGE}" stroke-width="1.8"/><g stroke="#fdba74">{glyph}</g></g>')
+defs.append("</defs>")
 
 css = [
     ".fb{transform-box:fill-box;transform-origin:50% 100%}",
@@ -174,6 +173,4 @@ for k, wb in enumerate(WINNERS):
     )
     w(f'<g opacity="0" style="animation:f{k} {T}s cubic-bezier(.45,0,.35,1) infinite"><use href="#o{(9 + k) % N}" x="{X9:.0f}" y="{ROW_Y}"/></g>')
 
-o.insert(o.index("</defs>") + 1, "<style>" + "".join(css) + "</style>")
-w("</svg>")
-save(sys.argv[1], o)
+write_svg(sys.argv[1], "Animated transformer language model", defs, css, o)

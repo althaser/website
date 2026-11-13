@@ -6,6 +6,7 @@
 import subprocess
 import sys
 import tempfile
+import xml.dom.minidom
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -37,6 +38,10 @@ def main():
             out = Path(tmp) / target.name
             subprocess.run([sys.executable, str(script), str(out)], check=True)
             fresh = out.read_bytes()
+        try:
+            xml.dom.minidom.parseString(fresh)
+        except Exception as e:
+            sys.exit(f"INVALID {target.name}: {e}")
         if check:
             ok = target.exists() and target.read_bytes() == fresh
             print(f"{'ok   ' if ok else 'STALE'} {target.name}")
