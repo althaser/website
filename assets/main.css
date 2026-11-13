@@ -515,7 +515,7 @@
     @apply mx-auto mt-6 mb-2 h-auto w-full max-w-5xl rounded-lg bg-radial from-ai-glow via-ai-deep via-65% to-ai-edge dark:rounded-none dark:bg-none;
   }
   .tab-caption {
-    @apply mx-auto mt-2 mb-0 max-w-3xl text-center text-sm text-gray-600 dark:text-gray-400;
+    @apply mx-auto mt-2 mb-0 w-fit max-w-3xl text-left text-sm text-pretty text-gray-600 dark:text-gray-400;
   }
   .terminal-progress {
     @apply mt-2 flex items-center gap-3;

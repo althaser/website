@@ -1,8 +1,13 @@
 {{ define "main" }}
-{{ $groups := slice (dict "id" "computing" "label" "Computing") (dict "id" "science" "label" "Math & Physics") }}
+{{ $groups := slice }}
 {{ $demos := slice }}
-{{ range $groups }}
-{{ $demos = $demos | append (sort (where hugo.Data.visuals "group" .id) "label") }}
+{{ range slice (dict "id" "computing" "label" "Computing") (dict "id" "science" "label" "Math & Physics") }}
+{{ $items := sort (where hugo.Data.visuals "group" .id) "label" }}
+{{ $groups = $groups | append (merge . (dict "items" $items)) }}
+{{ $demos = $demos | append $items }}
+{{ end }}
+{{ if ne (len $demos) (len hugo.Data.visuals) }}
+{{ errorf "data/visuals.yaml: every visual needs a group of computing or science" }}
 {{ end }}
 <div class="page-shell prose dark:prose-invert max-w-none">
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
@@ -11,7 +16,7 @@
     {{ range $groups }}
     <div class="tab-group" role="presentation">
       <span class="tab-group-label" aria-hidden="true">{{ .label }}</span>
-      {{ range sort (where hugo.Data.visuals "group" .id) "label" }}
+      {{ range .items }}
       <button type="button" class="tab" role="tab" id="tab-{{ .id }}" aria-controls="panel-{{ .id }}" aria-selected="{{ eq $index 0 }}"{{ if $index }} tabindex="-1"{{ end }} data-tab="{{ .id }}">{{ .label }}</button>
       {{ $index = add $index 1 }}
       {{ end }}
