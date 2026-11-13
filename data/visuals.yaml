@@ -22,3 +22,6 @@
 - id: riemann
   label: Riemann
   alt: Animated Riemann zeta function zeros on the critical line
+- id: spacetime
+  label: Spacetime
+  alt: Animated curved spacetime with an orbiting planet, bent light and its worldline
