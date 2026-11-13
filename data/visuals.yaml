@@ -14,7 +14,7 @@
   label: LLM
   alt: Animated transformer language model
 - id: neural
-  label: Neural Network
+  label: NeuralNetwork
   alt: Animated neural network
 - id: quantum
   label: Quantum
@@ -23,7 +23,7 @@
   label: Riemann
   alt: Animated Riemann zeta function zeros on the critical line
 - id: spacetime
-  label: Spacetime
+  label: SpaceTime
   alt: Animated curved spacetime with an orbiting planet, bent light and its worldline
 - id: fourier
   label: Fourier
