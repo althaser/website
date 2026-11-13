@@ -8,15 +8,16 @@ random.seed(9)
 SX, SY = 800, 365
 V = 26.0
 TAIL = 760
+REVEAL = 8
 # oblique view: the Sun moves along D, an orbit is drawn with the screen vectors U (up) and W (towards the viewer)
 D = (1, -.05)
 U = (0, -.92)
 W = (-.55, .3)
 
 # name, distance (AU), period (years), colour, size
-PLANETS = [("Mercury", .39, .24, "#c9c1b6", 2.8), ("Venus", .72, .62, "#f2cf86", 4.2), ("Earth", 1, 1, "#4aa8ff", 4.5),
-           ("Mars", 1.52, 1.88, "#ef6b45", 3.6), ("Jupiter", 5.2, 11.86, "#e3a76f", 8.5), ("Saturn", 9.58, 29.46, "#eedc9f", 7.5),
-           ("Uranus", 19.2, 84, "#86e7ec", 6), ("Neptune", 30, 164.8, "#5b7cff", 6)]
+PLANETS = [("Mercury", .39, .24, "#a8a29e", 2.8), ("Venus", .72, .62, "#facc15", 4.2), ("Earth", 1, 1, "#3b82f6", 4.5),
+           ("Mars", 1.52, 1.88, "#ef4444", 3.6), ("Jupiter", 5.2, 11.86, "#fb923c", 8.5), ("Saturn", 9.58, 29.46, "#c08457", 7.5),
+           ("Uranus", 19.2, 84, "#2dd4bf", 6), ("Neptune", 30, 164.8, "#a78bfa", 6)]
 DX, DY = D
 
 
@@ -45,7 +46,8 @@ o.append(f'<line x1="{SX}" y1="{SY}" x2="{num(SX + DX * 300)}" y2="{num(SY + DY 
 back, front, planets = [], [], []
 for n, (name, au, years, col, size) in enumerate(PLANETS):
     r = 22 + 27 * math.sqrt(au)
-    period = 4.2 * years ** .25
+    # rounded once, so the planet, the flowing trail and every reveal share exactly the same duration
+    period = round(4.2 * years ** .25, 2)
     w = 2 * math.pi / period
     ph = 2.4 * n
     pitch = V * period
@@ -59,25 +61,30 @@ for n, (name, au, years, col, size) in enumerate(PLANETS):
 
     taus = [k * dt for k in range(-per_turn, int((TAIL / V + period) / dt) + 2)]
     pts = [at(t) for t in taus]
-    flow = f"--x:{num(-DX * pitch)}px;--y:{num(-DY * pitch)}px;animation:fl {period:.3f}s linear infinite"
+    flow = f"--x:{num(-DX * pitch)}px;--y:{num(-DY * pitch)}px;animation:fl {period}s linear infinite"
     layers = {True: [], False: []}
     last = {True: None, False: None}
-    # segments ahead of the planet at the start of the cycle appear as it passes them and stay for the rest of the cycle
+    # segments ahead of the planet at the start of the cycle appear once it has passed them, in pieces of at most REVEAL px
+    sub = max(1, math.ceil(2 * math.pi * r / per_turn / REVEAL))
     for k in range(len(taus) - 1):
         a, b = pts[k], pts[k + 1]
         side = (a[2] + b[2]) / 2 > 0
         if taus[k] < 0:
-            f = -taus[k + 1] / period * 100
-            css.append(f"@keyframes r{n}_{k}{{0%,{f:.2f}%{{opacity:0}}{f + .01:.2f}%,100%{{opacity:1}}}}")
-            layers[side].append(f'<path class="mv" d="M{pt(a[0], a[1])}L{pt(b[0], b[1])}" style="animation:r{n}_{k} {period:.3f}s linear infinite"/>')
+            for j in range(sub):
+                ta = taus[k] + dt * j / sub
+                p, q = at(ta), at(ta + dt / sub)
+                f = min(round(-ta / period * 100, 1), 99.8)
+                key = f"r{n}{len(css):x}"
+                css.append(f"@keyframes {key}{{0%,{f:.1f}%{{opacity:0}}{f + .1:.1f}%,to{{opacity:1}}}}.{key}{{animation:{key} {period}s infinite}}")
+                layers[side].append(f'<path class="mv {key}" d="M{pt(p[0], p[1])}L{pt(q[0], q[1])}"/>')
         elif last[side] == k - 1 and isinstance(layers[side][-1], list):
             layers[side][-1].append(b)
         else:
             layers[side].append([a, b])
         last[side] = k
-    for side, dest, op in ((False, back, .35), (True, front, .8)):
+    for side, dest, op in ((False, back, .55), (True, front, .8)):
         body = "".join(p if isinstance(p, str) else '<path d="M' + "L".join(pt(q[0], q[1]) for q in p) + '"/>' for p in layers[side])
-        dest.append(f'<g class="h" stroke="{col}" stroke-width="{1.2 + size / 8:.2f}" stroke-opacity="{op}" style="{flow}">{body}</g>')
+        dest.append(f'<g class="h" stroke="{col}" stroke-width="{1.2 + size / 8:.2f}" opacity="{op}" style="{flow}">{body}</g>')
 
     # the planet itself, going round the Sun
     steps = 60
@@ -88,7 +95,7 @@ for n, (name, au, years, col, size) in enumerate(PLANETS):
     css.append(f"@keyframes p{n}{{{''.join(frames)}}}")
     ox, oy, _ = orbit(r, ph)
     ring = f'<ellipse rx="{size * 2.1:.1f}" ry="{size * .7:.1f}" transform="rotate(-18)" fill="none" stroke="{col}" stroke-opacity=".8" stroke-width="1.4"/>' if name == "Saturn" else ""
-    planets.append(f'<g transform="translate({num(SX + ox)} {num(SY + oy)})" style="animation:p{n} {period:.3f}s linear infinite">'
+    planets.append(f'<g transform="translate({num(SX + ox)} {num(SY + oy)})" style="animation:p{n} {period}s linear infinite">'
                    f'<circle r="{size * 2.6:.1f}" fill="url(#hl)"/><circle r="{size}" fill="{col}"/>{ring}</g>')
 
 o.append(f'<g mask="url(#tm)">{"".join(back)}</g>')
