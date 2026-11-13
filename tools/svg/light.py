@@ -12,9 +12,11 @@ ER, MR = 34, 10
 TRIP, PC = 1.28, 3.2
 
 # wave: double slit
-SX, SY = 120, 480
-BX, GAP, SLIT = 290, 64, 12
-SCR = 570
+# the panels share a 70 px side margin with the plate on the right
+WX0 = 70
+SX, SY = 150, 480
+BX, GAP, SLIT = 310, 64, 12
+SCR = 590
 LAM, PW = 20, 12.0
 TOP, BOT = 330, 640
 S1, S2 = SY - GAP / 2, SY + GAP / 2
@@ -34,14 +36,14 @@ defs = ["<defs>", *DEFS,
         '<radialGradient id="mo" cx=".38" cy=".35"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#64748b"/></radialGradient>',
         '<linearGradient id="pl" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#cbd5e1"/><stop offset="1" stop-color="#475569"/></linearGradient>',
         f'<linearGradient id="bm" gradientUnits="userSpaceOnUse" x1="-90" x2="0" y1="0" y2="0"><stop offset="0" stop-color="#fde68a" stop-opacity="0"/><stop offset="1" stop-color="#fff7d6"/></linearGradient>',
-        f'<clipPath id="before"><rect x="0" y="{TOP}" width="{BX}" height="{BOT - TOP}"/></clipPath>',
+        f'<clipPath id="before"><rect x="{WX0}" y="{TOP}" width="{BX - WX0}" height="{BOT - TOP}"/></clipPath>',
         f'<linearGradient id="fv" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".18" stop-color="#fff"/><stop offset=".82" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>',
         f'<linearGradient id="fh" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".25" stop-color="#fff"/></linearGradient>',
-        f'<mask id="mv" maskUnits="userSpaceOnUse" x="0" y="{TOP}" width="{SCR}" height="{BOT - TOP}"><rect y="{TOP}" width="{SCR}" height="{BOT - TOP}" fill="url(#fv)"/></mask>',
-        f'<mask id="mh" maskUnits="userSpaceOnUse" x="0" y="{TOP}" width="{BX}" height="{BOT - TOP}"><rect y="{TOP}" width="{BX}" height="{BOT - TOP}" fill="url(#fh)"/></mask>',
+        f'<mask id="mv" maskUnits="userSpaceOnUse" x="{WX0}" y="{TOP}" width="{SCR - WX0}" height="{BOT - TOP}"><rect x="{WX0}" y="{TOP}" width="{SCR - WX0}" height="{BOT - TOP}" fill="url(#fv)"/></mask>',
+        f'<mask id="mh" maskUnits="userSpaceOnUse" x="{WX0}" y="{TOP}" width="{BX - WX0}" height="{BOT - TOP}"><rect x="{WX0}" y="{TOP}" width="{BX - WX0}" height="{BOT - TOP}" fill="url(#fh)"/></mask>',
         f'<clipPath id="after"><rect x="{BX + 2}" y="{TOP}" width="{SCR - BX - 2}" height="{BOT - TOP}"/></clipPath>',
         "</defs>"]
-o = [nebula((330, 470), (870, 430), (300, 320), 220)]
+o = [nebula((370, 470), (900, 430), (300, 290), 220)]
 o.extend(stars(80))
 
 # --- speed of light ---------------------------------------------------------------
