@@ -25,3 +25,6 @@
 - id: spacetime
   label: Spacetime
   alt: Animated curved spacetime with an orbiting planet, bent light and its worldline
+- id: fourier
+  label: Fourier
+  alt: Animated Fourier series drawing a shape with epicycles, its spectrum and partial reconstructions
