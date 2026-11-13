@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, H, base_css, nebula, palette, save, stars, svg_open
+from common import DEFS, FONT, H, MONO, base_css, mobile, nebula, palette, save, stars, svg_open
 
 random.seed(11)
 T = 6.0
@@ -14,7 +14,6 @@ NS[-1] = 5
 GAP = 24
 ORANGE, AMBER = "#fb923c", "#fbbf24"
 WIN = 2
-DIGIT = ["#####", "....#", "...#.", "..#..", ".#...", ".#...", ".#..."]
 
 
 
@@ -37,6 +36,7 @@ css = [
     "@keyframes ls{0%,47%{opacity:0}51%{opacity:1}55%{opacity:.6}58%{opacity:1}64%,100%{opacity:0}}",
     "@keyframes ok{0%,50%{opacity:0}54%,92%{opacity:1}96%,100%{opacity:0}}",
     ".bar{transform-box:fill-box;transform-origin:0 50%}",
+    mobile(".lb{font-size:30px}.lb2{font-size:24px}"),
     ".f{fill:#fff;stroke-width:3;stroke-opacity:.5}.b{fill:#fbbf24;stroke:#fb923c;stroke-width:3;stroke-opacity:.5}",
 ] + base_css()
 for i in range(L):
@@ -61,19 +61,17 @@ STYLE_AT = len(o)
 o.append(nebula((440, 350), (770, 350), (330, 340), 260))
 o.extend(stars(90))
 
-# input image: a hand-written 7
-PS = 10
-gx, gy = 48, H / 2 - len(DIGIT) * PS / 2
-o.append(f'<rect x="{gx - 8}" y="{gy - 8:.0f}" width="{5 * PS + 16}" height="{len(DIGIT) * PS + 16}" rx="8" fill="#0b1023" fill-opacity=".7" stroke="#22d3ee" stroke-opacity=".4"/>')
-on, off = [], []
-for r, line in enumerate(DIGIT):
-    for c, ch in enumerate(line):
-        (on if ch == "#" else off).append(f"M{gx + c * PS + 1} {gy + r * PS + 1:.0f}h{PS - 2}v{PS - 2}h-{PS - 2}z")
-o.append(f'<path d="{"".join(off)}" fill="#22d3ee" fill-opacity=".08"/>')
-o.append(f'<path d="{"".join(on)}" fill="#67e8f9" style="animation:px {T}s infinite"/>')
-for y in ys(NS[0]):
+# input vector: one value per input neuron
+CS = 16
+gx = 72
+iy = ys(NS[0])
+o.append(f'<rect x="{gx - 8}" y="{iy[0] - CS / 2 - 8:.0f}" width="{CS + 16}" height="{iy[-1] - iy[0] + CS + 16:.0f}" rx="8" fill="#0b1023" fill-opacity=".7" stroke="#22d3ee" stroke-opacity=".4"/>')
+cells = "".join(f'<rect x="{gx}" y="{y - CS / 2:.0f}" width="{CS}" height="{CS}" rx="3" fill="#67e8f9" fill-opacity="{random.uniform(.2, 1):.2f}"/>' for y in iy)
+o.append(f'<g style="animation:px {T}s infinite">{cells}</g>')
+o.append(f'<text x="{gx + CS / 2}" y="{iy[0] - CS / 2 - 22:.0f}" text-anchor="middle" class="lb" {FONT} font-style="italic" font-size="18" fill="#a5f3fc">input</text>')
+for y in iy:
     for k in range(2):
-        o.append(f'<rect class="mv" x="{gx + 5 * PS + 14}" y="{y - 2:.0f}" width="7" height="4" rx="1" fill="#67e8f9" style="animation:fl 1.6s linear {-k * .8 - random.uniform(0, .4):.2f}s infinite"/>')
+        o.append(f'<rect class="mv" x="{gx + CS + 14}" y="{y - 2:.0f}" width="7" height="4" rx="1" fill="#67e8f9" style="animation:fl 1.6s linear {-k * .8 - random.uniform(0, .4):.2f}s infinite"/>')
 
 # connections (static, merged by weight) and backprop flashes (merged per transition)
 edges = []
@@ -114,13 +112,39 @@ for i in range(L):
 
 # output probabilities with the correct class marked
 bx = X1 + 26
-probs = [.12, .08, 1.0, .18, .06]
+EPOCHS = 4
+# the correct class gains confidence every epoch while the others fade, then training starts over
+probs = [.38, .24, None, .52, .3]
+win_p = [.5, .62, .74, .86]
+fade = [1, .8, .62, .45]
+
+
+def epoch_pct(k, u):
+    return (k + u / 100) * 100 / EPOCHS
+
+
 for j, y in enumerate(ys(NS[-1])):
-    p = probs[j]
-    css.append(f"@keyframes pr{j}{{0%,{fwd(L - 1):.1f}%{{transform:scaleX(.04);opacity:.4}}{fwd(L - 1) + 6:.1f}%,92%{{transform:scaleX({p});opacity:1}}97%,100%{{transform:scaleX(.04);opacity:.4}}}}")
+    frames = []
+    for k in range(EPOCHS):
+        p = win_p[k] if j == WIN else probs[j] * fade[k]
+        frames.append(f"{epoch_pct(k, 0):.2f}%,{epoch_pct(k, fwd(L - 1)):.2f}%{{transform:scaleX(.04);opacity:.4}}"
+                      f"{epoch_pct(k, fwd(L - 1) + 6):.2f}%,{epoch_pct(k, 92):.2f}%{{transform:scaleX({p:.2f});opacity:1}}"
+                      f"{epoch_pct(k, 97):.2f}%{{transform:scaleX(.04);opacity:.4}}")
+    css.append(f"@keyframes pr{j}{{{''.join(frames)}100%{{transform:scaleX(.04);opacity:.4}}}}")
     fill = ORANGE if j == WIN else "#a78bfa"
     o.append(f'<rect x="{bx}" y="{y - 5:.0f}" width="90" height="10" rx="3" fill="#a78bfa" fill-opacity=".1"/>')
-    o.append(f'<rect class="bar" x="{bx}" y="{y - 5:.0f}" width="90" height="10" rx="3" fill="{fill}" style="animation:pr{j} {T}s ease-out infinite"/>')
+    o.append(f'<rect class="bar" x="{bx}" y="{y - 5:.0f}" width="90" height="10" rx="3" fill="{fill}" style="animation:pr{j} {EPOCHS * T}s ease-out infinite"/>')
+by = ys(NS[-1])[-1] + 30
+for k in range(EPOCHS):
+    css.append(f"@keyframes ep{k}{{0%,{epoch_pct(k, 0):.2f}%{{opacity:0}}{epoch_pct(k, 1):.2f}%,{epoch_pct(k, 99):.2f}%{{opacity:1}}{epoch_pct(k, 100):.2f}%,100%{{opacity:0}}}}")
+    o.append(f'<text class="mv lb2" x="{bx + 45}" y="{by:.0f}" text-anchor="middle" {MONO} font-size="13" fill="#c4b5fd" style="animation:ep{k} {EPOCHS * T}s infinite">epoch {k + 1}</text>')
+
+# what the pulses mean
+css.append("@keyframes lf{0%,3%{opacity:0}7%,42%{opacity:1}48%,100%{opacity:0}}")
+css.append("@keyframes lb{0%,55%{opacity:0}60%,90%{opacity:1}95%,100%{opacity:0}}")
+o.append(f'<text class="mv lb" x="600" y="62" text-anchor="middle" {FONT} font-style="italic" font-size="22" fill="#e0e7ff" style="animation:lf {T}s infinite">forward pass →</text>')
+o.append(f'<text class="mv lb" x="600" y="62" text-anchor="middle" {FONT} font-style="italic" font-size="22" fill="{AMBER}" style="animation:lb {T}s infinite">← backpropagation</text>')
+o.append(f'<text x="{bx + 45}" y="{ys(NS[-1])[0] - 27:.0f}" text-anchor="middle" class="lb" {FONT} font-style="italic" font-size="18" fill="#fed7aa">output</text>')
 wy = ys(NS[-1])[WIN]
 o.append(f'<path d="M{bx + 100} {wy:.0f}l5 5 9-11" fill="none" stroke="#4ade80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0" style="animation:ok {T}s infinite"/>')
 o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity="0" style="animation:ls {T}s infinite"/>')
