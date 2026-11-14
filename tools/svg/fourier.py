@@ -52,7 +52,7 @@ css = [
     "@keyframes sp{to{transform:rotate(360deg)}}",
     "@keyframes tr{0%{opacity:1}100%{opacity:.1}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
-    mobile(".ax{font-size:22px}"),
+    mobile(".ax{font-size:22px}.cu{display:none}"),
 ] + base_css()
 defs = ["<defs>", *DEFS, "</defs>"]
 o = [nebula((330, 390), (836, 350), (320, 360), 280)]
@@ -113,5 +113,8 @@ for n, terms in enumerate(THUMBS):
     css.append(motion(f"m{n}", shape[::4]))
     o.append(f'<g class="mv" style="animation:m{n} {P}s linear infinite"><circle r="7" fill="url(#hl)"/><circle r="2.2" fill="#fff"/></g>')
     o.append(f'<text x="{num(cx)}" y="{TY + 72}" text-anchor="middle" class="ax" {MONO} font-size="12" fill="{c}">{terms}</text>')
+
+o.append(f'<text x="600" y="672" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
+         f'MP3 and JPEG files shrink by keeping only the strongest frequencies, like the few terms above</text>')
 
 write_svg(sys.argv[1], "Animated Fourier series drawing with epicycles", defs, css, o)

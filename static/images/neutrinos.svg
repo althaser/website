@@ -156,4 +156,5 @@
 <circle cx="440" cy="605" r="6" fill="#22d3ee"/><text x="452" y="612" class="fl" font-family="Cambria Math,Georgia,Times New Roman,serif" font-style="italic" font-size="22" fill="#22d3ee">ν<tspan class="fs" font-size="15" dy="4">e</tspan></text>
 <circle cx="570" cy="605" r="6" fill="#a855f7"/><text x="582" y="612" class="fl" font-family="Cambria Math,Georgia,Times New Roman,serif" font-style="italic" font-size="22" fill="#a855f7">ν<tspan class="fs" font-size="15" dy="4">μ</tspan></text>
 <circle cx="700" cy="605" r="6" fill="#fb923c"/><text x="712" y="612" class="fl" font-family="Cambria Math,Georgia,Times New Roman,serif" font-style="italic" font-size="22" fill="#fb923c">ν<tspan class="fs" font-size="15" dy="4">τ</tspan></text>
+<text x="600" y="664" text-anchor="middle" class="fc" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">Super-Kamiokande hides 50 000 tonnes of water 1 km underground to catch just a few a day</text>
 </svg>

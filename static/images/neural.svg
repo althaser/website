@@ -972,5 +972,5 @@
 <circle cx="1015" cy="350" r="70" fill="url(#ho)" opacity="0" style="animation:ls 6.0s infinite"/>
 </g>
 <text x="600" y="66" text-anchor="middle" class="ti" font-family="Cambria Math,Georgia,Times New Roman,serif" font-size="25" fill="#ede9fe">a neural network learning</text>
-<text x="600" y="664" text-anchor="middle" class="cu" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">this one has 935 weights to tune; large language models have hundreds of billions</text>
+<text x="600" y="664" text-anchor="middle" class="cu" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">this one has 935 connections; a human brain has about 100 trillion</text>
 </svg>

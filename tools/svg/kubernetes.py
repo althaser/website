@@ -1,7 +1,7 @@
 import random
 import sys
 
-from common import DEFS, MONO, base_css, mobile, motion, nebula, stars, write_svg
+from common import DEFS, MONO, base_css, mobile, motion, nebula, stars, subtitle, title, write_svg
 
 random.seed(3)
 T = 13.0
@@ -107,6 +107,7 @@ defs = ["<defs>", *DEFS,
 
 w(nebula((460, 360), (770, 340), (380, 360), 260))
 o.extend(stars(80, (NX[0] - 10, NY - 10, NX[3] + NW + 10, NY + NH + 60)))
+BODY = len(o)
 
 
 def cp_link(n):
@@ -199,5 +200,12 @@ w(f'<circle cx="{GX}" cy="{ING[1]}" r="30" fill="url(#hl)"/>'
   f'<g fill="none" stroke="#67e8f9" stroke-opacity=".85" stroke-width="1.4"><circle cx="{GX}" cy="{ING[1]}" r="18"/>'
   f'<ellipse cx="{GX}" cy="{ING[1]}" rx="8" ry="18"/><path d="M{GX - 18} {ING[1]}h36M{GX - 15} {ING[1] - 9}h30M{GX - 15} {ING[1] + 9}h30"/></g>')
 w(f'<text x="{GX}" y="{ING[1] + 40}" text-anchor="middle" class="lb" {MONO} font-size="13" fill="#67e8f9" fill-opacity=".75">users</text>')
+
+# the drawing (control plane down to the users label) is fitted below the title
+ZOOM, TOP = .94, 120
+Y0, Y1 = CPT - 6, ING[1] + 46
+o[BODY:] = [f'<g transform="translate(600 {TOP + ZOOM * (Y1 - Y0) / 2:.1f}) scale({ZOOM}) translate(-600 {-(Y0 + Y1) / 2:.1f})">', *o[BODY:], "</g>"]
+o.append(title(600, 66, "a self-healing cluster"))
+o.append(subtitle(600, 98, "one Kubernetes cluster can run up to 5 000 nodes and 150 000 pods"))
 
 write_svg(sys.argv[1], "Animated Kubernetes cluster", defs, css + kf, o)

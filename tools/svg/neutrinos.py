@@ -84,5 +84,8 @@ for n, (name, col) in enumerate(FLAVOURS):
     o.append(f'<circle cx="{x - 30}" cy="{OY + 45}" r="6" fill="{col}"/>'
              f'<text x="{x - 18}" y="{OY + 52}" class="fl" {FONT} font-style="italic" font-size="22" fill="{col}">ν<tspan class="fs" font-size="15" dy="4">{name}</tspan></text>')
 
+o.append(f'<text x="600" y="664" text-anchor="middle" class="fc" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
+         f'Super-Kamiokande hides 50 000 tonnes of water 1 km underground to catch just a few a day</text>')
+
 defs.append("</defs>")
 write_svg(sys.argv[1], "Animated neutrinos streaming from the Sun straight through the Earth, and one neutrino changing flavour as it travels", defs, css, o)

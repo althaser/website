@@ -123,6 +123,7 @@
 <g transform="translate(725.5 439.2)" style="animation:p6 12.72s linear infinite"><circle r="15.6" fill="url(#hl)"/><circle r="6" fill="#2dd4bf"/></g>
 <g transform="translate(882.9 391.8)" style="animation:p7 15.05s linear infinite"><circle r="15.6" fill="url(#hl)"/><circle r="6" fill="#a78bfa"/></g>
 <text x="600" y="66" text-anchor="middle" class="ti" font-family="Cambria Math,Georgia,Times New Roman,serif" font-size="25" fill="#ede9fe">the sun’s path through the galaxy</text>
+<text x="600" y="98" text-anchor="middle" class="sbt" font-family="Cambria Math,Georgia,Times New Roman,serif" font-size="18" fill="#c4b5fd" fill-opacity=".85">even sitting still, you travel about 830 000 km every hour around the galaxy</text>
 <text x="1100" y="338" text-anchor="end" class="ax" font-family="Consolas,monospace" font-size="13" fill="#ffd166" fill-opacity=".8">≈ 230 km/s</text>
 <circle cx="111" cy="642" r="4" fill="#a8a29e"/><text x="121" y="646" class="ax" font-family="Consolas,monospace" font-size="13" fill="#a8a29e">Mercury</text>
 <circle cx="241" cy="642" r="4" fill="#facc15"/><text x="251" y="646" class="ax" font-family="Consolas,monospace" font-size="13" fill="#facc15">Venus</text>

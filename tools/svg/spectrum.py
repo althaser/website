@@ -103,5 +103,8 @@ o.append(f'<text x="{ZX0 + 12}" y="{ZY + 5}" class="ax" {MONO} font-size="13" fo
 o.append(f'<text x="{X0}" y="640" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">← lower energy · longer waves</text>'
          f'<text x="{X1}" y="640" text-anchor="end" class="ax" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">higher energy · shorter waves →</text>')
 
+o.append(f'<text x="600" y="672" text-anchor="middle" class="ex" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
+         f'bees see ultraviolet and some snakes sense infrared, just beyond our visible slice</text>')
+
 defs.append("</defs>")
 write_svg(sys.argv[1], "Animated electromagnetic spectrum from radio waves to gamma rays, with wavelengths, frequencies and the visible colours", defs, css, o)

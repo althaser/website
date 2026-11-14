@@ -155,6 +155,6 @@ o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity
 o[BODY:] = [f'<g transform="translate(0 {SHIFT})">', *o[BODY:], "</g>"]
 o.append(title(600, 66, "a neural network learning"))
 o.append(f'<text x="600" y="664" text-anchor="middle" class="cu" {MONO} font-size="13" fill="#e0e7ff" fill-opacity=".6">'
-         f'this one has {len(edges)} weights to tune; large language models have hundreds of billions</text>')
+         f'this one has {len(edges)} connections; a human brain has about 100 trillion</text>')
 
 write_svg(sys.argv[1], "Animated neural network training", defs, css, o)

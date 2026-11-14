@@ -81,7 +81,7 @@ css = [
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     f".t{{stroke-width:3;stroke-linecap:butt;animation:tr {T}s linear infinite}}",
     f".f{{animation:fl {T}s infinite}}",
-    mobile(".ax{font-size:22px}.ct{font-size:24px}.zv{display:none}.ri{font-size:30px}"),
+    mobile(".ax{font-size:22px}.ct{font-size:24px}.zv{display:none}.ri{font-size:30px}.cu{display:none}"),
 ] + base_css()
 
 ys = [sy(0), sy(TMAX)]
@@ -196,5 +196,8 @@ for k in range(len(ZEROS) + 1):
     d = poly((px(x), py(psi_approx(x, k))) for x in xs)
     o.append(f'<g class="mv" style="animation:a{k} {T}s linear infinite"><path class="c" d="{d}" stroke="{c}" stroke-width="2" clip-path="url(#pc)"/>'
              f'<text x="{PX0 + 8}" y="{PY1 + 6}" class="ct" {MONO} font-size="13" fill="{c}">{k} zero{"" if k == 1 else "s"}</text></g>')
+
+o.append(f'<text x="600" y="676" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
+         f'computers have checked over 10 trillion zeros: every one sits on the critical line</text>')
 
 write_svg(sys.argv[1], "Animated Riemann zeta zeros", defs, css, o)

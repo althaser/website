@@ -125,9 +125,10 @@ o.append(f'<circle cx="{VX + VW * 26 / 50:.0f}" cy="{VY}" r="3.2" fill="#fde68a"
          f'<line x1="{VX + VW * 26 / 50:.0f}" y1="{VY - 6}" x2="{VX + VW * 26 / 50:.0f}" y2="{VY - 22}" stroke="#fde68a" stroke-opacity=".7"/>')
 
 # three facts
-facts = [("100 000", "light-years across"), ("26 000", "light-years from the centre"), ("230 million", "years for one orbit")]
+facts = [("100 000", "light-years across"), ("26 000", "light-years from the centre"), ("230 million", "years for one orbit"), ("≈ 20", "orbits since the Sun was born"),
+         ("100–400 billion", "stars"), ("4.5 billion", "years until it merges with Andromeda")]
 for n, (big, small) in enumerate(facts):
-    y = 250 + n * 80
+    y = 150 + n * 82
     o.append(f'<text x="1030" y="{y}" text-anchor="middle" class="ex" {FONT} font-size="24" fill="#fde68a">{big}</text>'
              f'<text x="1030" y="{y + 22}" text-anchor="middle" class="ex" {MONO} font-size="12" fill="{STAR}" fill-opacity=".6">{small}</text>')
 

@@ -1,7 +1,7 @@
 import random
 import sys
 
-from common import DEFS, base_css, nebula, stars, write_svg
+from common import DEFS, MONO, base_css, mobile, nebula, stars, subtitle, title, write_svg
 
 random.seed(7)
 STEP = 5.0
@@ -55,6 +55,7 @@ css = [
     "@keyframes up{0%{transform:translateY(0);opacity:0}3%{opacity:1}36%{transform:translateY(-345px);opacity:1}40%,100%{transform:translateY(-345px);opacity:0}}",
     "@keyframes sm{0%,37%{transform:translate(0,0);opacity:0}38%{opacity:1}45%{transform:translate(-336px,-52px);opacity:1}47%,100%{transform:translate(-336px,-52px);opacity:0}}",
     "@keyframes cur{0%{opacity:1}14%,82%{opacity:0}96%,100%{opacity:1}}",
+    mobile(".lb{font-size:22px}"),
 ] + base_css()
 for k, y in enumerate(LAYERS):
     p = 3 + (ROW_Y - 10 - y) / 345 * 33
@@ -74,6 +75,7 @@ css.append("@keyframes row{" + "".join(row) + "}")
 
 w(nebula((450, 380), (780, 300)))
 o.extend(stars(80))
+BODY = len(o)
 
 # layer planes with ghost sheets
 for k, y in reversed(list(enumerate(LAYERS))):
@@ -172,5 +174,16 @@ for k, wb in enumerate(WINNERS):
         f"{pct(g(k, 81))}{{transform:translate(0,0);opacity:0}}100%{{transform:translate(0,0);opacity:0}}}}"
     )
     w(f'<g opacity="0" style="animation:f{k} {T}s cubic-bezier(.45,0,.35,1) infinite"><use href="#o{(9 + k) % N}" x="{X9:.0f}" y="{ROW_Y}"/></g>')
+
+# the drawing (softmax bars down to the token row) is fitted below the title, with short labels
+ZOOM, TOP = .9, 128
+Y0, Y1 = 50, 625
+o[BODY:] = [f'<g transform="translate(600 {TOP + ZOOM * (Y1 - Y0) / 2:.1f}) scale({ZOOM}) translate(-600 {-(Y0 + Y1) / 2:.1f})">', *o[BODY:],
+            f'<text x="1000" y="160" class="lb" {MONO} font-size="13" fill="#fdba74" fill-opacity=".85">next token</text>',
+            f'<text x="1010" y="390" class="lb" {MONO} font-size="13" fill="#c4b5fd" fill-opacity=".75">layers</text>',
+            f'<text x="600" y="652" text-anchor="middle" class="lb" {MONO} font-size="13" fill="#67e8f9" fill-opacity=".75">tokens so far</text>',
+            "</g>"]
+o.append(title(600, 66, "predicting the next token"))
+o.append(subtitle(600, 98, "a large model weighs hundreds of billions of numbers for every word"))
 
 write_svg(sys.argv[1], "Animated transformer language model", defs, css, o)

@@ -150,4 +150,5 @@
 <text x="600.0" y="570" text-anchor="middle" class="ax" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".75">430–750 THz</text>
 <text x="312" y="475" class="ax" font-family="Consolas,monospace" font-size="13" font-weight="600" fill="#0b1023">700 nm</text><text x="888" y="475" text-anchor="end" class="ax" font-family="Consolas,monospace" font-size="13" font-weight="600" fill="#0b1023">400 nm</text>
 <text x="70" y="640" class="ax" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">← lower energy · longer waves</text><text x="1130" y="640" text-anchor="end" class="ax" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">higher energy · shorter waves →</text>
+<text x="600" y="672" text-anchor="middle" class="ex" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">bees see ultraviolet and some snakes sense infrared, just beyond our visible slice</text>
 </svg>

@@ -1,7 +1,7 @@
 import random
 import sys
 
-from common import DEFS, MONO, base_css, mobile, nebula, stars, write_svg
+from common import DEFS, MONO, base_css, mobile, nebula, stars, subtitle, title, write_svg
 
 random.seed(5)
 W = 2.4
@@ -166,8 +166,11 @@ o.append(f'<g class="sl"><rect x="{DX + DW / 2 - 36}" y="{L2Y + 2:.1f}" width="7
 o.append(f'<text x="{DX + 4}" y="{DY - 12}" class="sl" {LB}>streaming multiprocessors</text>')
 o.append(f'<text x="{ex1 + 14}" y="{PY + PH + 25}" class="lb" {LB}>PCIe</text>')
 
-# the drawing is laid out at 1:1 and then enlarged to fill the canvas, centred on it
-ZOOM, CY0 = 1.1, (OUT_Y - 10 + PY + PH + 40) / 2
-o[BODY:] = [f'<g transform="translate(600 350) scale({ZOOM}) translate(-600 {-CY0:.1f})">', *o[BODY:], "</g>"]
+# the drawing is laid out at 1:1 and then fitted below the title
+ZOOM, TOP = .94, 120
+Y0, Y1 = OUT_Y - 10, PY + PH + 40
+o[BODY:] = [f'<g transform="translate(600 {TOP + ZOOM * (Y1 - Y0) / 2:.1f}) scale({ZOOM}) translate(-600 {-(Y0 + Y1) / 2:.1f})">', *o[BODY:], "</g>"]
+o.append(title(600, 66, "thousands of cores in parallel"))
+o.append(subtitle(600, 98, "an NVIDIA H100 has 16 896 cores working at the same time"))
 
 write_svg(sys.argv[1], "Animated GPU parallel computing", defs, css + kf, o)
