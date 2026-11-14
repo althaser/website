@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, PALETTE, STAR, back, base_css, mobile, motion, nebula, num, poly, stars, sub, title, write_svg
+from common import DEFS, FONT, MONO, PALETTE, STAR, back, base_css, mobile, motion, nebula, num, poly, stars, sub, title, write_svg
 
 random.seed(7)
 CYAN, ORANGE = PALETTE[0], PALETTE[-1]
@@ -93,13 +93,12 @@ straight = [proj(px, -95)[:2] for px in range(-L, L + 1, 5)]
 o.append(f'<path class="c" d="{poly(straight)}" stroke="{STAR}" stroke-opacity=".35" stroke-dasharray="3 7" mask="url(#gm)"/>')
 o.append(f'<path class="c" d="{poly(rp)}" stroke="#fde68a" stroke-opacity=".25" stroke-width="1.2" mask="url(#gm)"/>')
 TOTAL = PHOTON + PH_GAP
-seg = 4
-for k in range(seg, len(rp), seg):
-    dl = (k - seg) / (len(rp) - 1) * PHOTON - TOTAL
-    o.append(f'<path class="c mv" d="{poly(rp[k - seg:k + 1])}" stroke="#fde68a" stroke-width="2.6" style="animation:tr {TOTAL}s linear {dl:.2f}s infinite"/>')
-idx = [round(i * (len(rp) - 1) / 60) for i in range(61)]
+# one trail piece per ray step, lit once the photon reaches its end; the photon passes through every step
+for k in range(1, len(rp)):
+    dl = k / (len(rp) - 1) * PHOTON - TOTAL
+    o.append(f'<path class="c mv" d="{poly(rp[k - 1:k + 1])}" stroke="#fde68a" stroke-width="2.6" style="animation:tr {TOTAL}s linear {dl:.2f}s infinite"/>')
 scan = PHOTON / TOTAL * 100
-body = "".join(f"{scan * i / 60:.2f}%{{transform:translate({num(rp[j][0])}px,{num(rp[j][1])}px)}}" for i, j in enumerate(idx))
+body = "".join(f"{scan * j / (len(rp) - 1):.2f}%{{transform:translate({num(x)}px,{num(y)}px)}}" for j, (x, y) in enumerate(rp))
 css.append(f"@keyframes ph{{{body}100%{{transform:translate({num(rp[-1][0])}px,{num(rp[-1][1])}px)}}}}")
 css.append(f"@keyframes po{{0%,{scan:.1f}%{{opacity:1}}{scan + 2:.1f}%,100%{{opacity:0}}}}")
 o.append(f'<g class="mv" style="animation:po {TOTAL}s linear infinite"><g style="animation:ph {TOTAL}s linear infinite"><circle r="14" fill="url(#hl)"/><circle r="3.2" fill="#fff"/></g></g>')
@@ -108,6 +107,8 @@ o.append(f'<g class="mv" style="animation:po {TOTAL}s linear infinite"><g style=
 sx, sy, _ = proj(0, 0)
 o.append(f'<circle class="gl" cx="{num(sx)}" cy="{num(sy)}" r="62" fill="url(#sg)" style="animation:gl 4s ease-in-out infinite"/>')
 o.append(f'<circle cx="{num(sx)}" cy="{num(sy)}" r="15" fill="#fff7ed"/>')
+o.append(f'<text x="{num(sx)}" y="{num(sy + 46)}" text-anchor="middle" class="ax" {MONO} font-size="13" fill="#fde68a" fill-opacity=".85">star</text>')
+o.append(f'<text x="{num(rp[0][0] + 4)}" y="{num(rp[0][1] - 12)}" class="ax" {MONO} font-size="13" fill="#fde68a" fill-opacity=".8">light</text>')
 o.append(f'<path class="c" d="{poly(orbit[120:])}" stroke="{CYAN}" stroke-opacity=".5" stroke-dasharray="4 6"/>')
 
 # planet: position and perspective size along the orbit
@@ -118,7 +119,8 @@ for i in range(121):
     pts.append((px, py, k))
 body = "".join(f"{100 * i / 120:.2f}%{{transform:translate({num(px)}px,{num(py)}px) scale({k:.3f})}}" for i, (px, py, k) in enumerate(pts))
 css.append(f"@keyframes pl{{{body}}}")
-o.append(f'<g transform="translate({num(pts[0][0])} {num(pts[0][1])}) scale({pts[0][2]:.3f})" style="animation:pl {P}s linear infinite"><circle r="22" fill="url(#hl)"/><circle r="9" fill="url(#pg)"/></g>')
+o.append(f'<g transform="translate({num(pts[0][0])} {num(pts[0][1])}) scale({pts[0][2]:.3f})" style="animation:pl {P}s linear infinite"><circle r="22" fill="url(#hl)"/><circle r="9" fill="url(#pg)"/>'
+         f'<text x="14" y="-12" class="ax" {MONO} font-size="13" fill="#a5f3fc">planet</text></g>')
 o.append(title(CX, 66, f'G{sub("μν")}{back(" = 8πG T")}{sub("μν")}'))
 
 # worldline: the same orbit drawn in (x, y, t) is a helix inside the light cone
