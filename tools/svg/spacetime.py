@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, MONO, PALETTE, STAR, back, base_css, mobile, motion, nebula, num, poly, stars, sub, title, write_svg
+from common import DEFS, FONT, MONO, PALETTE, STAR, base_css, mobile, motion, nebula, num, poly, stars, title, write_svg
 
 random.seed(7)
 CYAN, ORANGE = PALETTE[0], PALETTE[-1]
@@ -42,7 +42,7 @@ css = [
     f"@keyframes hs{{to{{transform:translateY({PITCH}px)}}}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     ".gl{transform-box:fill-box;transform-origin:center}",
-    mobile(".ax{font-size:26px}"),
+    mobile(".ax{font-size:26px}.sbt{font-size:26px}.sbs{font-size:17px}"),
 ] + base_css()
 
 defs = ["<defs>", *DEFS,
@@ -121,7 +121,10 @@ body = "".join(f"{100 * i / 120:.2f}%{{transform:translate({num(px)}px,{num(py)}
 css.append(f"@keyframes pl{{{body}}}")
 o.append(f'<g transform="translate({num(pts[0][0])} {num(pts[0][1])}) scale({pts[0][2]:.3f})" style="animation:pl {P}s linear infinite"><circle r="22" fill="url(#hl)"/><circle r="9" fill="url(#pg)"/>'
          f'<text x="14" y="-12" class="ax" {MONO} font-size="13" fill="#a5f3fc">planet</text></g>')
-o.append(title(CX, 66, f'G{sub("μν")}{back(" = 8πG T")}{sub("μν")}'))
+o.append(title(CX, 66, "mass curves spacetime"))
+# Einstein's field equation as a small subtitle under the plain-words title
+o.append(f'<text x="{CX}" y="98" text-anchor="middle" class="sbt" {FONT} font-size="18" fill="#c4b5fd" fill-opacity=".85">'
+         f'G<tspan class="sbs" font-size="12" dy="4">μν</tspan><tspan dy="-4"> = 8πG T</tspan><tspan class="sbs" font-size="12" dy="4">μν</tspan></text>')
 
 # worldline: the same orbit drawn in (x, y, t) is a helix inside the light cone
 def hp(phase, t):
