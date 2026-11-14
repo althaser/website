@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, H, MONO, base_css, mobile, nebula, palette, stars, write_svg
+from common import DEFS, FONT, H, MONO, base_css, mobile, nebula, palette, stars, title, write_svg
 
 random.seed(11)
 T = 6.0
@@ -14,6 +14,7 @@ NS[-1] = 5
 GAP = 24
 ORANGE, AMBER = "#fb923c", "#fbbf24"
 WIN = 2
+SHIFT = 24
 
 
 
@@ -36,7 +37,7 @@ css = [
     "@keyframes ls{0%,47%{opacity:0}51%{opacity:1}55%{opacity:.6}58%{opacity:1}64%,100%{opacity:0}}",
     "@keyframes ok{0%,50%{opacity:0}54%,92%{opacity:1}96%,100%{opacity:0}}",
     ".bar{transform-box:fill-box;transform-origin:0 50%}",
-    mobile(".lb{font-size:30px}.lb2{font-size:24px}"),
+    mobile(".lb{font-size:26px}.lb2{font-size:24px}.cu{display:none}"),
     ".f{fill:#fff;stroke-width:3;stroke-opacity:.5}.b{fill:#fbbf24;stroke:#fb923c;stroke-width:3;stroke-opacity:.5}",
 ] + base_css()
 for i in range(L):
@@ -60,6 +61,7 @@ o = []
 
 o.append(nebula((440, 350), (770, 350), (330, 340), 260))
 o.extend(stars(90))
+BODY = len(o)
 
 # input vector: one value per input neuron
 CS = 16
@@ -142,11 +144,17 @@ for k in range(EPOCHS):
 # what the pulses mean
 css.append("@keyframes lf{0%,3%{opacity:0}7%,42%{opacity:1}48%,100%{opacity:0}}")
 css.append("@keyframes lb{0%,55%{opacity:0}60%,90%{opacity:1}95%,100%{opacity:0}}")
-o.append(f'<text class="mv lb" x="600" y="62" text-anchor="middle" {FONT} font-style="italic" font-size="22" fill="#e0e7ff" style="animation:lf {T}s infinite">forward pass →</text>')
-o.append(f'<text class="mv lb" x="600" y="62" text-anchor="middle" {FONT} font-style="italic" font-size="22" fill="{AMBER}" style="animation:lb {T}s infinite">← backpropagation</text>')
+o.append(f'<text class="mv lb" x="600" y="{98 - SHIFT}" text-anchor="middle" {FONT} font-style="italic" font-size="18" fill="#e0e7ff" style="animation:lf {T}s infinite">forward pass →</text>')
+o.append(f'<text class="mv lb" x="600" y="{98 - SHIFT}" text-anchor="middle" {FONT} font-style="italic" font-size="18" fill="{AMBER}" style="animation:lb {T}s infinite">← backpropagation</text>')
 o.append(f'<text x="{bx + 45}" y="{ys(NS[-1])[0] - 27:.0f}" text-anchor="middle" class="lb" {FONT} font-style="italic" font-size="18" fill="#fed7aa">output</text>')
 wy = ys(NS[-1])[WIN]
 o.append(f'<path d="M{bx + 100} {wy:.0f}l5 5 9-11" fill="none" stroke="#4ade80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0" style="animation:ok {T}s infinite"/>')
 o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity="0" style="animation:ls {T}s infinite"/>')
+
+# the whole network sits a little lower, leaving room for the title; the pass labels act as its subtitle
+o[BODY:] = [f'<g transform="translate(0 {SHIFT})">', *o[BODY:], "</g>"]
+o.append(title(600, 66, "a neural network learning"))
+o.append(f'<text x="600" y="664" text-anchor="middle" class="cu" {MONO} font-size="13" fill="#e0e7ff" fill-opacity=".6">'
+         f'this one has {len(edges)} weights to tune; large language models have hundreds of billions</text>')
 
 write_svg(sys.argv[1], "Animated neural network training", defs, css, o)
