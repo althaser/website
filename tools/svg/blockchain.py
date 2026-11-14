@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, MONO, PALETTE, base_css, nebula, stars, write_svg
+from common import DEFS, MONO, PALETTE, base_css, mobile, nebula, stars, subtitle, title, write_svg
 
 random.seed(9)
 P = 4.0
@@ -24,6 +24,7 @@ css = [
     "@keyframes sp{to{transform:rotate(360deg)}}",
     "@keyframes wk{0%,100%{opacity:1}50%{opacity:.3}}",
     "@keyframes gs{0%{transform:translate(0,0);opacity:0}5%{opacity:1}45%{transform:translate(var(--x),var(--y));opacity:1}50%,100%{transform:translate(var(--x),var(--y));opacity:0}}",
+    mobile(),
 ] + base_css(None)
 
 
@@ -37,6 +38,7 @@ def kf(name, frames):
 
 o = [nebula((420, 260), (800, 465), (380, 380), 235)]
 o.extend(stars(90))
+BODY = len(o)
 
 # P2P mesh
 nodes = []
@@ -168,4 +170,10 @@ defs = ["<defs>", *DEFS,
         '<linearGradient id="fadeX" gradientUnits="userSpaceOnUse" x1="0" x2="1200" y1="0" y2="0"><stop offset=".138" stop-color="#fff" stop-opacity="0"/><stop offset=".228" stop-color="#fff"/><stop offset=".89" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>',
         '<mask id="chainFade" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="700"><rect width="1200" height="700" fill="url(#fadeX)"/></mask>',
         "</defs>"]
+# the drawing (y 30 to 650) is shrunk a little and lowered to make room for the title
+ZOOM, TOP = .88, 118
+o[BODY:] = [f'<g transform="translate(600 {TOP}) scale({ZOOM}) translate(-600 -30)">', *o[BODY:], "</g>"]
+o.append(title(600, 66, "mining a new block"))
+o.append(subtitle(600, 98, "Bitcoin has added a block about every 10 minutes since 2009"))
+
 write_svg(sys.argv[1], "Animated blockchain processing", defs, css, o)
