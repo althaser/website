@@ -41,7 +41,7 @@
 - id: spacetime
   label: SpaceTime
   alt: Animated curved spacetime with an orbiting planet, bent light and its worldline
-  group: science
+  group: astronomy
   caption: "Mass curves spacetime: a planet orbits inside the well, light bends past the star and every object follows its worldline."
 - id: fourier
   label: Fourier
@@ -51,7 +51,7 @@
 - id: solarsystem
   label: SolarSystem
   alt: Animated solar system moving through space, the planets tracing helices around the Sun's path
-  group: science
+  group: astronomy
   caption: "As the Sun travels through the galaxy, each planet traces a helix around its path."
 - id: light
   label: Light
@@ -66,7 +66,7 @@
 - id: milkyway
   label: MilkyWay
   alt: Animated Milky Way seen from above, with its spiral arms, central bar and the Sun's position
-  group: science
+  group: astronomy
   caption: "Our galaxy is a barred spiral about 100 000 light-years across; the Sun sits on a small spur between two arms, 26 000 light-years from the centre, and takes 230 million years to go round once."
 - id: neutrinos
   label: Neutrinos

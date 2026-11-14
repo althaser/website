@@ -1,13 +1,13 @@
 {{ define "main" }}
 {{ $groups := slice }}
 {{ $demos := slice }}
-{{ range slice (dict "id" "computing" "label" "Computing") (dict "id" "science" "label" "Math & Physics") }}
+{{ range slice (dict "id" "computing" "label" "Computing") (dict "id" "science" "label" "Math & Physics") (dict "id" "astronomy" "label" "Astronomy") }}
 {{ $items := sort (where hugo.Data.visuals "group" .id) "label" }}
 {{ $groups = $groups | append (merge . (dict "items" $items)) }}
 {{ $demos = $demos | append $items }}
 {{ end }}
 {{ if ne (len $demos) (len hugo.Data.visuals) }}
-{{ errorf "data/visuals.yaml: every visual needs a group of computing or science" }}
+{{ errorf "data/visuals.yaml: every visual needs a group of computing, science or astronomy" }}
 {{ end }}
 <div class="page-shell prose dark:prose-invert max-w-none">
   <h1 class="mt-1 mb-4">{{ .Title }}</h1>
