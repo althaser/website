@@ -73,3 +73,8 @@
   alt: Animated neutrinos streaming from the Sun straight through the Earth, and one neutrino changing flavour as it travels
   group: science
   caption: "Neutrinos barely interact with matter: billions from the Sun cross every square centimetre of us each second, pass straight through the Earth, and switch between three flavours as they travel."
+- id: laplace
+  label: Laplace
+  alt: Animated Laplace transform, a damped, steady and growing signal with its poles moving across the s-plane
+  group: science
+  caption: "The Laplace transform turns a signal in time into a few points, its poles, in the s-plane: poles on the left mean it dies out, on the axis it rings forever, and on the right it grows without limit."
