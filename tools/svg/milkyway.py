@@ -57,7 +57,7 @@ defs = ["<defs>", *DEFS,
         "</defs>"]
 o = [nebula((600, 392), (600, 392), (330, 300), 300)]
 o.extend(stars(90))
-o.append(title(600, 66, "the Milky Way"))
+o.append(title(600, 66, "the milky way"))
 
 g = [f'<circle cx="{CX}" cy="{CY}" r="{R * 1.08:.0f}" fill="url(#dk)"/>']
 

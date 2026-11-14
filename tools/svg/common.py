@@ -56,8 +56,24 @@ def motion(name, points):
 
 
 def title(x, y, body):
-    """Panel title; `body` may hold sub() spans."""
+    """Panel title, always lowercase; `body` may hold sub() spans."""
+    if any(c.isupper() for c in body if c.isascii() and c.isalpha()) and "<" not in body:
+        raise ValueError(f"titles are lowercase: {body!r}")
     return f'<text x="{x}" y="{y}" text-anchor="middle" class="ti" {FONT} font-size="25" fill="#ede9fe">{body}</text>'
+
+
+def subtitle(x, y, body):
+    """Smaller line under a title, usually the formula behind it; `body` may hold small() and base() spans."""
+    return f'<text x="{x}" y="{y}" text-anchor="middle" class="sbt" {FONT} font-size="18" fill="#c4b5fd" fill-opacity=".85">{body}</text>'
+
+
+def small(text, up=False):
+    """Subscript (or superscript with up=True) inside a subtitle; follow it with base() to return to the baseline."""
+    return f'<tspan class="sbs" font-size="12" dy="{-7 if up else 4}">{text}</tspan>'
+
+
+def base(text, up=False):
+    return f'<tspan dy="{7 if up else -4}">{text}</tspan>'
 
 
 def sub(text, up=False):
@@ -71,7 +87,7 @@ def back(text, up=False):
 
 def mobile(rules=""):
     """Phone sizes: titles and subscripts are shared, `rules` adds the image's own."""
-    return f"@media (max-width:520px){{.ti{{font-size:34px}}.su{{font-size:23px}}{rules}}}"
+    return f"@media (max-width:520px){{.ti{{font-size:34px}}.su{{font-size:23px}}.sbt{{font-size:26px}}.sbs{{font-size:17px}}{rules}}}"
 
 
 def svg_open(label, x=0, y=0):

@@ -33,7 +33,7 @@ o = [nebula((330, 300), (840, 330), (300, 340), 260)]
 o.extend(stars(90))
 
 # --- from the Sun, straight through the Earth -------------------------------------
-o.append(title(600, 66, "from the Sun, straight through the Earth"))
+o.append(title(600, 66, "from the sun, straight through the earth"))
 o.append(f'<circle cx="{EX}" cy="{EY}" r="{ER}" fill="url(#ea)" stroke="#60a5fa" stroke-opacity=".5"/>'
          f'<circle cx="{EX}" cy="{EY}" r="{ER * .45:.0f}" fill="#fb923c" fill-opacity=".12"/>')
 o.append(f'<text x="{EX}" y="{EY + ER + 28}" text-anchor="middle" class="ax" {MONO} font-size="13" fill="#93c5fd" fill-opacity=".8">Earth</text>')

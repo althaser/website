@@ -12,7 +12,7 @@
 <clipPath id="b5"><rect x="818.2" y="105" width="187.1" height="60"/></clipPath>
 <clipPath id="b6"><rect x="1005.3" y="105" width="124.7" height="60"/></clipPath>
 </defs>
-<style>@keyframes wv{to{transform:translateX(var(--d))}}.c{fill:none;stroke-linecap:round;stroke-linejoin:round}@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.ax{font-size:22px}.bn{font-size:26px}.ex{display:none}}@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}</style>
+<style>@keyframes wv{to{transform:translateX(var(--d))}}.c{fill:none;stroke-linecap:round;stroke-linejoin:round}@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.sbt{font-size:26px}.sbs{font-size:17px}.ax{font-size:22px}.bn{font-size:26px}.ex{display:none}}@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}</style>
 <ellipse cx="380" cy="380" rx="340" ry="260" fill="url(#nb1)"/><ellipse cx="820" cy="360" rx="340" ry="260" fill="url(#nb2)"/>
 <circle cx="1079" cy="434" r="1" fill="#e0e7ff" style="animation:tw 6.9s -2.0s infinite"/>
 <circle cx="1116" cy="687" r="1" fill="#e0e7ff" opacity="0.19"/>

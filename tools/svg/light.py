@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, MONO, STAR, base_css, mobile, nebula, num, palette, poly, stars, title, write_svg
+from common import DEFS, FONT, MONO, STAR, base_css, mobile, nebula, num, palette, poly, stars, subtitle, title, write_svg
 
 random.seed(13)
 
@@ -47,7 +47,8 @@ o = [nebula((370, 470), (900, 430), (300, 290), 220)]
 o.extend(stars(80))
 
 # --- speed of light ---------------------------------------------------------------
-o.append(title(600, 66, "c = 299 792 458 m/s"))
+o.append(title(600, 66, "light: wave or particle"))
+o.append(subtitle(600, 98, "c = 299 792 458 m/s"))
 o.append(f'<line x1="{EX + ER}" y1="{LY}" x2="{MX - MR}" y2="{LY}" stroke="{STAR}" stroke-opacity=".18" stroke-dasharray="2 6"/>')
 o.append(f'<circle cx="{EX}" cy="{LY}" r="{ER * 1.6:.0f}" fill="url(#hl)" opacity=".5"/><circle cx="{EX}" cy="{LY}" r="{ER}" fill="url(#ea)"/>')
 o.append(f'<circle cx="{MX}" cy="{LY}" r="{MR}" fill="url(#mo)"/>')
@@ -67,7 +68,8 @@ o.append(f'<circle class="mv" cx="{MX}" cy="{LY}" r="26" fill="url(#hl)" style="
 o.append(f'<text class="mv ax" x="{MX}" y="{LY - 26}" text-anchor="middle" {MONO} font-size="14" fill="#fde68a" style="animation:ct {PC}s linear infinite">{TRIP} s</text>')
 
 # --- wave: double slit ------------------------------------------------------------
-o.append(title((SX + SCR) / 2, 296, "wave · double slit"))
+o.append(title((SX + SCR) / 2, 280, "wave"))
+o.append(subtitle((SX + SCR) / 2, 312, "double slit"))
 rings = int(400 / LAM)
 
 
@@ -109,7 +111,8 @@ o.append(f'<path d="{poly(prof)}" fill="none" stroke="#f0abfc" stroke-opacity=".
 o.append(f'<line x1="{SCR + 12}" y1="{TOP}" x2="{SCR + 12}" y2="{BOT}" stroke="{STAR}" stroke-opacity=".2"/>')
 
 # --- particle: photoelectric effect -----------------------------------------------
-o.append(title(915, 296, "particle · E = hf"))
+o.append(title(915, 280, "particle"))
+o.append(subtitle(915, 312, "E = hf"))
 o.append(f'<rect x="{PLX0}" y="{PLY}" width="{PLX1 - PLX0}" height="22" rx="3" fill="url(#pl)" fill-opacity=".85"/>')
 o.append(f'<text x="{(PLX0 + PLX1) / 2}" y="{PLY + 15}" text-anchor="middle" {MONO} font-size="12" fill="#1e293b">metal</text>')
 hits = 6
@@ -117,7 +120,7 @@ for n in range(hits):
     violet = n % 2 == 0
     col, wl = ("#a78bfa", 7) if violet else ("#f87171", 15)
     hx = PLX0 + 60 + (PLX1 - PLX0 - 120) * ((n * 3) % hits + .5) / hits
-    sx, sy = hx - 120, PLY - 270
+    sx, sy = hx - 120, PLY - 250
     ang = math.atan2(PLY - sy, hx - sx)
     length = math.hypot(hx - sx, PLY - sy)
     squiggle = poly((-36 + t, 5 * math.sin(2 * math.pi * t / wl)) for t in range(0, 37, 1))

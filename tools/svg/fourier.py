@@ -3,13 +3,13 @@ import math
 import random
 import sys
 
-from common import DEFS, MONO, STAR, back, base_css, mobile, motion, nebula, num, palette, poly, stars, sub, title, write_svg
+from common import DEFS, MONO, STAR, base, base_css, mobile, motion, nebula, num, palette, poly, small, stars, subtitle, title, write_svg
 
 random.seed(5)
 P = 14.0
 KMAX = 20
 EX, EY, SCALE = 296, 395, 1.9
-SPX0, SPX1, SPY0, SPY1 = 616, 1096, 355, 120
+SPX0, SPX1, SPY0, SPY1 = 616, 1096, 355, 136
 THUMBS, TY, TS = (2, 5, 10, 2 * KMAX + 1), 555, .27
 
 # a stylised pi, traced clockwise
@@ -84,10 +84,12 @@ for k in order:
     prev_k, prev_arg = k, arg
 chain += '<circle r="12" fill="url(#hl)"/><circle r="3.5" fill="#fff"/>' + close
 o.append(chain)
-o.append(title(EX, 66, f'f(t) = Σ c{sub("k")}{back(" e")}{sub("2πikt", up=True)}'))
+o.append(title(EX, 66, "circles drawing a shape"))
+o.append(subtitle(EX, 98, f"f(t) = Σ c{small('k')}{base(' e')}{small('2πikt', up=True)}"))
 
 # spectrum: |c_k| for every frequency, coloured like its circle
-o.append(title((SPX0 + SPX1) / 2, 66, f'|c{sub("k")}{back("|  spectrum")}'))
+o.append(title((SPX0 + SPX1) / 2, 66, "frequency spectrum"))
+o.append(subtitle((SPX0 + SPX1) / 2, 98, f"|c{small('k')}{base('|')}"))
 o.append(f'<line x1="{SPX0 - 10}" y1="{SPY0}" x2="{SPX1 + 10}" y2="{SPY0}" stroke="{STAR}" stroke-opacity=".35"/>')
 peak = max(abs(coef[k]) for k in order)
 bw = (SPX1 - SPX0) / (2 * KMAX + 1)

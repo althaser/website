@@ -104,7 +104,7 @@ o.append(f'<circle cx="{SX}" cy="{SY}" r="70" fill="url(#sun)"/><circle cx="{SX}
 o.append(f'<g mask="url(#tm)">{"".join(front)}</g>')
 o.extend(planets)
 
-o.append(title(600, 66, "the Sun’s path through the galaxy"))
+o.append(title(600, 66, "the sun’s path through the galaxy"))
 o.append(f'<text x="{num(SX + DX * 300)}" y="{num(SY + DY * 300 - 12)}" text-anchor="end" class="ax" {MONO} font-size="13" fill="#ffd166" fill-opacity=".8">≈ 230 km/s</text>')
 gap = 1040 / len(PLANETS)
 for n, (name, *_, col, size) in enumerate(PLANETS):

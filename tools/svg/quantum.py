@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, MONO, PALETTE, STAR, base_css, nebula, palette, stars, write_svg
+from common import DEFS, MONO, PALETTE, STAR, base, base_css, mobile, nebula, palette, small, stars, subtitle, title, write_svg
 
 random.seed(4)
 NQ = 8
@@ -30,6 +30,7 @@ css = [
     "@keyframes nd{0%{transform:rotate(-40deg)}10%{transform:rotate(32deg)}24%{transform:rotate(-12deg)}40%,100%{transform:rotate(-40deg)}}",
     ".hb{transform-box:fill-box;transform-origin:0 50%}",
     ".rp{transform-box:fill-box;transform-origin:center}",
+    mobile(".cu{display:none}"),
 ] + base_css(None)
 
 # wave packet with a gaussian envelope
@@ -131,5 +132,12 @@ for q, y in enumerate(WY):
     o.append(f'<rect x="{hx0}" y="{y - 6}" width="{hw}" height="12" rx="3" fill="{CYAN}" fill-opacity=".55"/>')
     o.append(f'<rect class="hb" x="{hx0}" y="{y - 6}" width="{hw}" height="12" rx="3" fill="{ORANGE}" style="animation:h{q} {HT}s ease-in-out infinite"/>')
     o.append(f'<line x1="{hx0 + hw / 2}" y1="{y - 9}" x2="{hx0 + hw / 2}" y2="{y + 9}" stroke="{STAR}" stroke-opacity=".35" stroke-dasharray="2 2"/>')
+
+# title and a curiosity; the view is shifted by 17 px, so its centre is at x = 583
+MIDX = 600 - 17
+o.append(title(MIDX, 66, "a quantum circuit"))
+o.append(subtitle(MIDX, 98, f"8 qubits hold 2{small('8', up=True)}{base(' = 256 states at once', up=True)}"))
+o.append(f'<text x="{MIDX}" y="640" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
+         f'with 300 qubits, that is more states than there are atoms in the universe</text>')
 
 write_svg(sys.argv[1], "Animated quantum circuit", defs, css, o, x=-17)
