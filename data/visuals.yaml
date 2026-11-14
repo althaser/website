@@ -37,7 +37,7 @@
   label: Riemann
   alt: Animated Riemann zeta function zeros on the critical line
   group: science
-  caption: "Every zero of ζ on the critical line Re(s) = ½ adds a wave that sharpens the count of the prime numbers."
+  caption: "Every zero of ζ on the critical line Re(s) = ½ adds a wave that sharpens the count of the prime numbers. The third graph shows ψ(x), a staircase that steps up at every prime (and prime power) up to x: the smooth curve is rebuilt from the zeros alone, and each new zero brings it closer to the exact steps."
 - id: spacetime
   label: SpaceTime
   alt: Animated curved spacetime with an orbiting planet, bent light and its worldline

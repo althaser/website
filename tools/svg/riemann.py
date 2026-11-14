@@ -124,16 +124,25 @@ CHUNK = 10
 for n, k in enumerate(range(0, len(pts) - 1, CHUNK)):
     end = min(k + CHUNK, len(pts) - 1)
     c = palette(samples[(k + end) // 2] / TMAX)
-    a = min(pct(samples[end]), SCAN * 100 - .5)
-    css.append(f"@keyframes c{n}{{0%,{a:.2f}%{{opacity:0}}{a + .4:.2f}%,{SCAN * 100:.0f}%{{opacity:1}}{SCAN * 100 + 3:.0f}%,100%{{opacity:0}}}}")
+    a = pct(samples[end])
+    hold = max(a + .4, SCAN * 100)
+    css.append(f"@keyframes c{n}{{0%,{a:.2f}%{{opacity:0}}{a + .4:.2f}%,{hold:.2f}%{{opacity:1}}{SCAN * 100 + 3:.0f}%,100%{{opacity:0}}}}")
     defs.insert(-1, f'<path id="k{n}" d="{poly(pts[k:end + 1])}"/>')
     o.append(f'<g class="c" style="animation:c{n} {T}s linear infinite;stroke-linecap:butt" stroke="{c}"><use href="#k{n}" stroke-opacity=".18" stroke-width="6"/>'
              f'<use href="#k{n}" stroke-opacity=".8" stroke-width="1.8"/></g>')
+# breakpoints at most PIECE px (or SUB samples) apart: the pen moves through them and each trail piece lights once the pen reaches its end
+PIECE = 12
+marks, run = [0], 0.0
+for k in range(1, len(pts)):
+    run += math.dist(pts[k - 1], pts[k])
+    if run >= PIECE or k - marks[-1] >= SUB or k == len(pts) - 1:
+        marks.append(k)
+        run = 0.0
 o.append(f'<g style="animation:zo {T}s linear infinite">')
-for k in range(SUB, len(pts), SUB):
-    o.append(f'<path class="mv c t" d="{poly(pts[k - SUB:k + 1])}" stroke="{palette(samples[k] / TMAX)}" style="animation-delay:{when(samples[k - SUB]):.2f}s"/>')
+for i, j in zip(marks, marks[1:]):
+    o.append(f'<path class="mv c t" d="{poly(pts[i:j + 1])}" stroke="{palette(samples[j] / TMAX)}" style="animation-delay:{when(samples[j]):.2f}s"/>')
 o.append('</g>')
-frames = [f"{pct(t):.2f}%{{transform:translate({num(x)}px,{num(y)}px)}}" for t, (x, y) in list(zip(samples, pts))[::4]]
+frames = [f"{pct(samples[k]):.2f}%{{transform:translate({num(pts[k][0])}px,{num(pts[k][1])}px)}}" for k in marks]
 frames.append(f"100%{{transform:translate({num(pts[-1][0])}px,{num(pts[-1][1])}px)}}")
 css.append("@keyframes zp{" + "".join(frames) + "}")
 css.append(f"@keyframes zo{{0%,{SCAN * 100:.0f}%{{opacity:1}}{SCAN * 100 + 3:.0f}%,100%{{opacity:0}}}}")
