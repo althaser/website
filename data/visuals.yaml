@@ -68,3 +68,8 @@
   alt: Animated Milky Way seen from above, with its spiral arms, central bar and the Sun's position
   group: science
   caption: "Our galaxy is a barred spiral about 100 000 light-years across; the Sun sits on a small spur between two arms, 26 000 light-years from the centre, and takes 230 million years to go round once."
+- id: neutrinos
+  label: Neutrinos
+  alt: Animated neutrinos streaming from the Sun straight through the Earth, and one neutrino changing flavour as it travels
+  group: science
+  caption: "Neutrinos barely interact with matter: billions from the Sun cross every square centimetre of us each second, pass straight through the Earth, and switch between three flavours as they travel."
