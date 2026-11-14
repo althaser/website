@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, H, MONO, base_css, mobile, nebula, palette, stars, title, write_svg
+from common import DEFS, FONT, H, MONO, base_css, curiosity, mobile, nebula, palette, stars, title, write_svg
 
 random.seed(11)
 T = 6.0
@@ -37,7 +37,7 @@ css = [
     "@keyframes ls{0%,47%{opacity:0}51%{opacity:1}55%{opacity:.6}58%{opacity:1}64%,100%{opacity:0}}",
     "@keyframes ok{0%,50%{opacity:0}54%,92%{opacity:1}96%,100%{opacity:0}}",
     ".bar{transform-box:fill-box;transform-origin:0 50%}",
-    mobile(".lb{font-size:26px}.lb2{font-size:24px}.cu{display:none}"),
+    mobile(".lb{font-size:26px}.lb2{font-size:24px}"),
     ".f{fill:#fff;stroke-width:3;stroke-opacity:.5}.b{fill:#fbbf24;stroke:#fb923c;stroke-width:3;stroke-opacity:.5}",
 ] + base_css()
 for i in range(L):
@@ -154,7 +154,6 @@ o.append(f'<circle cx="{X1:.0f}" cy="{H / 2:.0f}" r="70" fill="url(#ho)" opacity
 # the whole network sits a little lower, leaving room for the title; the pass labels act as its subtitle
 o[BODY:] = [f'<g transform="translate(0 {SHIFT})">', *o[BODY:], "</g>"]
 o.append(title(600, 66, "a neural network learning"))
-o.append(f'<text x="600" y="664" text-anchor="middle" class="cu" {MONO} font-size="13" fill="#e0e7ff" fill-opacity=".6">'
-         f'this one has {len(edges)} connections; a human brain has about 100 trillion</text>')
+o.append(curiosity(600, 664, f'this one has {len(edges)} connections; a human brain has about 100 trillion'))
 
 write_svg(sys.argv[1], "Animated neural network training", defs, css, o)

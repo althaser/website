@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, MONO, STAR, base_css, hexc, mix, mobile, nebula, palette, ramp, rgb, stars, subtitle, title, write_svg
+from common import DEFS, MONO, STAR, base_css, curiosity, hexc, mix, mobile, nebula, palette, ramp, rgb, stars, subtitle, title, write_svg
 
 random.seed(11)
 T = 11.0
@@ -68,7 +68,7 @@ defs.append(f'<clipPath id="gc"><rect x="{GX}" y="{GY}" width="{GW}" height="{GH
 defs.append("</defs>")
 
 den0, den1, hold1, re1 = 10, 68, 84, 97
-css = [mobile(".ax{font-size:24px}.cu{display:none}")] + base_css(".nz")
+css = [mobile(".ax{font-size:24px}")] + base_css(".nz")
 for g in range(GROUPS):
     r = den0 + 4 + (den1 - den0 - 12) * (g + random.random() * .8) / GROUPS
     n = hold1 + (re1 - hold1 - 4) * random.random()
@@ -164,7 +164,6 @@ o.append(title(600, 66, "from noise to image"))
 o.append(subtitle(600, 98, "a diffusion model removes a little noise at every step"))
 o.append(f'<text x="{GX}" y="{ty + 30}" class="ax" {MONO} font-size="13" fill="#e879f9" fill-opacity=".8">pure noise</text>'
          f'<text x="{GX + GW}" y="{ty + 30}" text-anchor="end" class="ax" {MONO} font-size="13" fill="#22d3ee" fill-opacity=".8">image</text>')
-o.append(f'<text x="600" y="660" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
-         f'image generators repeat this 20 to 50 times for every picture they make</text>')
+o.append(curiosity(600, 660, "image generators repeat this 20 to 50 times for every picture they make"))
 
 write_svg(sys.argv[1], "Animated diffusion model generating an image", defs, css, o)

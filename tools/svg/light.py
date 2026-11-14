@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, MONO, STAR, base_css, mobile, nebula, num, palette, poly, stars, subtitle, title, write_svg
+from common import DEFS, FONT, MONO, STAR, base_css, curiosity, mobile, nebula, num, palette, poly, stars, subtitle, title, write_svg
 
 random.seed(13)
 
@@ -29,7 +29,7 @@ WORK = .5
 css = [
     "@keyframes rg{0%{transform:scale(.02);opacity:.9}100%{transform:scale(1);opacity:0}}",
     ".w{fill:none;stroke-width:1.6;transform-box:view-box}",
-    mobile(".ax{font-size:24px}.cu{display:none}"),
+    mobile(".ax{font-size:24px}"),
 ] + base_css(shown=".st")
 defs = ["<defs>", *DEFS,
         '<radialGradient id="ea" cx=".38" cy=".35"><stop offset="0" stop-color="#7dd3fc"/><stop offset=".55" stop-color="#2563eb"/><stop offset="1" stop-color="#1e1b4b"/></radialGradient>',
@@ -142,7 +142,6 @@ for n in range(hits):
 o.append(f'<text x="{PLX0}" y="{PLY + 46}" class="ax" {MONO} font-size="13" fill="#a78bfa">high f → e⁻ ejected</text>'
          f'<text x="{PLX0}" y="{PLY + 72}" class="ax" {MONO} font-size="13" fill="#f87171">low f → none</text>')
 
-o.append(f'<text x="600" y="238" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
-         f'even one photon at a time builds up the stripes: each is a particle, and still a wave</text>')
+o.append(curiosity(600, 238, "even one photon at a time builds up the stripes: each is a particle, and still a wave"))
 
 write_svg(sys.argv[1], "Animated light: its speed from the Earth to the Moon, a double slit wave pattern and photons ejecting electrons", defs, css, o)

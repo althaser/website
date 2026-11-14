@@ -85,9 +85,14 @@ def back(text, up=False):
     return f'<tspan dy="{10 if up else -6}">{text}</tspan>'
 
 
+def curiosity(x, y, text):
+    """A one-line fact in small print; hidden on phones, where it would be too small to read."""
+    return f'<text x="{x}" y="{y}" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">{text}</text>'
+
+
 def mobile(rules=""):
     """Phone sizes: titles and subscripts are shared, `rules` adds the image's own."""
-    return f"@media (max-width:520px){{.ti{{font-size:34px}}.su{{font-size:23px}}.sbt{{font-size:26px}}.sbs{{font-size:17px}}{rules}}}"
+    return f"@media (max-width:520px){{.ti{{font-size:34px}}.su{{font-size:23px}}.sbt{{font-size:26px}}.sbs{{font-size:17px}}.cu{{display:none}}{rules}}}"
 
 
 def svg_open(label, x=0, y=0):

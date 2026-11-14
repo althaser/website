@@ -7,7 +7,7 @@
 <radialGradient id="bu"><stop offset="0" stop-color="#fff7d6"/><stop offset=".3" stop-color="#fde68a" stop-opacity=".8"/><stop offset=".7" stop-color="#fb923c" stop-opacity=".25"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>
 <radialGradient id="eg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fde68a" stop-opacity=".9"/><stop offset=".25" stop-color="#c7d2fe" stop-opacity=".45"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
 </defs>
-<style>@keyframes gr{to{transform:rotate(360deg)}}@keyframes ps{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.6);opacity:0}}@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.sbt{font-size:26px}.sbs{font-size:17px}.ar{font-size:22px}.yh{font-size:30px}.ex{display:none}}@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}</style>
+<style>@keyframes gr{to{transform:rotate(360deg)}}@keyframes ps{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.6);opacity:0}}@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.sbt{font-size:26px}.sbs{font-size:17px}.cu{display:none}.ar{font-size:22px}.yh{font-size:30px}.ex{display:none}}@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}</style>
 <ellipse cx="600" cy="392" rx="330" ry="300" fill="url(#nb1)"/><ellipse cx="600" cy="392" rx="300" ry="300" fill="url(#nb2)"/>
 <circle cx="347" cy="438" r="1.3" fill="#e0e7ff" style="animation:tw 5.7s -3.4s infinite"/>
 <circle cx="452" cy="496" r="1" fill="#e0e7ff" opacity="0.35"/>

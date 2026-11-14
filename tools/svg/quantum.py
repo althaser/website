@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, MONO, PALETTE, STAR, base, base_css, mobile, nebula, palette, small, stars, subtitle, title, write_svg
+from common import DEFS, MONO, PALETTE, STAR, base, base_css, curiosity, mobile, nebula, palette, small, stars, subtitle, title, write_svg
 
 random.seed(4)
 NQ = 8
@@ -30,7 +30,7 @@ css = [
     "@keyframes nd{0%{transform:rotate(-40deg)}10%{transform:rotate(32deg)}24%{transform:rotate(-12deg)}40%,100%{transform:rotate(-40deg)}}",
     ".hb{transform-box:fill-box;transform-origin:0 50%}",
     ".rp{transform-box:fill-box;transform-origin:center}",
-    mobile(".cu{display:none}"),
+    mobile(),
 ] + base_css(None)
 
 # wave packet with a gaussian envelope
@@ -137,7 +137,6 @@ for q, y in enumerate(WY):
 MIDX = 600 - 17
 o.append(title(MIDX, 66, "a quantum circuit"))
 o.append(subtitle(MIDX, 98, f"8 qubits hold 2{small('8', up=True)}{base(' = 256 states at once', up=True)}"))
-o.append(f'<text x="{MIDX}" y="640" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
-         f'with 300 qubits, that is more states than there are atoms in the universe</text>')
+o.append(curiosity(MIDX, 640, "with 300 qubits, that is more states than there are atoms in the universe"))
 
 write_svg(sys.argv[1], "Animated quantum circuit", defs, css, o, x=-17)

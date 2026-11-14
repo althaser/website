@@ -12,7 +12,7 @@
 <clipPath id="b5"><rect x="818.2" y="105" width="187.1" height="60"/></clipPath>
 <clipPath id="b6"><rect x="1005.3" y="105" width="124.7" height="60"/></clipPath>
 </defs>
-<style>@keyframes wv{to{transform:translateX(var(--d))}}.c{fill:none;stroke-linecap:round;stroke-linejoin:round}@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.sbt{font-size:26px}.sbs{font-size:17px}.ax{font-size:22px}.bn{font-size:26px}.ex{display:none}}@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}</style>
+<style>@keyframes wv{to{transform:translateX(var(--d))}}.c{fill:none;stroke-linecap:round;stroke-linejoin:round}@media (max-width:520px){.ti{font-size:34px}.su{font-size:23px}.sbt{font-size:26px}.sbs{font-size:17px}.cu{display:none}.ax{font-size:22px}.bn{font-size:26px}.ex{display:none}}@keyframes tw{0%,100%{opacity:.15}50%{opacity:.9}}@media (prefers-reduced-motion:reduce){*{animation:none!important}.mv{opacity:0}}</style>
 <ellipse cx="380" cy="380" rx="340" ry="260" fill="url(#nb1)"/><ellipse cx="820" cy="360" rx="340" ry="260" fill="url(#nb2)"/>
 <circle cx="1079" cy="434" r="1" fill="#e0e7ff" style="animation:tw 6.9s -2.0s infinite"/>
 <circle cx="1116" cy="687" r="1" fill="#e0e7ff" opacity="0.19"/>
@@ -150,5 +150,5 @@
 <text x="600.0" y="570" text-anchor="middle" class="ax" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".75">430–750 THz</text>
 <text x="312" y="475" class="ax" font-family="Consolas,monospace" font-size="13" font-weight="600" fill="#0b1023">700 nm</text><text x="888" y="475" text-anchor="end" class="ax" font-family="Consolas,monospace" font-size="13" font-weight="600" fill="#0b1023">400 nm</text>
 <text x="70" y="640" class="ax" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">← lower energy · longer waves</text><text x="1130" y="640" text-anchor="end" class="ax" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">higher energy · shorter waves →</text>
-<text x="600" y="672" text-anchor="middle" class="ex" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">bees see ultraviolet and some snakes sense infrared, just beyond our visible slice</text>
+<text x="600" y="672" text-anchor="middle" class="cu" font-family="Consolas,monospace" font-size="13" fill="#e0e7ff" fill-opacity=".6">bees see ultraviolet and some snakes sense infrared, just beyond our visible slice</text>
 </svg>

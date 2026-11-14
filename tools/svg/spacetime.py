@@ -2,7 +2,7 @@ import math
 import random
 import sys
 
-from common import DEFS, FONT, MONO, PALETTE, STAR, base, base_css, mobile, motion, nebula, num, poly, small, stars, subtitle, title, write_svg
+from common import DEFS, FONT, MONO, PALETTE, STAR, base, base_css, curiosity, mobile, motion, nebula, num, poly, small, stars, subtitle, title, write_svg
 
 random.seed(7)
 CYAN, ORANGE = PALETTE[0], PALETTE[-1]
@@ -42,7 +42,7 @@ css = [
     f"@keyframes hs{{to{{transform:translateY({PITCH}px)}}}}",
     ".c{fill:none;stroke-linecap:round;stroke-linejoin:round}",
     ".gl{transform-box:fill-box;transform-origin:center}",
-    mobile(".ax{font-size:26px}.cu{display:none}"),
+    mobile(".ax{font-size:26px}"),
 ] + base_css()
 
 defs = ["<defs>", *DEFS,
@@ -163,7 +163,6 @@ labels = (f'<text x="{H + 10}" y="{-H + 5}" class="ax" {FONT} font-style="italic
           f'<text x="{H + 10}" y="{H + 5}" class="ax" {FONT} font-style="italic" font-size="15" fill="#fde68a" fill-opacity=".6">past</text>')
 o.append(f'<g transform="translate({num(now[0][0])} {num(now[0][1])})" style="animation:wn {P}s linear infinite">{cone}{labels}<circle r="16" fill="url(#hl)"/><circle r="5" fill="#a5f3fc"/></g>')
 
-o.append(f'<text x="600" y="672" text-anchor="middle" class="cu" {MONO} font-size="13" fill="{STAR}" fill-opacity=".6">'
-         f'GPS clocks gain 38 µs a day in weaker gravity: uncorrected, maps would drift 10 km a day</text>')
+o.append(curiosity(600, 672, "GPS clocks gain 38 µs a day in weaker gravity: uncorrected, maps would drift 10 km a day"))
 
 write_svg(sys.argv[1], "Animated curved spacetime", defs, css, o)
